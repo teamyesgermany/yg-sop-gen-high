@@ -7,75 +7,183 @@ from docx import Document
 from docx.shared import Pt
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from dotenv import load_dotenv
+import spacy
 
 
 load_dotenv()  # take environment variables from .env.
 
 ai.api_key = os.getenv("OPENAI_API_KEY")
 
+nlp = spacy.blank("en")  # Create a blank English model
+#^ Load the SpaCy English model
+nlp_e = spacy.load("en_core_web_sm")
 
 
+def retrieve_cgpa_score(content_resume):
+    
+    # Check if the entity_ruler already exists in the pipeline
+    if 'entity_ruler' in nlp.pipe_names:
+        ruler = nlp.get_pipe('entity_ruler')
+    else:
+        ruler = nlp.add_pipe("entity_ruler")
 
+    patterns = [
+        {"label": "CGPA", "pattern": [{"TEXT": {"REGEX": "\\d+(\\.\\d+)?"}}, {"LOWER": {"IN": ["cgpa", "sgpi"]}}]},  # Matches "9.6 CGPA"
+        {"label": "CGPA", "pattern": [{"LOWER": {"IN": ["cgpa", "sgpi"]}}, {"TEXT": {"REGEX": "\\d+(\\.\\d+)?"}}, {"IS_PUNCT": True, "OP": "?"}]},  # Matches "CGPA 9.6" and "CGPA 9.5" (with optional punctuation)
+        {"label": "CGPA", "pattern": [{"LOWER": {"IN": ["cgpa", "sgpi"]}}, {"IS_PUNCT": True, "OP": "?"}, {"TEXT": {"REGEX": "\\d+(\\.\\d+)?"}}]},  # Matches "CGPA - 9.26" or "CGPA 9.5" (with optional punctuation)
+        {"label": "CGPA", "pattern": [{"TEXT": {"REGEX": "\\d+(\\.\\d+)?"}}, {"LOWER": {"IN": ["cgpa", "sgpi"]}}, {"IS_PUNCT": True, "OP": "?"}]},  # Matches "9.5 CGPA" or "9.5 CGPA -" (with optional punctuation)
+        {"label": "CGPA", "pattern": [{"TEXT": {"REGEX": "\\d+(\\.\\d+)?"}}, {"IS_PUNCT": True, "OP": "?"}, {"LOWER": {"IN": ["cgpa", "sgpi"]}}]},  # Matches "9.5 - CGPA" or "9.5 . CGPA" (with optional punctuation)
+        {"label": "CGPA", "pattern": [{"LOWER": {"IN": ["cgpa", "sgpi"]}}, {"IS_PUNCT": True, "OP": "?"}, {"LOWER": {"IN": ["-", "–"]}}, {"IS_SPACE": True, "OP": "?"}, {"TEXT": {"REGEX": "\\d+(\\.\\d+)?"}}]}, # Matches "CGPA - 9.26" or "CGPA -9.5" (with optional punctuation and space)
+        {"label": "CGPA", "pattern": [{"TEXT": {"REGEX": "\w*\\d+(\\.\\d+)?"}}, {"LOWER": {"REGEX": "(cgpa|sgpi\\w*)"}}]},
+        {"label": "CGPA", "pattern": [{"LOWER": {"REGEX": "(\\w*cgpa|sgpi)"}}, {"TEXT": {"REGEX": "\\d+(\\.\\d+)?\w*"}}]}
+    ]
+
+    ruler.add_patterns(patterns)
+
+    lines = content_resume.split('\n')
+    score = "unknown"
+    for index, line in enumerate(lines):
+        doc = nlp(line)
+        found_cgpa = False
+        for ent in doc.ents:
+            if ent.label_ == 'CGPA':
+                found_cgpa = True
+                print(ent.text)
+                numerical_score = nlp_e(ent.text)
+                for token in numerical_score:
+                    if token.ent_type_ == 'CARDINAL':
+                        score = token.text
+                break  # Stop looping over entities once CGPA label is found
+        if found_cgpa:
+            break  # Stop looping over lines once CGPA label is found
+
+    return score
 
 
 def generate_sop(template_text, res_text,programme,user_name,university):
-    completion = ai.ChatCompletion.create(
-      #model="gpt-3.5-turbo-16k", 
-      model = "gpt-4o-2024-05-13",
-      temperature=ai_temp,
-          messages=[
-        {"role": "user", "content": "Generate a statement of purpose based on the provided details, following a specific structure and style."},
-        {"role": "user", "content": f"Template for guidance: {template_text}. You should reproduce the exact same structure"},
-        {"role": "user", "content": f"Resume information: {res_text}"},
-        {"role": "user", "content": f"Study programme name: {programme}"},
-        {"role": "user", "content": f"Candidate's name: {user_name}"},
-        {"role": "user", "content": f"University name: {university}"},
-        # {"role": "user", "content": f"Description of the university: {university_desc}"},
-        # {"role": "user", "content": f"Content of the study programme: {programme_content}"},
-        {"role": "user", "content": "1st Paragraph:  introduction about your name, background, and programme and university you are applying and also mention the reason within one line why to choose this programme"},
-        {"role": "user", "content": """2nd Paragraph: Discuss the candidate's academic and professional background :
-         IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
-         Mention ALL his work experiences and the different roles and responsibilities he held
-         Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-         Mention all his certificates
-         """},
-        {"role": "user", "content": f"""3rd Paragraph: Based on the information from Internet about the programme and based on the resume : {res_text}, do the following : :
-            Show a Strong motivation by evoking a storytelling from your past that led you to want to study this programme
-         	Explain also why you are STRONGLY MOTIVATED to pursue this programme by relating to your previous experience
-            Select some modules proposed by the programme and describe their contents, then explain why you are HIGHLY motivated to study them.
-	        Explain Why this programme can help you build your career and prepare you for your future  
-         
-         """},
-        {"role": "user", "content": f"""4th Paragraph: Based on the information from Internet, you should retrieve the following data :
-                                                        Exact ranking of the University and the source of ranking
-	                                                    Number of students
-	                                                    facilities, faculties , campus location
-	                                                    Precise you have relatives and friends there
-	                                                    Names of research centers linked to the programme
-        You should use ALL these data and invent for each one an element of motivation make you want to integrate the University
+    
+    
+    cgpa_score = retrieve_cgpa_score(res_text)
+    print("from the terminal : ", cgpa_score)
+    
+    if float(cgpa_score) > 7: 
+        completion = ai.ChatCompletion.create(
+        #model="gpt-3.5-turbo-16k", 
+        model = "gpt-4o-2024-05-13",
+        temperature=ai_temp,
+            messages=[
+            {"role": "user", "content": "Generate a statement of purpose based on the provided details, following a specific structure and style."},
+            {"role": "user", "content": f"Template for guidance: {template_text}. You should reproduce the exact same structure"},
+            {"role": "user", "content": f"Resume information: {res_text}"},
+            {"role": "user", "content": f"Study programme name: {programme}"},
+            {"role": "user", "content": f"Candidate's name: {user_name}"},
+            {"role": "user", "content": f"University name: {university}"},
+            # {"role": "user", "content": f"Description of the university: {university_desc}"},
+            # {"role": "user", "content": f"Content of the study programme: {programme_content}"},
+            {"role": "user", "content": "1st Paragraph:  introduction about your name, background, and programme and university you are applying and also mention the reason within one line why to choose this programme"},
+            {"role": "user", "content": """2nd Paragraph: Discuss the candidate's academic and professional background :
+            IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
+            Mention ALL his work experiences and the different roles and responsibilities he held
+            Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
+            Mention all his certificates
+            """},
+            {"role": "user", "content": f"""3rd Paragraph: Based on the information from Internet about the programme and based on the resume : {res_text}, do the following : :
+                Show a Strong motivation by evoking a storytelling from your past that led you to want to study this programme
+                Explain also why you are STRONGLY MOTIVATED to pursue this programme by relating to your previous experience
+                Select some modules proposed by the programme and describe their contents, then explain why you are HIGHLY motivated to study them.
+                Explain Why this programme can help you build your career and prepare you for your future  
             
-        In this paragraph you should also mention why you want to study in the city of the University , mention :  Some cool spots in the city you would like to see
-                                                                                                                   names of companies in the city of the same field of your study        
-         """},
-        {"role": "user", "content": """5th Paragraph: Explain why you chose to study in Germany :
-         You should mention :
-         Intention to stay in Germany because the field education comparative is far better to others destinations,
-	     Good exposure, diversity and culture 
-	     Mention examples of cooperations between indian and germany linked to your area of study and how you see yourself participating in it in the future ! Search for last news information you have
-         """},
-        {"role": "user", "content": "6th Paragraph: Describe your future career perspectives and aspirations post-study. Show your intentions and reasons to stay and work in Germany"},
-        {"role": "user", "content": "Last Paragraph: A brief conclusion summarizing why you are the ideal applicant and show again your interest."},
-        {"role": "user", "content": "Finish with a closing line with consideration of this statement of purpose and add your name signature bellow"},
-        {"role": "user", "content": "Please ensure each paragraph transitions smoothly into the next, maintaining a logical flow throughout the document."},
-        {"role": "user", "content": "The statement of purpose should consist of seven paragraphs, totaling a minimum of 500 words, using simple language that appears human-written."},
-        {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Use simple words. Simple please."}
+            """},
+            {"role": "user", "content": f"""4th Paragraph: Based on the information from Internet, you should retrieve the following data :
+                                                            Exact ranking of the University and the source of ranking
+                                                            Number of students
+                                                            facilities, faculties , campus location
+                                                            Precise you have relatives and friends there
+                                                            Names of research centers linked to the programme
+            You should use ALL these data and invent for each one an element of motivation make you want to integrate the University
+                
+            In this paragraph you should also mention why you want to study in the city of the University , mention :  Some cool spots in the city you would like to see
+                                                                                                                    names of companies in the city of the same field of your study        
+            """},
+            {"role": "user", "content": """5th Paragraph: Explain why you chose to study in Germany :
+            You should mention :
+            Intention to stay in Germany because the field education comparative is far better to others destinations,
+            Good exposure, diversity and culture 
+            Mention examples of cooperations between indian and germany linked to your area of study and how you see yourself participating in it in the future ! Search for last news information you have
+            """},
+            {"role": "user", "content": "6th Paragraph: Describe your future career perspectives and aspirations post-study. Show your intentions and reasons to stay and work in Germany"},
+            {"role": "user", "content": "Last Paragraph: A brief conclusion summarizing why you are the ideal applicant and show again your interest."},
+            {"role": "user", "content": "Finish with a closing line with consideration of this statement of purpose and add your name signature bellow"},
+            {"role": "user", "content": "Please ensure each paragraph transitions smoothly into the next, maintaining a logical flow throughout the document."},
+            {"role": "user", "content": "The statement of purpose should consist of seven paragraphs, totaling a minimum of 500 words, using simple language that appears human-written."},
+            {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Use simple words. Simple please."}
 
-    ]
-    )
+        ]
+        )
 
-    response_out = completion['choices'][0]['message']['content']
-    st.write(response_out)
-    return response_out
+        response_out = completion['choices'][0]['message']['content']
+        st.write(response_out)
+        return response_out
+    
+    
+    else: 
+        completion = ai.ChatCompletion.create(
+        #model="gpt-3.5-turbo-16k", 
+        model = "gpt-4o-2024-05-13",
+        temperature=ai_temp,
+         messages=[
+            {"role": "user", "content": "Generate a statement of purpose based on the provided details, following a specific structure and style."},
+            {"role": "user", "content": f"Template for guidance: {template_text}. You should reproduce the exact same structure"},
+            {"role": "user", "content": f"Resume information: {res_text}"},
+            {"role": "user", "content": f"Study programme name: {programme}"},
+            {"role": "user", "content": f"Candidate's name: {user_name}"},
+            {"role": "user", "content": f"University name: {university}"},
+            # {"role": "user", "content": f"Description of the university: {university_desc}"},
+            # {"role": "user", "content": f"Content of the study programme: {programme_content}"},
+            {"role": "user", "content": "1st Paragraph:  introduction about your name, background, and programme and university you are applying and also mention the reason within one line why to choose this programme"},
+            {"role": "user", "content": """2nd Paragraph: Discuss the candidate's academic and professional background :
+            DON'T mention his CGPA score PLEASE.
+            Mention ALL his work experiences and the different roles and responsibilities he held
+            Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
+            Mention all his certificates
+            """},
+            {"role": "user", "content": f"""3rd Paragraph: Based on the information from Internet about the programme and based on the resume : {res_text}, do the following : :
+                Show a Strong motivation by evoking a storytelling from your past that led you to want to study this programme
+                Explain also why you are STRONGLY MOTIVATED to pursue this programme by relating to your previous experience
+                Select some modules proposed by the programme and describe their contents, then explain why you are HIGHLY motivated to study them.
+                Explain Why this programme can help you build your career and prepare you for your future  
+            
+            """},
+            {"role": "user", "content": f"""4th Paragraph: Based on the information from Internet, you should retrieve the following data :
+                                                            Exact ranking of the University and the source of ranking
+                                                            Number of students
+                                                            facilities, faculties , campus location
+                                                            Precise you have relatives and friends there
+                                                            Names of research centers linked to the programme
+            You should use ALL these data and invent for each one an element of motivation make you want to integrate the University
+                
+            In this paragraph you should also mention why you want to study in the city of the University , mention :  Some cool spots in the city you would like to see
+                                                                                                                    names of companies in the city of the same field of your study        
+            """},
+            {"role": "user", "content": """5th Paragraph: Explain why you chose to study in Germany :
+            You should mention :
+            Intention to stay in Germany because the field education comparative is far better to others destinations,
+            Good exposure, diversity and culture 
+            Mention examples of cooperations between indian and germany linked to your area of study and how you see yourself participating in it in the future ! Search for last news information you have
+            """},
+            {"role": "user", "content": "6th Paragraph: Describe your future career perspectives and aspirations post-study. Show your intentions and reasons to stay and work in Germany"},
+            {"role": "user", "content": "Last Paragraph: A brief conclusion summarizing why you are the ideal applicant and show again your interest."},
+            {"role": "user", "content": "Finish with a closing line with consideration of this statement of purpose and add your name signature bellow"},
+            {"role": "user", "content": "Please ensure each paragraph transitions smoothly into the next, maintaining a logical flow throughout the document."},
+            {"role": "user", "content": "The statement of purpose should consist of seven paragraphs, totaling a minimum of 500 words, using simple language that appears human-written."},
+            {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Use simple words. Simple please."}
+         ]
+        )
+
+        response_out = completion['choices'][0]['message']['content']
+        st.write(response_out)
+        return response_out
+        
     
 
 
@@ -103,9 +211,17 @@ def save_doc_to_buffer(doc):
     return buffer
     
     
+def read_pdf(file):
+    pdf_reader = PdfReader(file)
+    text = ""
+    for page in pdf_reader.pages:
+        text += page.extract_text()
+    return text
 
 
-
+# def generate_random_templates(directory_path):
+#     choice.random
+    
 
 
 
@@ -141,6 +257,7 @@ else:
     
  
  
+st.subheader("If you have a template in mind you can submit it. Otherwise it will be automatically generated.")
 # radio for upload or copy paste option         
 template_format = st.radio(
     "Do you want to upload or paste the template",
@@ -159,6 +276,8 @@ if template_format == 'Upload':
 else:
     # use the pasted contents instead
     template_text = st.text_input('Pasted template elements')
+# else:
+#     template_format = generate_random_template()
             
             
 
