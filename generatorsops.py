@@ -8,6 +8,7 @@ from docx.shared import Pt
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from dotenv import load_dotenv
 import spacy
+import random
 
 
 load_dotenv()  # take environment variables from .env.
@@ -219,10 +220,25 @@ def read_pdf(file):
     return text
 
 
-# def generate_random_templates(directory_path):
-#     choice.random
+def generate_random_templates(directory_path):
+    # List all files in the directory
+    files = os.listdir(directory_path)
+    # Filter out the PDF files
+    pdf_files = [file for file in files if file.endswith('.pdf')]
     
-
+    # Check if there are any PDF files
+    if not pdf_files:
+        print("No PDF files found in the directory.")
+        return
+    
+    # Randomly select a PDF file
+    selected_pdf = random.choice(pdf_files)
+    print(f"Selected PDF: {selected_pdf}")
+    
+    # Full path to the selected PDF file
+    pdf_path = os.path.join(directory_path, selected_pdf)
+    return read_pdf(pdf_path)
+    
 
 
 
@@ -232,13 +248,13 @@ def read_pdf(file):
 st.markdown("""
 # 📝 AI-Powered SOP Generator
 
-Generate a sop letter : JUST READ THE INSTRUCTIONS BRO
+Generate a sop letter : JUST READ THE INSTRUCTIONS
 """
 )
 
 # radio for upload or copy paste option         
 res_format = st.radio(
-    "Do you want to upload or paste your resume/key experience",
+    "Upload or paste the applicant's resume/key experience",
     ('Upload', 'Paste'))
 
 if res_format == 'Upload':
@@ -261,7 +277,7 @@ st.subheader("If you have a template in mind you can submit it. Otherwise it wil
 # radio for upload or copy paste option         
 template_format = st.radio(
     "Do you want to upload or paste the template",
-    ('Upload', 'Paste'))
+    ('Upload', 'Paste', 'let the software generate the template'))
 
 if template_format == 'Upload':     
         # upload_resume
@@ -273,11 +289,11 @@ if template_format == 'Upload':
         template_text = ""
         for page in pdf_reader.pages:
             template_text += page.extract_text()
-else:
+elif template_format == 'Paste':
     # use the pasted contents instead
     template_text = st.text_input('Pasted template elements')
-# else:
-#     template_format = generate_random_template()
+else:
+    template_text = generate_random_templates('templates')
             
             
 
