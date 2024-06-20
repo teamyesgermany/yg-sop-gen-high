@@ -9,7 +9,7 @@ from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from dotenv import load_dotenv
 import spacy
 import random
-import textract
+
 
 
 load_dotenv()  # take environment variables from .env.
