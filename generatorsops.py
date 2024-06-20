@@ -9,6 +9,7 @@ from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from dotenv import load_dotenv
 import spacy
 import random
+import textract
 
 
 load_dotenv()  # take environment variables from .env.
@@ -930,7 +931,12 @@ def generate_random_templates(directory_path):
     return read_pdf(pdf_path)
     
 
-
+def read_docx(file):
+    doc = Document(file)
+    full_text = []
+    for para in doc.paragraphs:
+        full_text.append(para.text)
+    return '\n'.join(full_text)
 
 
 
@@ -950,16 +956,19 @@ res_format = st.radio(
 if res_format == 'Upload':
     # upload_resume
     res_file = st.file_uploader('📁 Upload your resume in pdf format')
-    if res_file:
+    if res_file is not None and res_file.name.endswith('.pdf'):
         pdf_reader = PdfReader(res_file)
 
         # Collect text from pdf
         res_text = ""
         for page in pdf_reader.pages:
             res_text += page.extract_text()
-else:
-    # use the pasted contents instead
-    res_text = st.text_input('Pasted resume elements')
+    elif res_file is not None and res_file.name.endswith('.docx'):
+        st.error('sorry you should submit pdf format for the resume')
+
+    else:
+        # use the pasted contents instead
+        res_text = st.text_input('Pasted resume elements')
     
  
  
@@ -1001,18 +1010,21 @@ with st.form('input_form'):
 
 # if the form is submitted run the openai completion   
 if submitted:
-    random_number = random.randint(0, 3)
-    print(random_number)
-    if random_number == 0:
-        response = generate_sop(template_text, res_text,programme,user_name,university)
-    elif random_number == 1:
-        response = generate_sop1( generate_random_templates('templates1'), res_text,programme,user_name,university)
-    elif random_number == 2:
-        response = generate_sop2( generate_random_templates('templates2'), res_text,programme,user_name,university)
-    elif random_number == 3:
-        response = generate_sop3( generate_random_templates('templates3'), res_text,programme,user_name,university)
-    else:
-        response = generate_sop4( generate_random_templates('templates4'), res_text,programme,user_name,university)
+    # random_number = random.randint(0, 3)
+    # print(random_number)
+    # if random_number == 0:
+    #     response = generate_sop(template_text, res_text,programme,user_name,university)
+    # elif random_number == 1:
+    #     response = generate_sop1( generate_random_templates('templates1'), res_text,programme,user_name,university)
+    # elif random_number == 2:
+    #     response = generate_sop2( generate_random_templates('templates2'), res_text,programme,user_name,university)
+    # elif random_number == 3:
+    #     response = generate_sop3( generate_random_templates('templates3'), res_text,programme,user_name,university)
+    # else:
+    #     response = generate_sop4( generate_random_templates('templates4'), res_text,programme,user_name,university)
+    
+    
+    response = generate_sop4( generate_random_templates('templates4'), res_text,programme,user_name,university)
     
     doc_download1 = create_word_document(response, 'Arial', 11)
     st.download_button(
