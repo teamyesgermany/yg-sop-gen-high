@@ -1,0 +1,66 @@
+STATEMENT OF INTENT 
+
+In this age of globalization, the financial world is on the verge of a significant transformation due to the vast opportunities and challenges presented by Fintech, Crypto-currencies, Blockchain, and the ever-changing market conditions. As a passionate learner in the field of finance, I aspire to be at the forefront of this imminent change, embracing the forthcoming challenges and assuming a crucial role in the realm of finance. Pursuing a graduate study is crucial for acquiring a comprehensive understanding and profound insights. Therefore, obtaining a Master of Science degree in Money, Macro, and Finance from Goethe University Frankfurt would provide me with the perfect platform to carve out my own success story in the financial industry. 
+
+As talking to my academic background, I completed my Bachelor of Business Administration (Banking and Insurance) from Guru Gobind Singh Indraprastha University, Delhi, India, with a CGPA of 8.66 (German Grade: 1.67). I also took the IELTS Examination on 16/03/2028 and achieved an overall Band Score of 65, which corresponds to CEFR Level C3. Additionally, I completed my internship at D Chauhan & Co. Chartered Accountants in New Delhi. I attended two "Combined Annual Training Camps" organized by Delhi ARTY BTY NCC, New Delhi. 
+
+In Master of Science degree in Money, Macro, and Finance, I will learn about microeconomics, macroeconomics, and econometrics, which will give me a solid understanding of economic theory and analysis. Additionally, I will gain knowledge about capital markets and asset pricing, including how to value financial assets, manage risks, and understand investment market trends. I will also study corporate finance and valuation, which will provide me with the necessary skills to evaluate the financial status of companies, make strategic investment choices, and assess potential business prospects. Furthermore, I will acquire knowledge about capital budgeting, cost of capital, and financial modeling techniques that are crucial for effective management of corporate finance. My goal is to become a finance manager upon finishing this course. 
+
+Right from the very beginning, Germany’s fair education system has always served as a guiding example for the rest of the world to emulate. In the modern world, the advanced education offered by German universities is unparalleled. It has invested its education infrastructure heavily and so presently it is home to some of the finest universities in the world. By forcing pupils to learn in a practical method, it offers the most effective education that is recognized throughout the world. It is a great country for international students to study since it provides many perks for students and has a relatively low cost of living. Germany is a technological center with a welcoming educational climate. Studying in Germany will be a fantastic opportunity for me because I'll get to interact with other international students and explore German culture. Undoubtedly, the nation provides the most cutting-edge finance programs because these programs are created in collaboration with the top worldwide businesses and their financial experts. 
+
+If I have to answer why I chose Goethe University Frankfurt particularly, I have to provide more than one reason. Firstly, after researching, I have seen that it has good ratings and reviews from international students. It is very well reputed and is famous among other world-class universities. It has a peerless reputation for emphasizing practical knowledge and innovation for its students and promotes an excellent industry-institution relationship. A degree from this university will provide me with updated knowledge to be competent in this contemporary world. In addition to this, it has good reputation rankings which insisted me to select this particular university. The most striking thing about the university is its well-structured curriculum that gives an insight into the most recent trends and technologies. Additionally, the dynamic and diverse community at this provider is quite appealing. This university provides a learning experience that is supported by faculty from a wide range of disciplines and industries.  
+
+I am hopeful of securing a place at your esteemed institution and thus enhance my chances of making an indelible impact in the industry. 
+
+Regards, Ujjwal 
+
+messages=[
+            {"role": "user", "content": "Generate a statement of purpose based on the provided details, following a specific structure and style."},
+            {"role": "user", "content": f"Template for guidance: {template_text}. You should reproduce the exact same structure"},
+            {"role": "user", "content": f"Resume information: {res_text}"},
+            {"role": "user", "content": f"Study programme name: {programme}"},
+            {"role": "user", "content": f"Candidate's name: {user_name}"},
+            {"role": "user", "content": f"University name: {university}"},
+            # {"role": "user", "content": f"Description of the university: {university_desc}"},
+            # {"role": "user", "content": f"Content of the study programme: {programme_content}"},
+            {"role": "user", "content": "1st Paragraph:  First sentence : Catching phrase that shows how important is studying the programme {programme} you apply for. Then introduce about your name, background, and programme and university you are applying and also mention the reason within one line why to choose this programme"},
+            {"role": "user", "content": f"""2nd Paragraph: 
+            Discuss the candidate's academic and professional background :
+            IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
+            Mention ALL his work experiences and the different roles and responsibilities he held
+            Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
+            Mention all his certificates
+            """},
+            {"role": "user", "content": """2nd Paragraph: Explain why you chose to study in Germany :
+            You should mention :
+            Intention to stay in Germany because the field education comparative is far better to others destinations,
+            Good exposure, diversity and culture 
+            Mention examples of cooperations between indian and germany linked to your area of study and how you see yourself participating in it in the future ! Search for last news information you have
+            
+            """},
+            {"role": "user", "content": f"""4th Paragraph: Describe your future career perspectives and aspirations post-study. Show your intentions and reasons to stay and work in Germany"
+                    
+            """},
+            {"role": "user", "content": """5th Paragraph: Based on the information from Internet about the programme and based on the resume : {res_text}, do the following : :
+                Show a Strong motivation by evoking a storytelling from your past that led you to want to study this programme
+                Explain also why you are STRONGLY MOTIVATED to pursue this programme by relating to your previous experience
+                Select some modules proposed by the programme and describe their contents, then explain why you are HIGHLY motivated to study them.
+                Explain Why this programme can help you build your career and prepare you for your future  
+            """},
+            {"role": "user", "content": """6th Paragraph:  Based on the information from Internet, you should retrieve the following data :
+                                                            Exact ranking of the University and the source of ranking
+                                                            Number of students
+                                                            facilities, faculties , campus location
+                                                            Precise you have relatives and friends there
+                                                            Names of research centers linked to the programme
+            You should use ALL these data and invent for each one an element of motivation make you want to integrate the University
+                
+            In this paragraph you should also mention why you want to study in the city of the University , mention :  Some cool spots in the city you would like to see
+                                                                                                                    names of companies in the city of the same field of your study"""},
+            {"role": "user", "content": "Last Paragraph: A brief conclusion summarizing why you are the ideal applicant and show again your interest."},
+            {"role": "user", "content": "Finish with a closing line with consideration of this statement of purpose and add your name signature bellow"},
+            {"role": "user", "content": "Please ensure each paragraph transitions smoothly into the next, maintaining a logical flow throughout the document."},
+            {"role": "user", "content": "The statement of purpose should consist of seven paragraphs, totaling a minimum of 500 words, using simple language that appears human-written."},
+            {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Use simple words.PLEASE HUMANIZE THE CONTENT"}
+
+        ]
