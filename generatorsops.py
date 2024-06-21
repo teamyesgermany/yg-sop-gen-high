@@ -870,7 +870,6 @@ def generate_sop4(template_text, res_text,programme,user_name,university):
             {"role": "user", "content": "Please ensure each paragraph transitions smoothly into the next, maintaining a logical flow throughout the document."},
             {"role": "user", "content": "The statement of purpose should consist of seven paragraphs, totaling a minimum of 500 words, using simple language that appears human-written."},
             {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on', 'delve', 'renowned'"}
-
         ]
         )
 
@@ -878,6 +877,9 @@ def generate_sop4(template_text, res_text,programme,user_name,university):
         st.write(response_out)
         return response_out
        
+       
+
+
 
 
 def create_word_document(phrase, font_name, font_size):
@@ -966,7 +968,7 @@ if res_format == 'Upload':
     elif res_file is not None and res_file.name.endswith('.docx'):
         st.error('sorry you should submit pdf format for the resume')
 
-    else:
+else:
         # use the pasted contents instead
         res_text = st.text_input('Pasted resume elements')
     
@@ -999,7 +1001,7 @@ else:
 with st.form('input_form'):
     # other inputs
     programme = st.text_input('Programme name')
-    user_name = st.text_input('name')
+    user_name = st.text_input('Applicant name')
     university = st.text_input('University name')
     # programme_content = st.text_input('Programme content')
     # university_desc = st.text_input('University Description')
@@ -1010,21 +1012,21 @@ with st.form('input_form'):
 
 # if the form is submitted run the openai completion   
 if submitted:
-    # random_number = random.randint(0, 3)
-    # print(random_number)
-    # if random_number == 0:
-    #     response = generate_sop(template_text, res_text,programme,user_name,university)
-    # elif random_number == 1:
-    #     response = generate_sop1( generate_random_templates('templates1'), res_text,programme,user_name,university)
-    # elif random_number == 2:
-    #     response = generate_sop2( generate_random_templates('templates2'), res_text,programme,user_name,university)
-    # elif random_number == 3:
-    #     response = generate_sop3( generate_random_templates('templates3'), res_text,programme,user_name,university)
-    # else:
-    #     response = generate_sop4( generate_random_templates('templates4'), res_text,programme,user_name,university)
+    random_number = random.randint(0, 4)
+    print(random_number)
+    if random_number == 0:
+        response = generate_sop(template_text, res_text,programme,user_name,university)
+    elif random_number == 1:
+        response = generate_sop1( generate_random_templates('templates1'), res_text,programme,user_name,university)
+    elif random_number == 2:
+        response = generate_sop2( generate_random_templates('templates2'), res_text,programme,user_name,university)
+    elif random_number == 3:
+        response = generate_sop3( generate_random_templates('templates3'), res_text,programme,user_name,university)
+    else:
+        response = generate_sop4( generate_random_templates('templates4'), res_text,programme,user_name,university)
     
     
-    response = generate_sop4( generate_random_templates('templates4'), res_text,programme,user_name,university)
+    # response = generate_sop4( generate_random_templates('templates4'), res_text,programme,user_name,university)
     
     doc_download1 = create_word_document(response, 'Arial', 11)
     st.download_button(
