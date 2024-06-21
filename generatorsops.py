@@ -974,7 +974,7 @@ else:
     
  
  
-st.subheader("If you have a template in mind you can submit it. Otherwise it will be automatically generated.")
+st.subheader("If you have a template in mind you can submit it 'Upload'.  Otherwise tick 'Let the software generate the template' and it will be automatically generated ")
 # radio for upload or copy paste option         
 template_format = st.radio(
     "Do you want to upload or paste the template",
