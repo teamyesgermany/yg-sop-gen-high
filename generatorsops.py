@@ -1209,7 +1209,7 @@ if submitted:
     elif random_number == 4 or random_number == 5:
         response = generate_sop4( generate_random_templates('templates4'), res_text,programme,user_name,university)
     else:
-        response = generate_sop5( generate_random_templates('templates4\Rachel ,Jacob-M.Sc. International Management and Psychology program at the Rhine-Waal University of Applied Sciences-admission.pdf'), res_text,programme,user_name,university)
+        response = generate_sop5( generate_random_templates('templates4\Rachel_Jacob-M.Sc. International Management and Psychology program at the Rhine-Waal University of Applied Sciences-admission.pdf'), res_text,programme,user_name,university)
 
 
     
