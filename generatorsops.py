@@ -1196,7 +1196,7 @@ with st.form('input_form'):
 
 # if the form is submitted run the openai completion   
 if submitted:
-    random_number = random.randint(0, 5)
+    random_number = random.randint(0, 6)
     print(random_number)
     if random_number == 0:
         response = generate_sop(template_text, res_text,programme,user_name,university)
@@ -1206,7 +1206,7 @@ if submitted:
         response = generate_sop2( generate_random_templates('templates2'), res_text,programme,user_name,university)
     elif random_number == 3:
         response = generate_sop3( generate_random_templates('templates3'), res_text,programme,user_name,university)
-    elif random_number == 4:
+    elif random_number == 4 or random_number == 5:
         response = generate_sop4( generate_random_templates('templates4'), res_text,programme,user_name,university)
     else:
         response = generate_sop5( generate_random_templates('templates4\Rachel ,Jacob-M.Sc. International Management and Psychology program at the Rhine-Waal University of Applied Sciences-admission.pdf'), res_text,programme,user_name,university)
