@@ -799,7 +799,7 @@ def generate_sop3(template_text, res_text,programme,user_name,university):
         
 
 
-def generate_sop5(template_text, res_text,programme,user_name,university):
+def generate_sop5(template_text, res_text,programme,university):
     
     
     cgpa_score = retrieve_cgpa_score(res_text)
@@ -815,7 +815,7 @@ def generate_sop5(template_text, res_text,programme,user_name,university):
             {"role": "user", "content": f"Template for guidance: {template_text}. You should reproduce the exact same structure"},
             {"role": "user", "content": f"Resume information: {res_text}"},
             {"role": "user", "content": f"Study programme name: {programme}"},
-            {"role": "user", "content": f"Candidate's name: {user_name}"},
+            # {"role": "user", "content": f"Candidate's name: {user_name}"},
             {"role": "user", "content": f"University name: {university}"},
             # {"role": "user", "content": f"Description of the university: {university_desc}"},
             # {"role": "user", "content": f"Content of the study programme: {programme_content}"},
@@ -875,7 +875,7 @@ def generate_sop5(template_text, res_text,programme,user_name,university):
             {"role": "user", "content": f"Template for guidance: {template_text}. You should reproduce the exact same structure"},
             {"role": "user", "content": f"Resume information: {res_text}"},
             {"role": "user", "content": f"Study programme name: {programme}"},
-            {"role": "user", "content": f"Candidate's name: {user_name}"},
+            # {"role": "user", "content": f"Candidate's name: {user_name}"},
             {"role": "user", "content": f"University name: {university}"},
             # {"role": "user", "content": f"Description of the university: {university_desc}"},
             # {"role": "user", "content": f"Content of the study programme: {programme_content}"},
@@ -933,7 +933,7 @@ def generate_sop5(template_text, res_text,programme,user_name,university):
             {"role": "user", "content": f"Template for guidance: {template_text}. You should reproduce the exact same structure"},
             {"role": "user", "content": f"Resume information: {res_text}"},
             {"role": "user", "content": f"Study programme name: {programme}"},
-            {"role": "user", "content": f"Candidate's name: {user_name}"},
+            # {"role": "user", "content": f"Candidate's name: {user_name}"},
             {"role": "user", "content": f"University name: {university}"},
             # {"role": "user", "content": f"Description of the university: {university_desc}"},
             # {"role": "user", "content": f"Content of the study programme: {programme_content}"},
@@ -1185,7 +1185,7 @@ else:
 with st.form('input_form'):
     # other inputs
     programme = st.text_input('Programme name')
-    user_name = st.text_input('Applicant name')
+    # user_name = st.text_input('Applicant name')
     university = st.text_input('University name')
     # programme_content = st.text_input('Programme content')
     # university_desc = st.text_input('University Description')
@@ -1199,20 +1199,20 @@ if submitted:
     random_number = random.randint(0, 6)
     print(random_number)
     if random_number == 0:
-        response = generate_sop(template_text, res_text,programme,user_name,university)
+        response = generate_sop(template_text, res_text,programme,university)
     elif random_number == 1:
-        response = generate_sop1( generate_random_templates('templates1'), res_text,programme,user_name,university)
+        response = generate_sop1( generate_random_templates('templates1'), res_text,programme,university)
     elif random_number == 2:
-        response = generate_sop2( generate_random_templates('templates2'), res_text,programme,user_name,university)
+        response = generate_sop2( generate_random_templates('templates2'), res_text,programme,university)
     elif random_number == 3:
-        response = generate_sop3( generate_random_templates('templates3'), res_text,programme,user_name,university)
+        response = generate_sop3( generate_random_templates('templates3'), res_text,programme,university)
     elif random_number == 4 or random_number == 5:
-        response = generate_sop4( generate_random_templates('templates4'), res_text,programme,user_name,university)
+        response = generate_sop4( generate_random_templates('templates4'), res_text,programme,university)
     else:
-        response = generate_sop5( generate_random_templates('templates4\Rachel_Jacob-M.Sc. International Management and Psychology program at the Rhine-Waal University of Applied Sciences-admission.pdf'), res_text,programme,user_name,university)
+        response = generate_sop5( generate_random_templates('templates4'), res_text,programme,university)
 
 
-    
+
     
     
     doc_download1 = create_word_document(response, 'Arial', 11)
