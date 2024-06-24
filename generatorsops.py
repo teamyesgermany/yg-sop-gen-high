@@ -797,6 +797,190 @@ def generate_sop3(template_text, res_text,programme,user_name,university):
         st.write(response_out)
         return response_out
         
+
+
+def generate_sop5(template_text, res_text,programme,user_name,university):
+    
+    
+    cgpa_score = retrieve_cgpa_score(res_text)
+    print("from the terminal : ", cgpa_score)
+    
+    if cgpa_score != 'unknown' and float(cgpa_score) >= 7: 
+        completion = ai.ChatCompletion.create(
+        #model="gpt-3.5-turbo-16k", 
+        model = "gpt-4o-2024-05-13",
+        temperature=ai_temp,
+        messages=[
+            {"role": "user", "content": "Generate a statement of purpose based on the provided details, following a specific structure and style."},
+            {"role": "user", "content": f"Template for guidance: {template_text}. You should reproduce the exact same structure"},
+            {"role": "user", "content": f"Resume information: {res_text}"},
+            {"role": "user", "content": f"Study programme name: {programme}"},
+            {"role": "user", "content": f"Candidate's name: {user_name}"},
+            {"role": "user", "content": f"University name: {university}"},
+            # {"role": "user", "content": f"Description of the university: {university_desc}"},
+            # {"role": "user", "content": f"Content of the study programme: {programme_content}"},
+            {"role": "user", "content": f"""1st Paragraph: Introduce about your name, background, and programme and university you are applying.
+                                                           Then, in 4 lines you should explain how the programme you apply for is important in society and for companies
+                                                           Mention that for the above 4 lines you want to study the programme to contribute to this dynamic
+             """},
+            {"role": "user", "content": f"""2nd Paragraph: Based on the information from Internet about the programme and based on the resume : {res_text}, do the following :
+                Tell what skills the programme will give you by mentionning which modules proposed you want to study
+                Explain also why you are STRONGLY MOTIVATED to pursue this programme by relating to your previous experience
+                Explain how this programme will help you become something you want to become in the future
+            """},
+            {"role": "user", "content": f"""5th Paragraph: 
+            Discuss the candidate's academic and professional background :
+            IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
+            Mention ALL his work experiences and the different roles and responsibilities he held
+            Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
+            Mention all his certificates
+            """},
+            {"role": "user", "content": """3rd Paragraph: Explain why you chose to study in Germany :
+            You should mention :
+            Intention to stay in Germany because the field education comparative is far better to others destinations,
+            Good exposure, diversity and culture 
+            Mention examples of cooperations between indian and germany linked to your area of study and how you see yourself participating in it in the future ! Search for last news information you have
+            
+            """},
+            {"role": "user", "content": """4th Paragraph:  Based on the information from Internet, you should retrieve the following data :
+                                                            Exact ranking of the University and the source of ranking
+                                                            Number of students
+                                                            facilities, faculties , campus location
+                                                            Precise you have relatives and friends there
+                                                            Names of research centers linked to the programme
+            You should use ALL these data and invent for each one an element of motivation make you want to integrate the University
+                
+            In this paragraph you should also mention why you want to study in the city of the University , mention :  Some cool spots in the city you would like to see
+                                                                                                                    names of companies in the city of the same field of your study"""},
+            {"role": "user", "content": "Finish with a closing line with consideration of this statement of purpose and add your name signature bellow"},
+            {"role": "user", "content": "Please ensure each paragraph transitions smoothly into the next, maintaining a logical flow throughout the document."},
+            {"role": "user", "content": "The statement of purpose should consist of seven paragraphs, totaling a minimum of 500 words, using simple language that appears human-written."},
+            {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on', 'delve', 'renowned'"}
+
+        ]
+        )
+
+        response_out = completion['choices'][0]['message']['content']
+        st.write(response_out)
+        return response_out
+    
+    
+    elif cgpa_score != 'unknown' and float(cgpa_score) < 7:
+        completion = ai.ChatCompletion.create(
+        #model="gpt-3.5-turbo-16k", 
+        model = "gpt-4o-2024-05-13",
+        temperature=ai_temp,
+        messages=[
+            {"role": "user", "content": "Generate a statement of purpose based on the provided details, following a specific structure and style."},
+            {"role": "user", "content": f"Template for guidance: {template_text}. You should reproduce the exact same structure"},
+            {"role": "user", "content": f"Resume information: {res_text}"},
+            {"role": "user", "content": f"Study programme name: {programme}"},
+            {"role": "user", "content": f"Candidate's name: {user_name}"},
+            {"role": "user", "content": f"University name: {university}"},
+            # {"role": "user", "content": f"Description of the university: {university_desc}"},
+            # {"role": "user", "content": f"Content of the study programme: {programme_content}"},
+            {"role": "user", "content": f"""1st Paragraph: Introduce about your name, background, and programme and university you are applying.
+                                                           Then, in 4 lines you should explain how the programme you apply for is important in society and for companies
+                                                           Mention that for the above 4 lines you want to study the programme to contribute to this dynamic
+             """},
+            {"role": "user", "content": f"""2nd Paragraph: Based on the information from Internet about the programme and based on the resume : {res_text}, do the following :
+                Tell what skills the programme will give you by mentionning which modules proposed you want to study
+                Explain also why you are STRONGLY MOTIVATED to pursue this programme by relating to your previous experience
+                Explain how this programme will help you become something you want to become in the future
+            """},
+            {"role": "user", "content": f"""5th Paragraph: 
+            Discuss the candidate's academic and professional background :
+            IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
+            Mention ALL his work experiences and the different roles and responsibilities he held
+            Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
+            Mention all his certificates
+            """},
+            {"role": "user", "content": """3rd Paragraph: Explain why you chose to study in Germany :
+            You should mention :
+            Intention to stay in Germany because the field education comparative is far better to others destinations,
+            Good exposure, diversity and culture 
+            Mention examples of cooperations between indian and germany linked to your area of study and how you see yourself participating in it in the future ! Search for last news information you have
+            
+            """},
+            {"role": "user", "content": """4th Paragraph:  Based on the information from Internet, you should retrieve the following data :
+                                                            Exact ranking of the University and the source of ranking
+                                                            Number of students
+                                                            facilities, faculties , campus location
+                                                            Precise you have relatives and friends there
+                                                            Names of research centers linked to the programme
+            You should use ALL these data and invent for each one an element of motivation make you want to integrate the University
+                
+            In this paragraph you should also mention why you want to study in the city of the University , mention :  Some cool spots in the city you would like to see
+                                                                                                                    names of companies in the city of the same field of your study"""},
+            {"role": "user", "content": "Finish with a closing line with consideration of this statement of purpose and add your name signature bellow"},
+            {"role": "user", "content": "Please ensure each paragraph transitions smoothly into the next, maintaining a logical flow throughout the document."},
+            {"role": "user", "content": "The statement of purpose should consist of seven paragraphs, totaling a minimum of 500 words, using simple language that appears human-written."},
+            {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on', 'delve', 'renowned'"}
+
+        ]
+        )
+
+        response_out = completion['choices'][0]['message']['content']
+        st.write(response_out)
+        return response_out
+    else:
+        completion = ai.ChatCompletion.create(
+        #model="gpt-3.5-turbo-16k", 
+        model = "gpt-4o-2024-05-13",
+        temperature=ai_temp,
+           messages=[
+            {"role": "user", "content": "Generate a statement of purpose based on the provided details, following a specific structure and style."},
+            {"role": "user", "content": f"Template for guidance: {template_text}. You should reproduce the exact same structure"},
+            {"role": "user", "content": f"Resume information: {res_text}"},
+            {"role": "user", "content": f"Study programme name: {programme}"},
+            {"role": "user", "content": f"Candidate's name: {user_name}"},
+            {"role": "user", "content": f"University name: {university}"},
+            # {"role": "user", "content": f"Description of the university: {university_desc}"},
+            # {"role": "user", "content": f"Content of the study programme: {programme_content}"},
+            {"role": "user", "content": f"""1st Paragraph: Introduce about your name, background, and programme and university you are applying.
+                                                           Then, in 4 lines you should explain how the programme you apply for is important in society and for companies
+                                                           Mention that for the above 4 lines you want to study the programme to contribute to this dynamic
+             """},
+            {"role": "user", "content": f"""2nd Paragraph: Based on the information from Internet about the programme and based on the resume : {res_text}, do the following :
+                Tell what skills the programme will give you by mentionning which modules proposed you want to study
+                Explain also why you are STRONGLY MOTIVATED to pursue this programme by relating to your previous experience
+                Explain how this programme will help you become something you want to become in the future
+            """},
+            {"role": "user", "content": f"""5th Paragraph: 
+            Discuss the candidate's academic and professional background :
+            IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
+            Mention ALL his work experiences and the different roles and responsibilities he held
+            Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
+            Mention all his certificates
+            """},
+            {"role": "user", "content": """3rd Paragraph: Explain why you chose to study in Germany :
+            You should mention :
+            Intention to stay in Germany because the field education comparative is far better to others destinations,
+            Good exposure, diversity and culture 
+            Mention examples of cooperations between indian and germany linked to your area of study and how you see yourself participating in it in the future ! Search for last news information you have
+            
+            """},
+            {"role": "user", "content": """4th Paragraph:  Based on the information from Internet, you should retrieve the following data :
+                                                            Exact ranking of the University and the source of ranking
+                                                            Number of students
+                                                            facilities, faculties , campus location
+                                                            Precise you have relatives and friends there
+                                                            Names of research centers linked to the programme
+            You should use ALL these data and invent for each one an element of motivation make you want to integrate the University
+                
+            In this paragraph you should also mention why you want to study in the city of the University , mention :  Some cool spots in the city you would like to see
+                                                                                                                    names of companies in the city of the same field of your study"""},
+            {"role": "user", "content": "Finish with a closing line with consideration of this statement of purpose and add your name signature bellow"},
+            {"role": "user", "content": "Please ensure each paragraph transitions smoothly into the next, maintaining a logical flow throughout the document."},
+            {"role": "user", "content": "The statement of purpose should consist of seven paragraphs, totaling a minimum of 500 words, using simple language that appears human-written."},
+            {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on', 'delve', 'renowned'"}
+
+        ]
+        )
+
+        response_out = completion['choices'][0]['message']['content']
+        st.write(response_out)
+        return response_out
      
 
 def generate_sop4(template_text, res_text,programme,user_name,university):
@@ -1012,7 +1196,7 @@ with st.form('input_form'):
 
 # if the form is submitted run the openai completion   
 if submitted:
-    random_number = random.randint(0, 4)
+    random_number = random.randint(0, 5)
     print(random_number)
     if random_number == 0:
         response = generate_sop(template_text, res_text,programme,user_name,university)
@@ -1022,11 +1206,14 @@ if submitted:
         response = generate_sop2( generate_random_templates('templates2'), res_text,programme,user_name,university)
     elif random_number == 3:
         response = generate_sop3( generate_random_templates('templates3'), res_text,programme,user_name,university)
-    else:
+    elif random_number == 4:
         response = generate_sop4( generate_random_templates('templates4'), res_text,programme,user_name,university)
+    else
+        response = generate_sop5( generate_random_templates('templates4\Rachel ,Jacob-M.Sc. International Management and Psychology program at the Rhine-Waal University of Applied Sciences-admission.pdf'), res_text,programme,user_name,university)
+
+
     
     
-    # response = generate_sop4( generate_random_templates('templates4'), res_text,programme,user_name,university)
     
     doc_download1 = create_word_document(response, 'Arial', 11)
     st.download_button(
