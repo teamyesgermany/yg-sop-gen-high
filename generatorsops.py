@@ -63,7 +63,7 @@ def retrieve_cgpa_score(content_resume):
 
 
 
-def generate_sop(template_text, res_text,programme,user_name,university):
+def generate_sop(template_text, res_text,programme,university):
     
     
     cgpa_score = retrieve_cgpa_score(res_text)
