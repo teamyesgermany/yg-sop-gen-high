@@ -1209,11 +1209,12 @@ if submitted:
     elif random_number == 4 or random_number == 5:
         response = generate_sop4( generate_random_templates('templates4'), res_text,programme,university)
     else:
-        response = generate_sop5( generate_random_templates('templates4'), res_text,programme,university)
-
-
-
+        response = generate_sop5( read_pdf("templates4\Rachel_Jacob-M.Sc. International Management and Psychology program at the Rhine-Waal University of Applied Sciences-admission.pdf"), res_text,programme,university)
     
+    
+    
+
+
     
     doc_download1 = create_word_document(response, 'Arial', 11)
     st.download_button(
