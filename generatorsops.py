@@ -246,7 +246,7 @@ def generate_sop(template_text, res_text,programme,user_name,university):
         return response_out
         
 
-def generate_sop1(template_text, res_text,programme,user_name,university):
+def generate_sop1(template_text, res_text,programme,university):
     
     
     cgpa_score = retrieve_cgpa_score(res_text)
@@ -436,7 +436,7 @@ def generate_sop1(template_text, res_text,programme,user_name,university):
         return response_out
         
 
-def generate_sop2(template_text, res_text,programme,user_name,university):
+def generate_sop2(template_text, res_text,programme,university):
     
     
     cgpa_score = retrieve_cgpa_score(res_text)
@@ -614,7 +614,7 @@ def generate_sop2(template_text, res_text,programme,user_name,university):
         return response_out
         
 
-def generate_sop3(template_text, res_text,programme,user_name,university):
+def generate_sop3(template_text, res_text,programme,university):
     
     
     cgpa_score = retrieve_cgpa_score(res_text)
@@ -983,7 +983,7 @@ def generate_sop5(template_text, res_text,programme,university):
         return response_out
      
 
-def generate_sop4(template_text, res_text,programme,user_name,university):
+def generate_sop4(template_text, res_text,programme,university):
     
     
     cgpa_score = retrieve_cgpa_score(res_text)
