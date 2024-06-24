@@ -1208,7 +1208,7 @@ if submitted:
         response = generate_sop3( generate_random_templates('templates3'), res_text,programme,user_name,university)
     elif random_number == 4:
         response = generate_sop4( generate_random_templates('templates4'), res_text,programme,user_name,university)
-    else
+    else:
         response = generate_sop5( generate_random_templates('templates4\Rachel ,Jacob-M.Sc. International Management and Psychology program at the Rhine-Waal University of Applied Sciences-admission.pdf'), res_text,programme,user_name,university)
 
 
