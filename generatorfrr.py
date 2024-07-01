@@ -15,14 +15,20 @@ import tiktoken
 import requests
 from bs4 import BeautifulSoup
 
+
+
+
+
 # Your Diffbot API token
-DIFFBOT_API_TOKEN = '46db6037f264bbd5e7451b1160d5d88c'
+
 DIFFBOT_API_URL = 'https://api.diffbot.com/v3/article'
 
 
 
 load_dotenv()  # take environment variables from .env.
 
+
+DIFFBOT_API_TOKEN = os.getenv("DIFFBOT_API_TOKEN")
 ai.api_key = os.getenv("OPENAI_API_KEY")
 
 nlp = spacy.blank("en")  # Create a blank English model
