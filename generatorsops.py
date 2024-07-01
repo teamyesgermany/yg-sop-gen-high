@@ -88,7 +88,8 @@ def generate_sop(template_text, res_text,programme,university):
             IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
             Mention ALL his work experiences and the different roles and responsibilities he held
             Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-            Mention all his certificates
+            Mention all his certificates.
+            Mention his overall IELTS score
             """},
             {"role": "user", "content": f"""3rd Paragraph: Based on the information from Internet about the programme and based on the resume : {res_text}, do the following : :
                 Show a Strong motivation by evoking a storytelling from your past that led you to want to study this programme
@@ -148,7 +149,8 @@ def generate_sop(template_text, res_text,programme,university):
             DON'T mention his CGPA score PLEASE.
             Mention ALL his work experiences and the different roles and responsibilities he held
             Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-            Mention all his certificates
+            Mention all his certificates.
+            Mention his overall IELTS score
             """},
             {"role": "user", "content": f"""3rd Paragraph: Based on the information from Internet about the programme and based on the resume : {res_text}, do the following : :
                 Show a Strong motivation by evoking a storytelling from your past that led you to want to study this programme
@@ -205,7 +207,8 @@ def generate_sop(template_text, res_text,programme,university):
             IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
             Mention ALL his work experiences and the different roles and responsibilities he held
             Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-            Mention all his certificates
+            Mention all his certificates.
+            Mention his overall IELTS score
             """},
             {"role": "user", "content": f"""3rd Paragraph: Based on the information from Internet about the programme and based on the resume : {res_text}, do the following : :
                 Show a Strong motivation by evoking a storytelling from your past that led you to want to study this programme
@@ -279,7 +282,8 @@ def generate_sop1(template_text, res_text,programme,university):
             IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
             Mention ALL his work experiences and the different roles and responsibilities he held
             Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-            Mention all his certificates
+            Mention all his certificates.
+            Mention his overall IELTS score
             """},
             {"role": "user", "content": f"""4th Paragraph: Describe your future career perspectives and aspirations post-study. Show your intentions and reasons to stay and work in Germany"
                     
@@ -341,7 +345,8 @@ def generate_sop1(template_text, res_text,programme,university):
             DON'T mention his CGPA score.
             Mention ALL his work experiences and the different roles and responsibilities he held
             Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-            Mention all his certificates
+            Mention all his certificates.
+            Mention his overall IELTS score
             """},
             {"role": "user", "content": f"""4th Paragraph: Describe your future career perspectives and aspirations post-study. Show your intentions and reasons to stay and work in Germany"
                     
@@ -401,7 +406,8 @@ def generate_sop1(template_text, res_text,programme,university):
             IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
             Mention ALL his work experiences and the different roles and responsibilities he held
             Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-            Mention all his certificates
+            Mention all his certificates.
+            Mention his overall IELTS score
             """},
             {"role": "user", "content": f"""4th Paragraph: Describe your future career perspectives and aspirations post-study. Show your intentions and reasons to stay and work in Germany"
                     
@@ -462,13 +468,14 @@ def generate_sop2(template_text, res_text,programme,university):
             IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
             Mention ALL his work experiences and the different roles and responsibilities he held
             Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-            Mention all his certificates
+            Mention all his certificates.
+            Mention his overall IELTS score
             """},
             {"role": "user", "content": f"""3rd Paragraph: Based on the information from Internet about the programme and based on the resume : {res_text}, do the following : :
                 Show a Strong motivation by evoking a storytelling from your past that led you to want to study this programme
                 Explain also why you are STRONGLY MOTIVATED to pursue this programme by relating to your previous experience
                 Select some modules proposed by the programme and describe their contents, then explain why you are HIGHLY motivated to study them.
-                Explain Why this programme can help you build your career and prepare you for your future  
+                Explain Why this programme can help you build your career and prepare you for your future
             """},
             {"role": "user", "content": """4th Paragraph: Explain why you chose to study in Germany :
             You should mention :
@@ -520,7 +527,8 @@ def generate_sop2(template_text, res_text,programme,university):
             DON'T mention his CGPA score.
             Mention ALL his work experiences and the different roles and responsibilities he held
             Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-            Mention all his certificates
+            Mention all his certificates.
+            Mention his overall IELTS score
             """},
             {"role": "user", "content": f"""3rd Paragraph: Based on the information from Internet about the programme and based on the resume : {res_text}, do the following : :
                 Show a Strong motivation by evoking a storytelling from your past that led you to want to study this programme
@@ -576,7 +584,8 @@ def generate_sop2(template_text, res_text,programme,university):
             IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
             Mention ALL his work experiences and the different roles and responsibilities he held
             Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-            Mention all his certificates
+            Mention all his certificates.
+            Mention his overall IELTS score
             """},
             {"role": "user", "content": f"""3rd Paragraph: Based on the information from Internet about the programme and based on the resume : {res_text}, do the following : :
                 Show a Strong motivation by evoking a storytelling from your past that led you to want to study this programme
@@ -665,7 +674,8 @@ def generate_sop3(template_text, res_text,programme,university):
             IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
             Mention ALL his work experiences and the different roles and responsibilities he held
             Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-            Mention all his certificates
+            Mention all his certificates.
+            Mention his overall IELTS score
             """},
             {"role": "user", "content": "Finish with a closing line with consideration of this statement of purpose and add your name signature bellow"},
             {"role": "user", "content": "Please ensure each paragraph transitions smoothly into the next, maintaining a logical flow throughout the document."},
@@ -725,7 +735,8 @@ def generate_sop3(template_text, res_text,programme,university):
             IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
             Mention ALL his work experiences and the different roles and responsibilities he held
             Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-            Mention all his certificates
+            Mention all his certificates.
+            Mention his overall IELTS score
             """},
             {"role": "user", "content": "Finish with a closing line with consideration of this statement of purpose and add your name signature bellow"},
             {"role": "user", "content": "Please ensure each paragraph transitions smoothly into the next, maintaining a logical flow throughout the document."},
@@ -783,7 +794,8 @@ def generate_sop3(template_text, res_text,programme,university):
             IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
             Mention ALL his work experiences and the different roles and responsibilities he held
             Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-            Mention all his certificates
+            Mention all his certificates.
+            Mention his overall IELTS score
             """},
             {"role": "user", "content": "Finish with a closing line with consideration of this statement of purpose and add your name signature bellow"},
             {"role": "user", "content": "Please ensure each paragraph transitions smoothly into the next, maintaining a logical flow throughout the document."},
@@ -833,7 +845,8 @@ def generate_sop5(template_text, res_text,programme,university):
             IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
             Mention ALL his work experiences and the different roles and responsibilities he held
             Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-            Mention all his certificates
+            Mention all his certificates.
+            Mention his overall IELTS score
             """},
             {"role": "user", "content": """3rd Paragraph: Explain why you chose to study in Germany :
             You should mention :
@@ -893,7 +906,8 @@ def generate_sop5(template_text, res_text,programme,university):
             IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
             Mention ALL his work experiences and the different roles and responsibilities he held
             Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-            Mention all his certificates
+            Mention all his certificates.
+            Mention his overall IELTS score
             """},
             {"role": "user", "content": """3rd Paragraph: Explain why you chose to study in Germany :
             You should mention :
@@ -951,7 +965,8 @@ def generate_sop5(template_text, res_text,programme,university):
             IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
             Mention ALL his work experiences and the different roles and responsibilities he held
             Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-            Mention all his certificates
+            Mention all his certificates.
+            Mention his overall IELTS score
             """},
             {"role": "user", "content": """3rd Paragraph: Explain why you chose to study in Germany :
             You should mention :
@@ -1211,7 +1226,7 @@ if submitted:
     else:
         response = generate_sop5( read_pdf(os.path.join('templates4', 'Rachel_Jacob-M.Sc. International Management and Psychology program at the Rhine-Waal University of Applied Sciences-admission.pdf')), res_text,programme,university)
     
-    # response = generate_sop5( read_pdf(os.path.join('templates4', 'Rachel_Jacob-M.Sc. International Management and Psychology program at the Rhine-Waal University of Applied Sciences-admission.pdf')), res_text,programme,university)
+    # response = generate_sop2( read_pdf(os.path.join('templates4', 'Rachel_Jacob-M.Sc. International Management and Psychology program at the Rhine-Waal University of Applied Sciences-admission.pdf')), res_text,programme,university)
 
     
 
