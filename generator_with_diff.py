@@ -1488,7 +1488,7 @@ async def return_data3(query):
         
 
 async def return_data3_orderofresults(query):  
-    url1, url2, url3 = await extract3urls(query)  # Await extract3urls here
+    url1, url2, url3 = await extract3urls_orderofresults(query)  # Await extract3urls here
     
     # Create tasks for fetching content from URLs asynchronously
     if all([url1, url2, url3]):
