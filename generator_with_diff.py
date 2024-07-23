@@ -1349,6 +1349,47 @@ async def extract3urls(query):
 
 
 
+async def extract3urls_orderofresults(query):
+    url = f'https://www.google.com/search?q={requests.utils.quote(query)}'
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    }
+
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url, headers=headers) as response:
+            if response.status == 200:
+                html = await response.text()
+                soup = BeautifulSoup(html, 'html.parser')
+
+                # Find the first search result links
+                links = []
+                results = soup.find_all('div', {'class': 'yuRUbf'})
+                for result in results[:10]:
+                    link = result.find('a')['href']
+                    links.append(link)
+                    print(link)
+                
+                if len(links) >= 10:
+                    # Slice the first 10 elements
+                    sliced_links = links[:3]
+                    
+
+                    # Retrieve the links at the random indices
+                    first_link = sliced_links[0]
+                    second_link = sliced_links[1]
+                    third_link = sliced_links[2]
+                    
+                    print('First link:', first_link, 'Second link:', second_link, 'Third link:', third_link)
+                    
+                    return first_link, second_link, third_link
+                else:
+                    return None, None, None
+            else:
+                print("Failed to retrieve the website content.")
+                return None, None, None
+
+
 # Function to retrieve all fragment links
 def get_fragment_links(base_url):
     response = requests.get(base_url)
@@ -1422,6 +1463,31 @@ def return_data_withfragments(query):
    
 # Main function
 async def return_data3(query):  
+    url1, url2, url3 = await extract3urls(query)  # Await extract3urls here
+    
+    # Create tasks for fetching content from URLs asynchronously
+    if all([url1, url2, url3]):
+        task1 = asyncio.create_task(get_url_content(url1))
+        task2 = asyncio.create_task(get_url_content(url2))
+        task3 = asyncio.create_task(get_url_content(url3))
+        
+        # Wait for all tasks to complete
+        content1, content2, content3 = await asyncio.gather(task1, task2, task3)
+            
+        # Filter out any None values
+        tablo = [content for content in [content1, content2, content3] if content is not None]
+        
+        if tablo:
+            result = '\n\n\n'.join(tablo)
+            # print(result)
+            # Or return the result if this is inside a function
+            return result
+    else:
+        print("One or more URLs are None")
+        return None
+        
+
+async def return_data3_orderofresults(query):  
     url1, url2, url3 = await extract3urls(query)  # Await extract3urls here
     
     # Create tasks for fetching content from URLs asynchronously
@@ -2633,7 +2699,7 @@ if submitted:
 
         # Define asynchronous tasks for return_data functions
         facilities_task = asyncio.create_task(return_data3(f"How do the facilities provided by {university} influence your decision to attend?"))
-        research_institutes_task = asyncio.create_task(return_data3(f"How do the research projects or research centers at {university} influence your decision to attend?"))
+        research_institutes_task = asyncio.create_task(return_data3_orderofresults(f"How do the research projects or research centers at {university} influence your decision to attend?"))
         university_description_wikipedia_task = asyncio.create_task(return_data1(f"{university} Wikipedia Deutch"))
         professors_task = asyncio.create_task(return_data1(f"good teachers, professors, doctors {university} Research gate"))
         ranking_task = asyncio.create_task(return_data1(f"ranking {university} "))
@@ -2650,8 +2716,8 @@ if submitted:
         professional_growth2_task = asyncio.create_task(return_data3(f"{programme} professional growth"))
         personal_benefit2_task = asyncio.create_task(return_data3(f"Why study {programme} in Germany"))
         international_students2_task = asyncio.create_task(return_data3(f"How many international students are at {university}"))
-        modules2_task = asyncio.create_task(return_data3(f"{programme}, {university}, modules"))
-        university_no_wikipedia_task = asyncio.create_task(return_data3(f"{university}"))
+        modules2_task = asyncio.create_task(return_data3_orderofresults(f"{programme}, {university}, modules"))
+        university_no_wikipedia_task = asyncio.create_task(return_data3_orderofresults(f"{university}"))
 
     #     #^ Wait for all return_data tasks to complete
        
