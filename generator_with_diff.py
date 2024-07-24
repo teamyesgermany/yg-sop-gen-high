@@ -2613,20 +2613,36 @@ res_format = st.radio(
 
 if res_format == 'Upload':
     # upload_resume
-    res_file = st.file_uploader('📁 Upload your resume in pdf format')
-    if res_file is not None and res_file.name.endswith('.pdf'):
-        pdf_reader = PdfReader(res_file)
+    res_file = st.file_uploader('📁 Upload your resume in pdf or docx format')
+    
+    if res_file is not None:
+        if res_file.name.endswith('.pdf'):
+            pdf_reader = PdfReader(res_file)
 
-        # Collect text from pdf
-        res_text = ""
-        for page in pdf_reader.pages:
-            res_text += page.extract_text()
-    elif res_file is not None and res_file.name.endswith('.docx'):
-        st.error('sorry you should submit pdf format for the resume')
+            # Collect text from pdf
+            res_text = ""
+            for page in pdf_reader.pages:
+                res_text += page.extract_text()
+        
+        elif res_file.name.endswith('.docx'):
+            doc_reader = Document(res_file)
 
+            res_text = ""
+            for para in doc_reader.paragraphs:
+                res_text += para.text + " "
+
+
+            for table in doc_reader.tables:
+                for row in table.rows:
+                    for cell in row.cells:
+                        res_text += cell.text + " "
+                    res_text += "\n"
+
+        else:
+            st.error("Unsupported file format. Please upload a PDF or DOCX file.")
 else:
-        # use the pasted contents instead
-        res_text = st.text_input('Pasted resume elements')
+    # Use the pasted contents instead
+    res_text = st.text_area('Pasted resume elements')
     
  
  
