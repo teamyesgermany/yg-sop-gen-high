@@ -18,7 +18,7 @@ import requests
 from bs4 import BeautifulSoup
 
 # Your Diffbot API token
-DIFFBOT_API_TOKEN = '46db6037f264bbd5e7451b1160d5d88c'
+DIFFBOT_API_TOKEN = 'fe55e6257d2143b2ad59ba2cc83e3379'
 DIFFBOT_API_URL = 'https://api.diffbot.com/v3/article'
 
 PICKLE_FILE = 'scraped_data.pkl'
@@ -93,8 +93,26 @@ async def generate_sop4(template_text, res_text,programme,university):
             Point 3. Talk about the Good exposure, diversity and German culture 
             """},
             {"role": "user", "content": "Finish with a closing line with consideration of this statement of purpose and add your name signature bellow"},
-            {
-                "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            {"role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+
+                        { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+
+            
+            
+            
+            
+            
+            
+            
             {"role": "user", "content": f"Be sure to replace the correct information from {res_text} including the name."},
             {"role": "user", "content": "Please ensure each paragraph transitions smoothly into the next, maintaining a logical flow throughout the document."},
             {"role": "user", "content": "The statement of purpose should consist of seven paragraphs, totaling a minimum of 500 words, using simple language that appears human-written."},
@@ -676,6 +694,15 @@ async def generate_responses(res_text,programme, university, university_descript
     print("from the terminal 1 : ", cgpa_score)
     
     
+   # Get all local variables (including function arguments)
+    arguments = locals()
+    
+    for arg_name, arg_value in arguments.items():
+        if arg_value is not None:
+            # Print the argument name and its content, with a limit on the content length for readability
+            print(f"{arg_name}: {' '.join(str(arg_value).split()[:200])}")
+    
+    
     
     # print("ranking", ' '.join(ranking.split()[:100]))
     # print("fee structure", ' '.join(fee_structure.split()[:100]))
@@ -760,8 +787,10 @@ async def generate_responses(res_text,programme, university, university_descript
     "role": "user",
     "content": " For Questions 1 to 7 The responses should be human-like and personal, using first-person language."
 },
-{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
-
+{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis', 'boasts'"},
+{
+    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
+}
 # {
 #     "role": "user",
 #     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
@@ -862,7 +891,7 @@ async def generate_responses(res_text,programme, university, university_descript
     "role": "user",
     "content": "The responses should be human-like and personal, using first-person language."
 },
-{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
+{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis', 'boasts'"},
 
 # {
 #     "role": "user",
@@ -959,7 +988,7 @@ async def generate_responses(res_text,programme, university, university_descript
     "role": "user",
     "content": "The responses should be human-like and personal, using first-person language."
 },
-{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
+{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis',  'boasts'"},
 
 # {
 #     "role": "user",
@@ -981,11 +1010,16 @@ async def generate_responses2(res_text,programme, university, programme_content,
 
     cgpa_score = await retrieve_cgpa_score(res_text)
     print("from the terminal 2 : ", cgpa_score)
+   
+   
+   # Get all local variables (including function arguments)
+    arguments = locals()
     
+    for arg_name, arg_value in arguments.items():
+        if arg_value is not None:
+            # Print the argument name and its content, with a limit on the content length for readability
+            print(f"{arg_name}: {' '.join(str(arg_value).split()[:200])}")
     
-    
-    # print("international_students", ' '.join(international_students.split()[:500]))
-    print("professional growth", ' '.join(professional_growth.split()[:100]))
     
     if cgpa_score != 'unknown' and float(cgpa_score) >= 7: 
         completion = ai.ChatCompletion.create(
@@ -1065,8 +1099,10 @@ async def generate_responses2(res_text,programme, university, programme_content,
     "role": "user",
     "content": " For Questions 1 to 8 The responses should be human-like and personal, using first-person language."
 },
-{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
-
+{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis', 'boasts'"},
+{
+    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
+}
 # {
 #     "role": "user",
 #     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
@@ -1289,8 +1325,15 @@ async def generate_responses4(res_text,programme, university,cooperation_india_g
     cgpa_score = await retrieve_cgpa_score(res_text)
     print("from the terminal 2 : ", cgpa_score)
     
-    print("ranking", ' '.join(germany.split()[:100]))
-    print("fee structure", ' '.join(cooperation_india_germany.split()[:100]))
+    
+   # Get all local variables (including function arguments)
+    arguments = locals()
+    
+    for arg_name, arg_value in arguments.items():
+        if arg_value is not None:
+            # Print the argument name and its content, with a limit on the content length for readability
+            print(f"{arg_name}: {' '.join(str(arg_value).split()[:200])}")
+    
     
 
     
@@ -1336,7 +1379,9 @@ async def generate_responses4(res_text,programme, university,cooperation_india_g
     "content": " For the questions 1 to 12, the responses should be human-like and personal, using first-person language."
 },
 {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
-
+{
+    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
+}
 # {
 #     "role": "user",
 #     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
