@@ -892,7 +892,9 @@ async def generate_responses(res_text,programme, university, university_descript
     "content": "The responses should be human-like and personal, using first-person language."
 },
 {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis', 'boasts'"},
-
+{
+    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
+}
 # {
 #     "role": "user",
 #     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
@@ -989,7 +991,9 @@ async def generate_responses(res_text,programme, university, university_descript
     "content": "The responses should be human-like and personal, using first-person language."
 },
 {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis',  'boasts'"},
-
+{
+    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
+}
 # {
 #     "role": "user",
 #     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
@@ -1203,7 +1207,9 @@ async def generate_responses2(res_text,programme, university, programme_content,
     "content": " For Questions 1 to 8 The responses should be human-like and personal, using first-person language."
 },
 {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
-
+{
+    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
+}
 # {
 #     "role": "user",
 #     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
@@ -1300,7 +1306,9 @@ async def generate_responses2(res_text,programme, university, programme_content,
     "content": " For Questions 1 to 8 The responses should be human-like and personal, using first-person language."
 },
 {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
-
+{
+    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
+}
 # {
 #     "role": "user",
 #     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
@@ -1445,7 +1453,9 @@ async def generate_responses4(res_text,programme, university,cooperation_india_g
     "content": " For the points 1 to 12, the responses should be human-like and personal, using first-person language."
 },
 {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
-
+{
+    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
+}
 # {
 #     "role": "user",
 #     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
@@ -1505,7 +1515,9 @@ async def generate_responses4(res_text,programme, university,cooperation_india_g
     "content": " For the points 1 to 12, the responses should be human-like and personal, using first-person language."
 },
 {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
-
+{
+    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
+}
 # {
 #     "role": "user",
 #     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
