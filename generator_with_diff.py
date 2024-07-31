@@ -36,6 +36,7 @@ async def generate_sop4(template_text, res_text,programme,university):
     
     
     cgpa_score = await retrieve_cgpa_score(res_text)
+    
     print("from the terminal : ", cgpa_score)
     
     if cgpa_score != 'unknown' and float(cgpa_score) >= 7: 
@@ -44,34 +45,43 @@ async def generate_sop4(template_text, res_text,programme,university):
         model = "gpt-4o-2024-05-13",
         temperature=ai_temp,
         messages=[
-            {"role": "user", "content": "Generate a statement of purpose based on the provided details, following a specific structure and style."},
+             {"role": "user", "content": "Generate a statement of purpose (SOP) based on the provided details, following a specific structure and style."},
+
             {"role": "user", "content": f"Template for guidance: {template_text}. You should reproduce the exact same structure"},
-            {"role": "user", "content": f"Resume information: {res_text}"},
+            {"role": "user", "content": f"Here is the resume {res_text} from which you have to take information about the student and please make sure that you do not add things from your own and stick to this {res_text} througout the sop"},
+            {"role": "user" , "content": f"Another important that you should keep in mind while making the sop is that the sop is a letter of motivation to study in this {university} , so you have to generate the sop which should contian strong motivational points for choosing {programme}"},
             {"role": "user", "content": f"Study programme name: {programme}"},
             {"role": "user", "content": f"University name: {university}"},
-            {"role": "user", "content": f"based on the provided details, following the specific structure and style given by the template {template_text}. You should reproduce the exact same structure of statement of purpose"},
-            {"role": "user", "content": "The template is likely to contain an Introduction's paragraph, Academic and experience paragraph, Programme and motivation paragraph, University paragraph, future career paragraph."},
-            {"role": "user", "content": "You must keep the same order of paragraphs from the template. The following instructions are just here so you can treat individually each paragraph :"},
-            {"role": "user", "content": f" for the Introduction's paragraph, you must start with a catching phrase that shows how important is studying the programme {programme} you apply for. Then, you must mention your name, background, and programme and university you are applying and also mention the reason why to choose this programme. And retrieve all introductory elements from {template_text}"},
-            {"role": "user", "content": """the Academic and experience Paragraph: Discuss the candidate's academic and professional background :
+
+            {"role": "user", "content": f" For the Introduction's paragraph, you must be using content from the {res_text} and follow the same structure and catchy words from from the introduction paragraph of this template {template_text}"},
+
+
+            {"role": "user", "content": f"""Fot the Academic and experience Paragraph too you will be using content from the {res_text}: Discuss the candidate's academic and professional background :
             IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
+            Mention all his acadamic education scores from the {res_text}
+             Mention all the acadamic education scores as they are prensent in {res_text}
             Mention ALL his work experiences and the different roles and responsibilities he held
-            Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-            Mention all his certificates.
-            Mention his overall IELTS score
+            Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list.
+            You will be mentioning things like his certificates and Ilets score if they are present in the {res_text}
             """},
-            {"role": "user", "content": f"""For the paragraph about the programme and the motivation behind your decision to study it,  you must :
+
+
+            {"role": "user", "content": f""" For the paragraph about the programme use strong motivational points for choosing {programme}, 
                 Show a STRONG motivation by evoking a storytelling from your past that led you want to study this programme.
+                If the past education of yours is related to the programme you are applying then you can consider them adding in this paragraph too
                 You have to choose MINIMUM two out of these points :
                 Story from a family experience
                 Story from a social phenomenon and you want to bring solutions
                 Story from previous internship
                 Story from the studied modules in your Academic cursus
                 Story from one of your extra-curricular activites
+                You will also be adding What are the benifits you will be getting from this {programme} and the {university} 
                 You must also select some modules proposed by the programme and describe their contents, then explain why you are HIGHLY motivated to study them.
+                Add learning outcomes form the curriculum of this {university} and these learning will be divided into two parts which are tecnical learning and interpersonal learning
                 Explain Why this programme can help you build your career and prepare you for your future too 
-                
             """},
+
+
             {"role": "user", "content": f""" For the paragraph about the University, you should retrieve the following data :
                                                             Exact ranking of the University and the source of ranking
                                                             Number of students
@@ -79,40 +89,27 @@ async def generate_sop4(template_text, res_text,programme,university):
                                                             Precise you have relatives and friends there
                                                             Names of Research centers and renowned Professors linked to the programme
             You should use ALL these data and invent for each one an element of motivation make you want to integrate the University
-                
             In this paragraph you should also mention why you want to study in the city of the University , mention :  Some cool spots in the city you would like to see
                                                                                                                         names of companies in the city that accept people from {programme} to work in       
             """},
+
             {"role": "user", "content": f"""For the paragraph which is about your future career perspectives and aspirations post-study, you should mention how the programme of {programme}
              will give you the opportunity to work in the futur job you want to do. You should mention names of professional positions linked to the programme you want to work in.
              You can also add that you aim to work in Germany"""},
+
+
             {"role": "user", "content": "Last Paragraph: A brief conclusion summarizing why you are the ideal applicant and show again your interest."},
             {"role": "user", "content": """For the paragraph about Germany, you must mention the following points :
             Point 1. Explain why you chose to apply in Germany
             Point 2. Your Intention to stay in Germany because the field education comparative is far better to others destinations
             Point 3. Talk about the Good exposure, diversity and German culture 
             """},
+
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+
             {"role": "user", "content": "Finish with a closing line with consideration of this statement of purpose and add your name signature bellow"},
-            {"role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-
-                        { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-
-            
-            
-            
-            
-            
-            
-            
             {"role": "user", "content": f"Be sure to replace the correct information from {res_text} including the name."},
             {"role": "user", "content": "Please ensure each paragraph transitions smoothly into the next, maintaining a logical flow throughout the document."},
             {"role": "user", "content": "The statement of purpose should consist of seven paragraphs, totaling a minimum of 500 words, using simple language that appears human-written."},
@@ -120,7 +117,6 @@ async def generate_sop4(template_text, res_text,programme,university):
 
         ]
 
-        
         )
 
         response_out = completion['choices'][0]['message']['content']
@@ -134,34 +130,43 @@ async def generate_sop4(template_text, res_text,programme,university):
         model = "gpt-4o-2024-05-13",
         temperature=ai_temp,
         messages=[
-            {"role": "user", "content": "Generate a statement of purpose based on the provided details, following a specific structure and style."},
+           {"role": "user", "content": "Generate a statement of purpose (SOP) based on the provided details, following a specific structure and style."},
+
             {"role": "user", "content": f"Template for guidance: {template_text}. You should reproduce the exact same structure"},
-            {"role": "user", "content": f"Resume information: {res_text}"},
+            {"role": "user", "content": f"Here is the resume {res_text} from which you have to take information about the student and please make sure that you do not add things from your own and stick to this {res_text} througout the sop"},
+            {"role": "user" , "content": f"Another important that you should keep in mind while making the sop is that the sop is a letter of motivation to study in this {university} , so you have to generate the sop which should contian strong motivational points for choosing {programme}"},
             {"role": "user", "content": f"Study programme name: {programme}"},
             {"role": "user", "content": f"University name: {university}"},
-            {"role": "user", "content": f"based on the provided details, following the specific structure and style given by the template {template_text}. You should reproduce the exact same structure of statement of purpose"},
-            {"role": "user", "content": "The template is likely to contain an Introduction's paragraph, Academic and experience paragraph, Programme and motivation paragraph, University paragraph, future career paragraph."},
-            {"role": "user", "content": "You must keep the same order of paragraphs from the template. The following instructions are just here so you can treat individually each paragraph :"},
-            {"role": "user", "content": f" for the Introduction's paragraph, you must start with a catching phrase that shows how important is studying the programme {programme} you apply for. Then, you must mention your name, background, and programme and university you are applying and also mention the reason why to choose this programme. And retrieve all introductory elements from {template_text}"},
-            {"role": "user", "content": """the Academic and experience Paragraph: Discuss the candidate's academic and professional background :
-            IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Please DON'T mention his CGPA score.
+
+            {"role": "user", "content": f" For the Introduction's paragraph, you must be using content from the {res_text} and follow the same structure and catchy words from from the introduction paragraph of this template {template_text}"},
+
+
+            {"role": "user", "content": f"""Fot the Academic and experience Paragraph too you will be using content from the {res_text}: Discuss the candidate's academic and professional background :
+            IF CGPA score is less than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
+             Mention all his acadamic education scores from the {res_text}
+             Mention all the acadamic education scores as they are prensent in {res_text}        
             Mention ALL his work experiences and the different roles and responsibilities he held
-            Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-            Mention all his certificates.
-            Mention his overall IELTS score
+            Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list.
+            You will be mentioning things like his certificates and Ilets score if they are present in the {res_text}
             """},
-            {"role": "user", "content": f"""For the paragraph about the programme and the motivation behind your decision to study it,  you must :
+
+
+            {"role": "user", "content": f""" For the paragraph about the programme use strong motivational points for choosing {programme}, 
                 Show a STRONG motivation by evoking a storytelling from your past that led you want to study this programme.
+                If the past education of yours is related to the programme you are applying then you can consider them adding in this paragraph too
                 You have to choose MINIMUM two out of these points :
                 Story from a family experience
                 Story from a social phenomenon and you want to bring solutions
                 Story from previous internship
                 Story from the studied modules in your Academic cursus
                 Story from one of your extra-curricular activites
+                You will also be adding What are the benifits you will be getting from this {programme} and the {university} 
                 You must also select some modules proposed by the programme and describe their contents, then explain why you are HIGHLY motivated to study them.
+                Add learning outcomes form the curriculum of this {university} and these learning will be divided into two parts which are tecnical learning and interpersonal learning
                 Explain Why this programme can help you build your career and prepare you for your future too 
-                
             """},
+
+
             {"role": "user", "content": f""" For the paragraph about the University, you should retrieve the following data :
                                                             Exact ranking of the University and the source of ranking
                                                             Number of students
@@ -169,26 +174,32 @@ async def generate_sop4(template_text, res_text,programme,university):
                                                             Precise you have relatives and friends there
                                                             Names of Research centers and renowned Professors linked to the programme
             You should use ALL these data and invent for each one an element of motivation make you want to integrate the University
-                
             In this paragraph you should also mention why you want to study in the city of the University , mention :  Some cool spots in the city you would like to see
                                                                                                                         names of companies in the city that accept people from {programme} to work in       
             """},
+
             {"role": "user", "content": f"""For the paragraph which is about your future career perspectives and aspirations post-study, you should mention how the programme of {programme}
              will give you the opportunity to work in the futur job you want to do. You should mention names of professional positions linked to the programme you want to work in.
              You can also add that you aim to work in Germany"""},
+
+
             {"role": "user", "content": "Last Paragraph: A brief conclusion summarizing why you are the ideal applicant and show again your interest."},
             {"role": "user", "content": """For the paragraph about Germany, you must mention the following points :
             Point 1. Explain why you chose to apply in Germany
             Point 2. Your Intention to stay in Germany because the field education comparative is far better to others destinations
             Point 3. Talk about the Good exposure, diversity and German culture 
             """},
+
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+
             {"role": "user", "content": "Finish with a closing line with consideration of this statement of purpose and add your name signature bellow"},
-            {
-                "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
             {"role": "user", "content": f"Be sure to replace the correct information from {res_text} including the name."},
             {"role": "user", "content": "Please ensure each paragraph transitions smoothly into the next, maintaining a logical flow throughout the document."},
             {"role": "user", "content": "The statement of purpose should consist of seven paragraphs, totaling a minimum of 500 words, using simple language that appears human-written."},
             {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
+
 
         ]
         )
@@ -202,34 +213,43 @@ async def generate_sop4(template_text, res_text,programme,university):
         model = "gpt-4o-2024-05-13",
         temperature=ai_temp,
         messages=[
-            {"role": "user", "content": "Generate a statement of purpose based on the provided details, following a specific structure and style."},
+                       {"role": "user", "content": "Generate a statement of purpose (SOP) based on the provided details, following a specific structure and style."},
+
             {"role": "user", "content": f"Template for guidance: {template_text}. You should reproduce the exact same structure"},
-            {"role": "user", "content": f"Resume information: {res_text}"},
+            {"role": "user", "content": f"Here is the resume {res_text} from which you have to take information about the student and please make sure that you do not add things from your own and stick to this {res_text} througout the sop"},
+            {"role": "user" , "content": f"Another important that you should keep in mind while making the sop is that the sop is a letter of motivation to study in this {university} , so you have to generate the sop which should contian strong motivational points for choosing {programme}"},
             {"role": "user", "content": f"Study programme name: {programme}"},
             {"role": "user", "content": f"University name: {university}"},
-            {"role": "user", "content": f"based on the provided details, following the specific structure and style given by the template {template_text}. You should reproduce the exact same structure of statement of purpose"},
-            {"role": "user", "content": "The template is likely to contain an Introduction's paragraph, Academic and experience paragraph, Programme and motivation paragraph, University paragraph, future career paragraph."},
-            {"role": "user", "content": "You must keep the same order of paragraphs from the template. The following instructions are just here so you can treat individually each paragraph :"},
-            {"role": "user", "content": f" for the Introduction's paragraph, you must start with a catching phrase that shows how important is studying the programme {programme} you apply for. Then, you must mention your name, background, and programme and university you are applying and also mention the reason why to choose this programme. And retrieve all introductory elements from {template_text}"},
-            {"role": "user", "content": """the Academic and experience Paragraph: Discuss the candidate's academic and professional background :
+
+            {"role": "user", "content": f" For the Introduction's paragraph, you must be using content from the {res_text} and follow the same structure and catchy words from from the introduction paragraph of this template {template_text}"},
+
+
+            {"role": "user", "content": f"""Fot the Academic and experience Paragraph too you will be using content from the {res_text}: Discuss the candidate's academic and professional background :
             IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
+             Mention all his acadamic education scores from the {res_text}
+             Mention all the acadamic education scores as they are prensent in {res_text}
             Mention ALL his work experiences and the different roles and responsibilities he held
-            Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-            Mention all his certificates.
-            Mention his overall IELTS score
+            Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list.
+            You will be mentioning things like his certificates and Ilets score if they are present in the {res_text}
             """},
-            {"role": "user", "content": f"""For the paragraph about the programme and the motivation behind your decision to study it,  you must :
+
+
+            {"role": "user", "content": f""" For the paragraph about the programme use strong motivational points for choosing {programme}, 
                 Show a STRONG motivation by evoking a storytelling from your past that led you want to study this programme.
+                If the past education of yours is related to the programme you are applying then you can consider them adding in this paragraph too
                 You have to choose MINIMUM two out of these points :
                 Story from a family experience
                 Story from a social phenomenon and you want to bring solutions
                 Story from previous internship
                 Story from the studied modules in your Academic cursus
                 Story from one of your extra-curricular activites
+                You will also be adding What are the benifits you will be getting from this {programme} and the {university} 
                 You must also select some modules proposed by the programme and describe their contents, then explain why you are HIGHLY motivated to study them.
+                Add learning outcomes form the curriculum of this {university} and these learning will be divided into two parts which are tecnical learning and interpersonal learning
                 Explain Why this programme can help you build your career and prepare you for your future too 
-                
             """},
+
+
             {"role": "user", "content": f""" For the paragraph about the University, you should retrieve the following data :
                                                             Exact ranking of the University and the source of ranking
                                                             Number of students
@@ -237,22 +257,27 @@ async def generate_sop4(template_text, res_text,programme,university):
                                                             Precise you have relatives and friends there
                                                             Names of Research centers and renowned Professors linked to the programme
             You should use ALL these data and invent for each one an element of motivation make you want to integrate the University
-                
             In this paragraph you should also mention why you want to study in the city of the University , mention :  Some cool spots in the city you would like to see
                                                                                                                         names of companies in the city that accept people from {programme} to work in       
             """},
+
             {"role": "user", "content": f"""For the paragraph which is about your future career perspectives and aspirations post-study, you should mention how the programme of {programme}
              will give you the opportunity to work in the futur job you want to do. You should mention names of professional positions linked to the programme you want to work in.
              You can also add that you aim to work in Germany"""},
+
+
             {"role": "user", "content": "Last Paragraph: A brief conclusion summarizing why you are the ideal applicant and show again your interest."},
             {"role": "user", "content": """For the paragraph about Germany, you must mention the following points :
             Point 1. Explain why you chose to apply in Germany
             Point 2. Your Intention to stay in Germany because the field education comparative is far better to others destinations
             Point 3. Talk about the Good exposure, diversity and German culture 
             """},
+
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+
             {"role": "user", "content": "Finish with a closing line with consideration of this statement of purpose and add your name signature bellow"},
-            {
-                "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
             {"role": "user", "content": f"Be sure to replace the correct information from {res_text} including the name."},
             {"role": "user", "content": "Please ensure each paragraph transitions smoothly into the next, maintaining a logical flow throughout the document."},
             {"role": "user", "content": "The statement of purpose should consist of seven paragraphs, totaling a minimum of 500 words, using simple language that appears human-written."},
@@ -390,50 +415,6 @@ async def extract3urls_orderofresults(query):
                 return None, None, None
 
 
-async def extract_1_url_from_urls(query):
-    url = f'https://www.google.com/search?q={requests.utils.quote(query)}'
-
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-    }
-
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url, headers=headers) as response:
-            if response.status == 200:
-                html = await response.text()
-                soup = BeautifulSoup(html, 'html.parser')
-
-                # Find the first search result links
-                links = []
-                results = soup.find_all('div', {'class': 'yuRUbf'})
-                for result in results[:5]:
-                    link = result.find('a')['href']
-                    links.append(link)
-                    print(link)
-                
-                if len(links) >= 5:
-                    # Slice the first 10 elements
-                    sliced_links = links[:5]
-                    
-                    # Get 3 unique random indices within the range of 0 to 4
-                 
-                    random_index = random.randint(0, 4)
-                    
-                    # Retrieve the links at the random indices
-                    chosen_link = sliced_links[random_index]
-                
-                    
-                    print('First link:', chosen_link)
-                    
-                    return chosen_link
-                else:
-                    return None
-            else:
-                print("Failed to retrieve the website content.")
-                return None
-            
-            
-            
 # Function to retrieve all fragment links
 def get_fragment_links(base_url):
     response = requests.get(base_url)
@@ -569,7 +550,7 @@ async def save_scraped_data(data):
         pickle.dump(data, file)
 
 
-async def extract_first_url_1(query):
+async def extract_urls1(query):
     url = f'https://www.google.com/search?q={requests.utils.quote(query)}'
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
@@ -634,7 +615,7 @@ async def get_url_content(url):
         return None
 
 async def return_data1(query):
-    url1 = await extract_first_url_1(query)
+    url1 = await extract_urls1(query)
     if url1:
         content = await get_url_content(url1)
         return content
@@ -642,14 +623,7 @@ async def return_data1(query):
         print("Nothing found for url1")
         return None
 
-async def return_data1_see(query):
-    url1 = await extract_1_url_from_urls(query)
-    if url1:
-        content = await get_url_content(url1)
-        return content
-    else:
-        print("Nothing found for url1")
-        return None
+
 
 
 
@@ -738,9 +712,14 @@ def retrieve_cgpa_score_sync(content_resume):
 
 
 
-async def generate_responses_university(res_text,programme, university, international_students, university_description_wikipedia, facilities, research_institutes, ranking, location, culture, professors, practical_learning, fee_structure):
+async def generate_responses(res_text,programme, university, university_description_wikipedia, facilities, research_institutes, ranking, location, culture, professors, practical_learning, fee_structure):
     
-    # Get all local variables (including function arguments)
+
+    cgpa_score = await retrieve_cgpa_score(res_text)
+    print("from the terminal 1 : ", cgpa_score)
+    
+    
+   # Get all local variables (including function arguments)
     arguments = locals()
     
     for arg_name, arg_value in arguments.items():
@@ -748,7 +727,12 @@ async def generate_responses_university(res_text,programme, university, internat
             # Print the argument name and its content, with a limit on the content length for readability
             print(f"{arg_name}: {' '.join(str(arg_value).split()[:200])}")
     
-
+    
+    
+    # print("ranking", ' '.join(ranking.split()[:100]))
+    # print("fee structure", ' '.join(fee_structure.split()[:100]))
+    
+    if cgpa_score != 'unknown' and float(cgpa_score) >= 7: 
         completion = ai.ChatCompletion.create(
         #model="gpt-3.5-turbo-16k", 
         model = "gpt-4o-2024-05-13",
@@ -758,7 +742,7 @@ async def generate_responses_university(res_text,programme, university, internat
 
     {
     "role": "user",
-    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer from Question 1 to Question 8:"
+    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer from Question 1 to Question 7:"
 },
 {
     "role": "user",
@@ -816,24 +800,17 @@ async def generate_responses_university(res_text,programme, university, internat
     "role": "user",
     "content": f"Your response should be based on {location} and {university_description_wikipedia} "
 },
-{
-    "role": "user",
-    "content": f"Question 1:  How does the size of the student body or the presence of an international student community at this university influence your decision to attend?  "
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on {international_students} "
-},
+
 {
     "role": "user",
     "content": "Provide concrete examples for Questions 1 to 7. For each question, generate 20 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
 },
 
 {"role": "user",
-"content":"For Questions 1 to 8 The responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
+"content":"For Questions 1 to 7 The responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
 {
     "role": "user",
-    "content": " For Questions 1 to 8 The responses should be human-like and personal, using first-person language."
+    "content": " For Questions 1 to 7 The responses should be human-like and personal, using first-person language."
 },
 {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis', 'boasts'"},
 {
@@ -859,9 +836,211 @@ async def generate_responses_university(res_text,programme, university, internat
         return response_out
     
     
-async def generate_responses_programme(res_text,programme, university, programme_content,  university_no_wikipedia , modules, practical_learning, personal_benefit, professional_growth):
+    elif cgpa_score != 'unknown' and float(cgpa_score) < 7:
+        completion = ai.ChatCompletion.create(
+        #model="gpt-3.5-turbo-16k", 
+        model = "gpt-4o-2024-05-13",
+        temperature=ai_temp,
+        messages = [
 
 
+    {
+    "role": "user",
+    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer from Question 1 to Question 7:"
+},
+{
+    "role": "user",
+    "content": f"Question 1: How do you believe this university's emphasis on practical learning will enhance your academic and professional goals?"
+},
+{
+    "role": "user",
+    "content": f"Your response should be based on {practical_learning} and reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal and genuine."
+},
+{
+    "role": "user",
+    "content": f"Question 2: How does the expertise and reputation of the faculty at this university influence your decision to attend?"
+},
+{
+    "role": "user",
+    "content": f"Your response should be  based on {university_description_wikipedia} and {professors}"
+},
+{
+    "role": "user",
+    "content": f"Question 3: How do the facilities provided by {university} influence your decision to attend?"
+},
+{
+    "role": "user",
+    "content": f"Your response should be based on {facilities}"
+},
+{
+    "role": "user",
+    "content": f"Question 4: How does the diverse culture at {university} influence your decision to attend the university?"
+},
+{
+    "role": "user",
+    "content": f"Your response should be based on {culture} "
+},
+{
+    "role": "user",
+    "content": f"Question 5: How do the research projects or research centers at {university} influence your decision to attend?"
+},
+{
+    "role": "user",
+    "content": f"Your response should be based on {research_institutes} "
+},
+{
+    "role": "user",
+    "content": f"Question 6: How do the university's ranking and fee structure influence your decision to attend?"
+},
+{
+    "role": "user",
+    "content": f"Your response should be based on {ranking} and {fee_structure}. Please provide the sources. "
+},
+{
+    "role": "user",
+    "content": f"Question 7:  How does the location of this university influence your decision to attend? "
+},
+{
+    "role": "user",
+    "content": f"Your response should be based on {location} and {university_description_wikipedia} "
+},
+
+{
+    "role": "user",
+    "content": "Provide concrete examples for Questions 1 to 7. For each question, generate 15 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
+},
+
+{"role": "user",
+"content":" for Questions 1 to 7 the responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
+{
+    "role": "user",
+    "content": "The responses should be human-like and personal, using first-person language."
+},
+{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis', 'boasts'"},
+{
+    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
+}
+# {
+#     "role": "user",
+#     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
+# }
+
+    
+    
+ 
+    
+    ]
+        )
+
+        response_out = completion['choices'][0]['message']['content']
+        st.write(response_out)
+        return response_out
+    else:
+        completion = ai.ChatCompletion.create(
+        #model="gpt-3.5-turbo-16k", 
+        model = "gpt-4o-2024-05-13",
+        temperature=ai_temp,
+        messages = [
+
+
+    {
+    "role": "user",
+    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer from Question 1 to Question 7:"
+},
+{
+    "role": "user",
+    "content": f"Question 1: How do you believe this university's emphasis on practical learning will enhance your academic and professional goals?"
+},
+{
+    "role": "user",
+    "content": f"Your response should be based on {practical_learning} and reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal and genuine."
+},
+{
+    "role": "user",
+    "content": f"Question 2: How does the expertise and reputation of the faculty at this university influence your decision to attend?"
+},
+{
+    "role": "user",
+    "content": f"Your response should be  based on {university_description_wikipedia} and {professors}"
+},
+{
+    "role": "user",
+    "content": f"Question 3: How do the facilities provided by {university} influence your decision to attend?"
+},
+{
+    "role": "user",
+    "content": f"Your response should be based on {facilities}"
+},
+{
+    "role": "user",
+    "content": f"Question 4: How does the diverse culture at {university} influence your decision to attend the university?"
+},
+{
+    "role": "user",
+    "content": f"Your response should be based on {culture} "
+},
+{
+    "role": "user",
+    "content": f"Question 5: How do the research projects or research centers at {university} influence your decision to attend?"
+},
+{
+    "role": "user",
+    "content": f"Your response should be based on {research_institutes} "
+},
+{
+    "role": "user",
+    "content": f"Question 6: How do the university's ranking and fee structure influence your decision to attend?"
+},
+{
+    "role": "user",
+    "content": f"Your response should be based on {ranking} and {fee_structure}. Please provide the sources. "
+},
+{
+    "role": "user",
+    "content": f"Question 7:  How does the location of this university influence your decision to attend? "
+},
+{
+    "role": "user",
+    "content": f"Your response should be based on {location} and {university_description_wikipedia} "
+},
+
+{
+    "role": "user",
+    "content": "Provide concrete examples for Questions 1 to 7. For each question, generate 15 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
+},
+
+{"role": "user",
+"content":" for Questions 1 to 7 the responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
+{
+    "role": "user",
+    "content": "The responses should be human-like and personal, using first-person language."
+},
+{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis',  'boasts'"},
+{
+    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
+}
+# {
+#     "role": "user",
+#     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
+# }
+
+    
+    
+ 
+    
+    ]
+        )
+
+        response_out = completion['choices'][0]['message']['content']
+        st.write(response_out)
+        return response_out
+
+async def generate_responses2(res_text,programme, university, programme_content,  university_no_wikipedia , international_students, modules, practical_learning, personal_benefit, professional_growth):
+
+    cgpa_score = await retrieve_cgpa_score(res_text)
+    print("from the terminal 2 : ", cgpa_score)
+   
+   
    # Get all local variables (including function arguments)
     arguments = locals()
     
@@ -871,6 +1050,7 @@ async def generate_responses_programme(res_text,programme, university, programme
             print(f"{arg_name}: {' '.join(str(arg_value).split()[:200])}")
     
     
+    if cgpa_score != 'unknown' and float(cgpa_score) >= 7: 
         completion = ai.ChatCompletion.create(
         #model="gpt-3.5-turbo-16k", 
         model = "gpt-4o-2024-05-13",
@@ -879,24 +1059,31 @@ async def generate_responses_programme(res_text,programme, university, programme
 
     {
     "role": "user",
-    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer from Question 1 to Question 7 :"
+    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer from Question 1 to Question 8 :"
 },
-
 
 {
     "role": "user",
-    "content": f"Question 1:  How does the link between the programme {programme_content} and the course curriculum {modules} influence your decision to enroll?  "
+    "content": f"Question 1:  How does the size of the student body or the presence of an international student community at this university influence your decision to attend?  "
 },
 {
     "role": "user",
-    "content": f"Question 2: How does this program's potential for personal benefit influence your decision to pursue it?  "},
+    "content": f"Your response should be based on {international_students} "
+},
+{
+    "role": "user",
+    "content": f"Question 2:  How does the link between the programme {programme_content} and the course curriculum {modules} influence your decision to enroll?  "
+},
+{
+    "role": "user",
+    "content": f"Question 3: How does this program's potential for personal benefit influence your decision to pursue it?  "},
 {
     "role": "user",
     "content": f"Your response should be based on {personal_benefit} "
 },
 {
     "role": "user",
-    "content": f"Question 3: How does the program's focus on professional growth influence your decision to enroll "},
+    "content": f"Question 4: How does the program's focus on professional growth influence your decision to enroll "},
 {
     "role": "user",
     "content": f"Your response should be based on {professional_growth} "
@@ -904,18 +1091,18 @@ async def generate_responses_programme(res_text,programme, university, programme
 
 {
     "role": "user",
-    "content": f"Question 4:  How does the emphasis on technical learning and skills in {programme_content} influence your decision to pursue it?  "
+    "content": f"Question 5:  How does the emphasis on technical learning and skills in {programme_content} influence your decision to pursue it?  "
 },
 {
     "role": "user",
-    "content": f"Question 5:  What is the driving motivation behind your choice of this particular program {programme} at {university} ? "},
+    "content": f"Question 6:  What is the driving motivation behind your choice of this particular program {programme} at {university} ? "},
 {
     "role": "user",
     "content": f"Your response should be based on {university_no_wikipedia} "
 },
 {
     "role": "user",
-    "content": f"Question 6 : How does your personal experience or interest influence your decision to choose the programme {programme}"
+    "content": f"Question 7 : How does your personal experience or interest influence your decision to choose the programme {programme}"
 },
 {
     "role": "user",
@@ -923,7 +1110,7 @@ async def generate_responses_programme(res_text,programme, university, programme
 },
 {
     "role": "user",
-    "content": f"Question 7 : How does the emphasis on applying skills in this program influence your decision to enroll? "
+    "content": f"Question 8 : How does the emphasis on applying skills in this program influence your decision to enroll? "
 },
 {
     "role": "user",
@@ -932,7 +1119,7 @@ async def generate_responses_programme(res_text,programme, university, programme
 
 {
     "role": "user",
-    "content": "Provide concrete examples for Questions 1 to 7. For each question, generate 20 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
+    "content": "Provide concrete examples for Questions 1 to 8. For each question, generate 20 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
 },
 
 {"role": "user",
@@ -949,6 +1136,13 @@ async def generate_responses_programme(res_text,programme, university, programme
 #     "role": "user",
 #     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
 # },
+
+
+
+    
+    
+ 
+    
     ]
 
 
@@ -957,12 +1151,213 @@ async def generate_responses_programme(res_text,programme, university, programme
         response_out = completion['choices'][0]['message']['content']
         st.write(response_out)
         return response_out
+    
+    
+    elif cgpa_score != 'unknown' and float(cgpa_score) < 7:
+        completion = ai.ChatCompletion.create(
+        #model="gpt-3.5-turbo-16k", 
+        model = "gpt-4o-2024-05-13",
+        temperature=ai_temp,
+        messages = [
+
+    {
+    "role": "user",
+    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer from Question 1 to Question 8 :"
+},
+
+{
+    "role": "user",
+    "content": f"Question 1:  How does the size of the student body or the presence of an international student community at this university influence your decision to attend?  "
+},
+{
+    "role": "user",
+    "content": f"Your response should be based on {international_students} "
+},
+{
+    "role": "user",
+    "content": f"Question 2:  How does the link between the programme {programme_content} and the course curriculum {modules} influence your decision to enroll?  "
+},
+{
+    "role": "user",
+    "content": f"Question 3: How does this program's potential for personal benefit influence your decision to pursue it?  "},
+{
+    "role": "user",
+    "content": f"Your response should be based on {personal_benefit} "
+},
+{
+    "role": "user",
+    "content": f"Question 4: How does the program's focus on professional growth influence your decision to enroll "},
+{
+    "role": "user",
+    "content": f"Your response should be based on {professional_growth} "
+},
+
+{
+    "role": "user",
+    "content": f"Question 5:  How does the emphasis on technical learning and skills in {programme_content} influence your decision to pursue it?  "
+},
+{
+    "role": "user",
+    "content": f"Question 6:  What is the driving motivation behind your choice of this particular program {programme} at {university} ? "},
+{
+    "role": "user",
+    "content": f"Your response should be based on {university_no_wikipedia} "
+},
+{
+    "role": "user",
+    "content": f"Question 7 : How does your personal experience or interest influence your decision to choose the programme {programme}"
+},
+{
+    "role": "user",
+    "content": f"Your response should be based on your resume {res_text} and {programme_content} "
+},
+{
+    "role": "user",
+    "content": f"Question 8 : How does the emphasis on applying skills in this program influence your decision to enroll? "
+},
+{
+    "role": "user",
+    "content": f"Your response should be based on your resume {res_text} and {programme_content}, and {practical_learning} and {modules} "
+},
+
+{
+    "role": "user",
+    "content": "Provide concrete examples for Questions 1 to 8. For each question, generate 20 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
+},
+
+{"role": "user",
+"content":"For Questions 1 to 8 The responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
+{
+    "role": "user",
+    "content": " For Questions 1 to 8 The responses should be human-like and personal, using first-person language."
+},
+{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
+{
+    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
+}
+# {
+#     "role": "user",
+#     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
+# },
 
 
-async def generate_responses_germany(  res_text, programme, university, cooperation_india_germany, quality_education_germany, 
-programme_variety_germany, research_opportunities_germany, cultural_experiences_germany, financial_support_germany,
-standard_living_germany, location_industries_germany, tuition_fees_germany, postgraduation_opportunities_germany, economic_opportunities_germany):
 
+    
+    
+ 
+    
+    ]
+        )
+
+        response_out = completion['choices'][0]['message']['content']
+        st.write(response_out)
+        return response_out
+    else:
+        completion = ai.ChatCompletion.create(
+        #model="gpt-3.5-turbo-16k", 
+        model = "gpt-4o-2024-05-13",
+        temperature=ai_temp,
+        messages = [
+
+    {
+    "role": "user",
+    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer from Question 1 to Question 8 :"
+},
+
+{
+    "role": "user",
+    "content": f"Question 1:  How does the size of the student body or the presence of an international student community at this university influence your decision to attend?  "
+},
+{
+    "role": "user",
+    "content": f"Your response should be based on {international_students} "
+},
+{
+    "role": "user",
+    "content": f"Question 2:  How does the link between the programme {programme_content} and the course curriculum {modules} influence your decision to enroll?  "
+},
+{
+    "role": "user",
+    "content": f"Question 3: How does this program's potential for personal benefit influence your decision to pursue it?  "},
+{
+    "role": "user",
+    "content": f"Your response should be based on {personal_benefit} "
+},
+{
+    "role": "user",
+    "content": f"Question 4: How does the program's focus on professional growth influence your decision to enroll "},
+{
+    "role": "user",
+    "content": f"Your response should be based on {professional_growth} "
+},
+
+{
+    "role": "user",
+    "content": f"Question 5:  How does the emphasis on technical learning and skills in {programme_content} influence your decision to pursue it?  "
+},
+{
+    "role": "user",
+    "content": f"Question 6:  What is the driving motivation behind your choice of this particular program {programme} at {university} ? "},
+{
+    "role": "user",
+    "content": f"Your response should be based on {university_no_wikipedia} "
+},
+{
+    "role": "user",
+    "content": f"Question 7 : How does your personal experience or interest influence your decision to choose the programme {programme}"
+},
+{
+    "role": "user",
+    "content": f"Your response should be based on your resume {res_text} and {programme_content} "
+},
+{
+    "role": "user",
+    "content": f"Question 8 : How does the emphasis on applying skills in this program influence your decision to enroll? "
+},
+{
+    "role": "user",
+    "content": f"Your response should be based on your resume {res_text} and {programme_content}, and {practical_learning} and {modules} "
+},
+
+{
+    "role": "user",
+    "content": "Provide concrete examples for Questions 1 to 8. For each question, generate 20 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
+},
+
+{"role": "user",
+"content":"For Questions 1 to 8 The responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
+{
+    "role": "user",
+    "content": " For Questions 1 to 8 The responses should be human-like and personal, using first-person language."
+},
+{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
+{
+    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
+}
+# {
+#     "role": "user",
+#     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
+# },
+
+
+
+    
+    
+ 
+    
+    ]
+        )
+
+        response_out = completion['choices'][0]['message']['content']
+        st.write(response_out)
+        return response_out
+
+
+async def generate_responses4(res_text,programme, university,cooperation_india_germany, germany):
+
+    cgpa_score = await retrieve_cgpa_score(res_text)
+    print("from the terminal 2 : ", cgpa_score)
+    
     
    # Get all local variables (including function arguments)
     arguments = locals()
@@ -972,60 +1367,201 @@ standard_living_germany, location_industries_germany, tuition_fees_germany, post
             # Print the argument name and its content, with a limit on the content length for readability
             print(f"{arg_name}: {' '.join(str(arg_value).split()[:200])}")
     
+    
 
+    
+    if cgpa_score != 'unknown' and float(cgpa_score) >= 7: 
         completion = ai.ChatCompletion.create(
         #model="gpt-3.5-turbo-16k", 
         model = "gpt-4o-2024-05-13",
         temperature=ai_temp,
         messages = [
 
-        {
-        "role": "user",
-        "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany."
-    },
-        
-        {"role": "user", "content": f"What factors make Germany an ideal study destination for you? Discuss the following 11 questions with relevant examples, for each question generate 10 lines minimum"},
-        {"role": "user", "content": f" Question 1 : Quality Education: How can {quality_education_germany} explain why Germany's high-quality education system is appealing to you."},
-        #& Include only the area : 
-        {"role": "user", "content": f" Question 2 : Program Variety:  How can {programme_variety_germany} offers the variety of programs available in Germany that aligns with your academic interests and goals in {programme}"},
-        #& same here : 
-        {"role": "user", "content": f" Question 3 : Economic Opportunities:  Based on {economic_opportunities_germany}, Discuss how the opportunities available in Germany align with your career goals in {programme}."},
-       
-        {"role": "user", "content":  f" Question 4 : Research Opportunities:  Based on {research_opportunities_germany}, Highlight the research opportunities in your field of study that attract you to Germany."},
-        # {"role": "user", "content":  f"Question 5 : Employment Opportunities:  Based on {employment_opportunities_germany}, Discuss the employment opportunities available in Germany that align with your career goals."},
-        {"role": "user", "content": f"Question 5 :  Based on {cooperation_india_germany}, Mention examples of cooperation between India and Germany relevant to this programme."},
-        {"role": "user", "content":  f" Question 6 :  Based on {cultural_experiences_germany}, Cultural Experience: Describe how experiencing German culture and language will enrich your personal and academic growth."},
-        { "role": "user", "content":  f"Question 7 : Financial Support:  Based on {financial_support_germany}, Explain how scholarships and financial support options in Germany will help alleviate your financial burden."},
-        {"role": "user", "content":   f"Question 8 : Standard of Living:  Based on {standard_living_germany}, Discuss the high standard of living and quality of life that Germany offers to students."},
-        {"role": "user", "content": f"Question 9 : Location and Industry Links:  Based on {location_industries_germany}, Explain the strategic advantages of Germany's location and its strong ties to industries relevant to your field."},
-        {"role": "user", "content":  f"Question 10 : Tuition Fees:  Based on {tuition_fees_germany}, Discuss the affordability of education in Germany due to its low tuition fees."},
-            {"role": "user", "content": f" Question 11 : Post-Graduation Opportunities:  Based on {postgraduation_opportunities_germany}, Highlight the post-graduation opportunities, including visa extensions, that make Germany a favorable choice for your future career prospects."},
-
-
     {
-        "role": "user",
-        "content": "Provide concrete examples for the questions 1 to 11. For each question, generate 10 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
-    },
+    "role": "user",
+    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer the following points:"
+},
+       {"role": "user", "content": f"""What factors make Germany an ideal study destination for you? Discuss the following points with relevant examples, for each point generate 10 lines minimum : (Your responses should be based on {germany}):
+        Point 1. Quality Education: Explain why Germany's high-quality education system is appealing to you. 
+        Point 2. Program Variety: Discuss how the variety of programs available in Germany aligns with your academic interests and goals.
+        Point 3. Economic Opportunities: Discuss how the opportunities available in Germany align with your career goals.
+        Point 4. Research Opportunities: Highlight the research opportunities in your field of study that attract you to Germany.
+        Point 5. Employment Opportunities: Discuss the employment opportunities available in Germany that align with your career goals.
+        Point 6. Mention examples of cooperation between India and Germany relevant to this programme.
+        Point 7. Cultural Experience: Describe how experiencing German culture and language will enrich your personal and academic growth.
+        Point 8. Financial Support: Explain how scholarships and financial support options in Germany will help alleviate your financial burden.
+        Point 9. Standard of Living: Discuss the high standard of living and quality of life that Germany offers to students.
+        Point 10.Location and Industry Links: Explain the strategic advantages of Germany's location and its strong ties to industries relevant to your field.
+        Point 11.Tuition Fees: Discuss the affordability of education in Germany due to its low tuition fees.
+        Point 12.Post-Graduation Opportunities: Highlight the post-graduation opportunities, including visa extensions, that make Germany a favorable choice for your future career prospects.
+        """},
+       {
+    "role": "user",
+    "content": f"Your responses should ONLY be based on {germany} and {cooperation_india_germany}"
+},
 
-    {"role": "user",
-    "content":"For the questions 1 to 11, the responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
+{
+    "role": "user",
+    "content": "Provide concrete examples for the questions 1 to 12. For each question, generate 10 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
+},
 
-    {
-        "role": "user",
-        "content": " For the questions 1 to 11, the responses should be human-like and personal, using first-person language."},
-    {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
-    {
-        "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
-    }
-    # {
-    #     "role": "user",
-    #     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
-    # },
-    ] )
+{"role": "user",
+"content":"For the questions 1 to 12, the responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
+{
+    "role": "user",
+    "content": " For the questions 1 to 12, the responses should be human-like and personal, using first-person language."
+},
+{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
+{
+    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
+}
+# {
+#     "role": "user",
+#     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
+# },
+
+
+
+    
+    
+ 
+    
+    ]
+
+
+        )
 
         response_out = completion['choices'][0]['message']['content']
         st.write(response_out)
-        return response_out 
+        return response_out
+    
+    
+    elif cgpa_score != 'unknown' and float(cgpa_score) < 7:
+        completion = ai.ChatCompletion.create(
+        #model="gpt-3.5-turbo-16k", 
+        model = "gpt-4o-2024-05-13",
+        temperature=ai_temp,
+        messages = [
+
+    {
+    "role": "user",
+    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer the following points:"
+},
+       {"role": "user", "content": f"""What factors make Germany an ideal study destination for you? Discuss the following points with relevant examples, for each point generate 10 lines minimum :
+        Point 1. Quality Education: Explain why Germany's high-quality education system is appealing to you. 
+        Point 2. Program Variety: Discuss how the variety of programs available in Germany aligns with your academic interests and goals.
+        Point 3. Economic Opportunities: Discuss how the opportunities available in Germany align with your career goals.
+        Point 4. Research Opportunities: Highlight the research opportunities in your field of study that attract you to Germany.
+        Point 5. Employment Opportunities: Discuss the employment opportunities available in Germany that align with your career goals.
+        Point 6. Mention examples of cooperation between India and Germany relevant to this programme.
+        Point 7. Cultural Experience: Describe how experiencing German culture and language will enrich your personal and academic growth.
+        Point 8. Financial Support: Explain how scholarships and financial support options in Germany will help alleviate your financial burden.
+        Point 9. Standard of Living: Discuss the high standard of living and quality of life that Germany offers to students.
+        Point 10.Location and Industry Links: Explain the strategic advantages of Germany's location and its strong ties to industries relevant to your field.
+        Point 11.Tuition Fees: Discuss the affordability of education in Germany due to its low tuition fees.
+        Point 12.Post-Graduation Opportunities: Highlight the post-graduation opportunities, including visa extensions, that make Germany a favorable choice for your future career prospects.
+        """},
+       {
+    "role": "user",
+    "content": f"Your responses should ONLY be based on {germany} and {cooperation_india_germany}"
+},
+
+{
+    "role": "user",
+    "content": "Provide concrete examples for the points 1 to 12. For each question, generate 10 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
+},
+
+{"role": "user",
+"content":"For the points 1 to 12, the responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
+{
+    "role": "user",
+    "content": " For the points 1 to 12, the responses should be human-like and personal, using first-person language."
+},
+{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
+{
+    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
+}
+# {
+#     "role": "user",
+#     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
+# },
+
+
+
+    
+    
+ 
+    
+    ]
+        )
+
+        response_out = completion['choices'][0]['message']['content']
+        st.write(response_out)
+        return response_out
+    else:
+        completion = ai.ChatCompletion.create(
+        #model="gpt-3.5-turbo-16k", 
+        model = "gpt-4o-2024-05-13",
+        temperature=ai_temp,
+        messages = [
+
+    {
+    "role": "user",
+    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer the following points:"
+},
+       {"role": "user", "content": f"""What factors make Germany an ideal study destination for you? Discuss the following points with relevant examples, for each point generate 10 lines minimum : (Your responses should be based on {germany}):
+        Point 1. Quality Education: Explain why Germany's high-quality education system is appealing to you. 
+        Point 2. Program Variety: Discuss how the variety of programs available in Germany aligns with your academic interests and goals.
+        Point 3. Economic Opportunities: Discuss how the opportunities available in Germany align with your career goals.
+        Point 4. Research Opportunities: Highlight the research opportunities in your field of study that attract you to Germany.
+        Point 5. Employment Opportunities: Discuss the employment opportunities available in Germany that align with your career goals.
+        Point 6. Mention examples of cooperation between India and Germany relevant to this programme.
+        Point 7. Cultural Experience: Describe how experiencing German culture and language will enrich your personal and academic growth.
+        Point 8. Financial Support: Explain how scholarships and financial support options in Germany will help alleviate your financial burden.
+        Point 9. Standard of Living: Discuss the high standard of living and quality of life that Germany offers to students.
+        Point 10.Location and Industry Links: Explain the strategic advantages of Germany's location and its strong ties to industries relevant to your field.
+        Point 11.Tuition Fees: Discuss the affordability of education in Germany due to its low tuition fees.
+        Point 12.Post-Graduation Opportunities: Highlight the post-graduation opportunities, including visa extensions, that make Germany a favorable choice for your future career prospects.
+        """},
+       {
+    "role": "user",
+    "content": f"Your responses should ONLY be based on {germany} and {cooperation_india_germany}"
+},
+
+{
+    "role": "user",
+    "content": "Provide concrete examples for the points 1 to 12. For each question, generate 10 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
+},
+
+{"role": "user",
+"content":"For the points 1 to 12, the responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
+{
+    "role": "user",
+    "content": " For the points 1 to 12, the responses should be human-like and personal, using first-person language."
+},
+{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
+{
+    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
+}
+# {
+#     "role": "user",
+#     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
+# },
+
+
+
+    
+    
+ 
+    
+    ]
+        )
+
+        response_out = completion['choices'][0]['message']['content']
+        st.write(response_out)
+        return response_out
+     
+     
     
        
 def create_word_document(phrase, font_name, font_size):
@@ -1222,8 +1758,6 @@ if submitted:
         response_sop = asyncio.create_task(generate_sop4( generate_random_templates('templates4'), res_text,programme,university))
 
         # Define asynchronous tasks for return_data functions
-        
-        #! Tasks for University :
         facilities_task = asyncio.create_task(return_data3(f"How do the facilities provided by {university} influence your decision to attend?"))
         research_institutes_task = asyncio.create_task(return_data3_orderofresults(f"How do the research projects or research centers at {university} influence your decision to attend?"))
         university_description_wikipedia_task = asyncio.create_task(return_data1(f"{university} Wikipedia Deutch"))
@@ -1231,30 +1765,19 @@ if submitted:
         ranking_task = asyncio.create_task(return_data1(f"ranking {university} "))
         location_task = asyncio.create_task(return_data1(f"How does the location of {university} offer something particular and better for students compared to other universities"))
         fee_structure_task = asyncio.create_task(return_data1(f"{university} fee structure")) # here it was return_data3
-        international_students_task = asyncio.create_task(return_data3(f"How many international students are at {university}"))
-        culture_task = asyncio.create_task(return_data3(f"How does the diverse culture at {university} influence your decision to attend?"))
         
-        #* Tasks for the programme : programme_content,  university_no_wikipedia , modules, practical_learning, personal_benefit, professional_growth
         programme_content_task = asyncio.create_task(return_data1(research))
-        university_no_wikipedia_task = asyncio.create_task(return_data3_orderofresults(f"{university}"))
-        modules_task = asyncio.create_task(return_data3_orderofresults(f"{programme}, {university}, modules"))
-        practical_learning_task = asyncio.create_task(return_data3(f"How do you believe the emphasis of {university} on practical learning will enhance your academic and professional goals?"))
-        personal_benefit_task = asyncio.create_task(return_data3(f"Why study {programme} in Germany"))
-        professional_growth_task = asyncio.create_task(return_data3(f"{programme} professional growth"))
         
-        #& Tasks for Germany (retake return_data1 function)
-        cooperation_india_germany_task = asyncio.create_task(return_data1_see(f"bilateral cooperation between india and germany, {programme}"))
-        quality_education_germany_task = asyncio.create_task(return_data1_see(f"why Germany's high-quality education system is appealing to Indian students"))
-        programme_variety_germany_task = asyncio.create_task(return_data1_see(f"Is Germany good for {programme}"))
-        research_opportunities_germany_task = asyncio.create_task(return_data1_see(f"Research Opportunities: Highlight the research opportunities in {programme} that attract you to Germany."))
-        cultural_experiences_germany_task = asyncio.create_task(return_data1_see(f"Describe how experiencing German culture and language will enrich your personal and academic growth."))
-        financial_support_germany_task = asyncio.create_task(return_data1_see(f"Explain how scholarships and financial support options in Germany will help alleviate your financial burden"))
-        standard_living_germany_task = asyncio.create_task(return_data1_see(f"Discuss the high standard of living and quality of life that Germany offers to Indian students."))
-        location_industries_germany_task = asyncio.create_task(return_data1_see(f"Explain the strategic advantages of Germany's location and its strong ties to industries relevant to {programme}"))
-        tuition_fees_germany_task = asyncio.create_task(return_data1_see(f" Discuss the affordability of education in Germany due to its low tuition fees for Indian students."))
-        postgraduation_opportunities_germany_task = asyncio.create_task(return_data1_see(f" Highlight the post-graduation opportunities, including visa extensions, that make Germany a favorable choice for your future career prospects in {programme} as an Indian student"))
-        economic_opportunities_germany_task = asyncio.create_task(return_data1_see(f"Article about Job Opportunities available in Germany for careers in {programme}"))
-
+        cooperation_india_germany_task = asyncio.create_task(return_data3(f"bilateral cooperation between india and germany, {programme}"))
+        germany_task = asyncio.create_task(return_data3("What factors make Germany an ideal study destination for you?"))
+        culture_task = asyncio.create_task(return_data3(f"How does the diverse culture at {university} influence your decision to attend?"))
+        practical_learning_task = asyncio.create_task(return_data3(f"How do you believe the emphasis of {university} on practical learning will enhance your academic and professional goals?"))
+        
+        professional_growth_task = asyncio.create_task(return_data3(f"{programme} professional growth"))
+        personal_benefit_task = asyncio.create_task(return_data3(f"Why study {programme} in Germany"))
+        international_students_task = asyncio.create_task(return_data3(f"How many international students are at {university}"))
+        modules_task = asyncio.create_task(return_data3_orderofresults(f"{programme}, {university}, modules"))
+        university_no_wikipedia_task = asyncio.create_task(return_data3_orderofresults(f"{university}"))
 
     #     #^ Wait for all return_data tasks to complete
        
@@ -1266,30 +1789,28 @@ if submitted:
         (university_description_wikipedia, professors, cooperation_india_germany) = await asyncio.gather(university_description_wikipedia_task, professors_task,  cooperation_india_germany_task)
         
         await asyncio.sleep(2)
-         
-        (ranking, location, fee_structure, programme_content, quality_education_germany ) = await asyncio.gather(ranking_task, location_task, fee_structure_task, programme_content_task, quality_education_germany_task)
+        
+        (ranking, location) = await asyncio.gather(ranking_task, location_task)
         
         await asyncio.sleep(2)
         
-        ( international_students , modules ) = await asyncio.gather( international_students_task, modules_task)
+        (professors, germany) = await asyncio.gather(professors_task, germany_task)
 
         await asyncio.sleep(2)
         
-        (culture, practical_learning ) = await asyncio.gather( culture_task, practical_learning_task)
+        (fee_structure, programme_content, culture ) = await asyncio.gather( fee_structure_task,  programme_content_task,
+            culture_task, )
         
         await asyncio.sleep(2)
-        (  university_no_wikipedia , personal_benefit ) = await asyncio.gather(  university_no_wikipedia_task, personal_benefit_task  )
+        ( practical_learning, international_students) = await asyncio.gather( practical_learning_task,
+            international_students_task)
         
         await asyncio.sleep(2)
-        
-        ( professional_growth, programme_variety_germany, research_opportunities_germany ) = await asyncio.gather(professional_growth_task , programme_variety_germany_task, research_opportunities_germany_task  )
+        ( modules, university_no_wikipedia) = await asyncio.gather( modules_task, university_no_wikipedia_task)
         
         await asyncio.sleep(2)
-        
-        ( cultural_experiences_germany, financial_support_germany, standard_living_germany, location_industries_germany, tuition_fees_germany  ) = await asyncio.gather(  cultural_experiences_germany_task, financial_support_germany_task, standard_living_germany_task,  location_industries_germany_task,   tuition_fees_germany_task )
-        await asyncio.sleep(2)
-        
-        ( postgraduation_opportunities_germany , economic_opportunities_germany  ) = await asyncio.gather( postgraduation_opportunities_germany_task,  economic_opportunities_germany_task)
+         
+        (  personal_benefit, professional_growth ) = await asyncio.gather(personal_benefit_task, professional_growth_task)
         
         
 
@@ -1298,31 +1819,28 @@ if submitted:
     
     
         # Run the response generation functions asynchronously
-        response1 = asyncio.create_task(generate_responses_university(
-            res_text, programme, university, international_students,
+        response2 = asyncio.create_task(generate_responses(
+            res_text, programme, university,
             university_description_wikipedia, facilities,
             research_institutes, ranking, location, culture,
             professors, practical_learning, fee_structure
         ))
         
-        response2 = asyncio.create_task(generate_responses_programme(
+        response22 = asyncio.create_task(generate_responses2(
              res_text, programme, university,
-            programme_content, university_no_wikipedia, modules,
+            programme_content, university_no_wikipedia, international_students, modules,
             practical_learning, personal_benefit,
             professional_growth
         ))
         
         
-        response3 = asyncio.create_task(generate_responses_germany(
-             res_text, programme, university, cooperation_india_germany, quality_education_germany, programme_variety_germany,
-             research_opportunities_germany, cultural_experiences_germany, financial_support_germany, standard_living_germany,
-             location_industries_germany,
-             tuition_fees_germany, postgraduation_opportunities_germany, economic_opportunities_germany
-             
+        response4 = asyncio.create_task(generate_responses4(
+             res_text, programme, university,
+            cooperation_india_germany, germany
         ))
 
         # Wait for all response generation tasks to complete
-        responses = await asyncio.gather(response_sop, response1, response2, response3)
+        responses = await asyncio.gather(response_sop, response2, response22, response4)
         response_final = responses 
         # Combine responses
         response = ''.join(response_final) 
