@@ -687,14 +687,9 @@ def retrieve_cgpa_score_sync(content_resume):
 
 
 
-async def generate_responses(res_text,programme, university, university_description_wikipedia, facilities, research_institutes, ranking, location, culture, professors, practical_learning, fee_structure):
+async def generate_responses_university(res_text,programme, university, international_students, university_description_wikipedia, facilities, research_institutes, ranking, location, culture, professors, practical_learning, fee_structure):
     
-
-    cgpa_score = await retrieve_cgpa_score(res_text)
-    print("from the terminal 1 : ", cgpa_score)
-    
-    
-   # Get all local variables (including function arguments)
+    # Get all local variables (including function arguments)
     arguments = locals()
     
     for arg_name, arg_value in arguments.items():
@@ -702,12 +697,7 @@ async def generate_responses(res_text,programme, university, university_descript
             # Print the argument name and its content, with a limit on the content length for readability
             print(f"{arg_name}: {' '.join(str(arg_value).split()[:200])}")
     
-    
-    
-    # print("ranking", ' '.join(ranking.split()[:100]))
-    # print("fee structure", ' '.join(fee_structure.split()[:100]))
-    
-    if cgpa_score != 'unknown' and float(cgpa_score) >= 7: 
+
         completion = ai.ChatCompletion.create(
         #model="gpt-3.5-turbo-16k", 
         model = "gpt-4o-2024-05-13",
@@ -717,7 +707,7 @@ async def generate_responses(res_text,programme, university, university_descript
 
     {
     "role": "user",
-    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer from Question 1 to Question 7:"
+    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer from Question 1 to Question 8:"
 },
 {
     "role": "user",
@@ -774,6 +764,119 @@ async def generate_responses(res_text,programme, university, university_descript
 {
     "role": "user",
     "content": f"Your response should be based on {location} and {university_description_wikipedia} "
+},
+{
+    "role": "user",
+    "content": f"Question 1:  How does the size of the student body or the presence of an international student community at this university influence your decision to attend?  "
+},
+{
+    "role": "user",
+    "content": f"Your response should be based on {international_students} "
+},
+{
+    "role": "user",
+    "content": "Provide concrete examples for Questions 1 to 7. For each question, generate 20 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
+},
+
+{"role": "user",
+"content":"For Questions 1 to 8 The responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
+{
+    "role": "user",
+    "content": " For Questions 1 to 8 The responses should be human-like and personal, using first-person language."
+},
+{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis', 'boasts'"},
+{
+    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
+}
+# {
+#     "role": "user",
+#     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
+# },
+
+
+    
+    
+ 
+    
+    ]
+
+
+        )
+
+        response_out = completion['choices'][0]['message']['content']
+        st.write(response_out)
+        return response_out
+    
+    
+async def generate_responses_programme(res_text,programme, university, programme_content,  university_no_wikipedia , modules, practical_learning, personal_benefit, professional_growth):
+
+
+   # Get all local variables (including function arguments)
+    arguments = locals()
+    
+    for arg_name, arg_value in arguments.items():
+        if arg_value is not None:
+            # Print the argument name and its content, with a limit on the content length for readability
+            print(f"{arg_name}: {' '.join(str(arg_value).split()[:200])}")
+    
+    
+        completion = ai.ChatCompletion.create(
+        #model="gpt-3.5-turbo-16k", 
+        model = "gpt-4o-2024-05-13",
+        temperature=ai_temp,
+        messages = [
+
+    {
+    "role": "user",
+    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer from Question 1 to Question 7 :"
+},
+
+
+{
+    "role": "user",
+    "content": f"Question 1:  How does the link between the programme {programme_content} and the course curriculum {modules} influence your decision to enroll?  "
+},
+{
+    "role": "user",
+    "content": f"Question 2: How does this program's potential for personal benefit influence your decision to pursue it?  "},
+{
+    "role": "user",
+    "content": f"Your response should be based on {personal_benefit} "
+},
+{
+    "role": "user",
+    "content": f"Question 3: How does the program's focus on professional growth influence your decision to enroll "},
+{
+    "role": "user",
+    "content": f"Your response should be based on {professional_growth} "
+},
+
+{
+    "role": "user",
+    "content": f"Question 4:  How does the emphasis on technical learning and skills in {programme_content} influence your decision to pursue it?  "
+},
+{
+    "role": "user",
+    "content": f"Question 5:  What is the driving motivation behind your choice of this particular program {programme} at {university} ? "},
+{
+    "role": "user",
+    "content": f"Your response should be based on {university_no_wikipedia} "
+},
+{
+    "role": "user",
+    "content": f"Question 6 : How does your personal experience or interest influence your decision to choose the programme {programme}"
+},
+{
+    "role": "user",
+    "content": f"Your response should be based on your resume {res_text} and {programme_content} "
+},
+{
+    "role": "user",
+    "content": f"Question 7 : How does the emphasis on applying skills in this program influence your decision to enroll? "
+},
+{
+    "role": "user",
+    "content": f"Your response should be based on your resume {res_text} and {programme_content}, and {practical_learning} and {modules} "
 },
 
 {
@@ -782,322 +885,6 @@ async def generate_responses(res_text,programme, university, university_descript
 },
 
 {"role": "user",
-"content":"For Questions 1 to 7 The responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
-{
-    "role": "user",
-    "content": " For Questions 1 to 7 The responses should be human-like and personal, using first-person language."
-},
-{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis', 'boasts'"},
-{
-    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
-}
-# {
-#     "role": "user",
-#     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
-# },
-
-
-    
-    
- 
-    
-    ]
-
-
-        )
-
-        response_out = completion['choices'][0]['message']['content']
-        st.write(response_out)
-        return response_out
-    
-    
-    elif cgpa_score != 'unknown' and float(cgpa_score) < 7:
-        completion = ai.ChatCompletion.create(
-        #model="gpt-3.5-turbo-16k", 
-        model = "gpt-4o-2024-05-13",
-        temperature=ai_temp,
-        messages = [
-
-
-    {
-    "role": "user",
-    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer from Question 1 to Question 7:"
-},
-{
-    "role": "user",
-    "content": f"Question 1: How do you believe this university's emphasis on practical learning will enhance your academic and professional goals?"
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on {practical_learning} and reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal and genuine."
-},
-{
-    "role": "user",
-    "content": f"Question 2: How does the expertise and reputation of the faculty at this university influence your decision to attend?"
-},
-{
-    "role": "user",
-    "content": f"Your response should be  based on {university_description_wikipedia} and {professors}"
-},
-{
-    "role": "user",
-    "content": f"Question 3: How do the facilities provided by {university} influence your decision to attend?"
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on {facilities}"
-},
-{
-    "role": "user",
-    "content": f"Question 4: How does the diverse culture at {university} influence your decision to attend the university?"
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on {culture} "
-},
-{
-    "role": "user",
-    "content": f"Question 5: How do the research projects or research centers at {university} influence your decision to attend?"
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on {research_institutes} "
-},
-{
-    "role": "user",
-    "content": f"Question 6: How do the university's ranking and fee structure influence your decision to attend?"
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on {ranking} and {fee_structure}. Please provide the sources. "
-},
-{
-    "role": "user",
-    "content": f"Question 7:  How does the location of this university influence your decision to attend? "
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on {location} and {university_description_wikipedia} "
-},
-
-{
-    "role": "user",
-    "content": "Provide concrete examples for Questions 1 to 7. For each question, generate 15 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
-},
-
-{"role": "user",
-"content":" for Questions 1 to 7 the responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
-{
-    "role": "user",
-    "content": "The responses should be human-like and personal, using first-person language."
-},
-{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis', 'boasts'"},
-{
-    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
-}
-# {
-#     "role": "user",
-#     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
-# }
-
-    
-    
- 
-    
-    ]
-        )
-
-        response_out = completion['choices'][0]['message']['content']
-        st.write(response_out)
-        return response_out
-    else:
-        completion = ai.ChatCompletion.create(
-        #model="gpt-3.5-turbo-16k", 
-        model = "gpt-4o-2024-05-13",
-        temperature=ai_temp,
-        messages = [
-
-
-    {
-    "role": "user",
-    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer from Question 1 to Question 7:"
-},
-{
-    "role": "user",
-    "content": f"Question 1: How do you believe this university's emphasis on practical learning will enhance your academic and professional goals?"
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on {practical_learning} and reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal and genuine."
-},
-{
-    "role": "user",
-    "content": f"Question 2: How does the expertise and reputation of the faculty at this university influence your decision to attend?"
-},
-{
-    "role": "user",
-    "content": f"Your response should be  based on {university_description_wikipedia} and {professors}"
-},
-{
-    "role": "user",
-    "content": f"Question 3: How do the facilities provided by {university} influence your decision to attend?"
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on {facilities}"
-},
-{
-    "role": "user",
-    "content": f"Question 4: How does the diverse culture at {university} influence your decision to attend the university?"
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on {culture} "
-},
-{
-    "role": "user",
-    "content": f"Question 5: How do the research projects or research centers at {university} influence your decision to attend?"
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on {research_institutes} "
-},
-{
-    "role": "user",
-    "content": f"Question 6: How do the university's ranking and fee structure influence your decision to attend?"
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on {ranking} and {fee_structure}. Please provide the sources. "
-},
-{
-    "role": "user",
-    "content": f"Question 7:  How does the location of this university influence your decision to attend? "
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on {location} and {university_description_wikipedia} "
-},
-
-{
-    "role": "user",
-    "content": "Provide concrete examples for Questions 1 to 7. For each question, generate 15 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
-},
-
-{"role": "user",
-"content":" for Questions 1 to 7 the responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
-{
-    "role": "user",
-    "content": "The responses should be human-like and personal, using first-person language."
-},
-{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis',  'boasts'"},
-{
-    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
-}
-# {
-#     "role": "user",
-#     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
-# }
-
-    
-    
- 
-    
-    ]
-        )
-
-        response_out = completion['choices'][0]['message']['content']
-        st.write(response_out)
-        return response_out
-
-async def generate_responses2(res_text,programme, university, programme_content,  university_no_wikipedia , international_students, modules, practical_learning, personal_benefit, professional_growth):
-
-    cgpa_score = await retrieve_cgpa_score(res_text)
-    print("from the terminal 2 : ", cgpa_score)
-   
-   
-   # Get all local variables (including function arguments)
-    arguments = locals()
-    
-    for arg_name, arg_value in arguments.items():
-        if arg_value is not None:
-            # Print the argument name and its content, with a limit on the content length for readability
-            print(f"{arg_name}: {' '.join(str(arg_value).split()[:200])}")
-    
-    
-    if cgpa_score != 'unknown' and float(cgpa_score) >= 7: 
-        completion = ai.ChatCompletion.create(
-        #model="gpt-3.5-turbo-16k", 
-        model = "gpt-4o-2024-05-13",
-        temperature=ai_temp,
-        messages = [
-
-    {
-    "role": "user",
-    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer from Question 1 to Question 8 :"
-},
-
-{
-    "role": "user",
-    "content": f"Question 1:  How does the size of the student body or the presence of an international student community at this university influence your decision to attend?  "
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on {international_students} "
-},
-{
-    "role": "user",
-    "content": f"Question 2:  How does the link between the programme {programme_content} and the course curriculum {modules} influence your decision to enroll?  "
-},
-{
-    "role": "user",
-    "content": f"Question 3: How does this program's potential for personal benefit influence your decision to pursue it?  "},
-{
-    "role": "user",
-    "content": f"Your response should be based on {personal_benefit} "
-},
-{
-    "role": "user",
-    "content": f"Question 4: How does the program's focus on professional growth influence your decision to enroll "},
-{
-    "role": "user",
-    "content": f"Your response should be based on {professional_growth} "
-},
-
-{
-    "role": "user",
-    "content": f"Question 5:  How does the emphasis on technical learning and skills in {programme_content} influence your decision to pursue it?  "
-},
-{
-    "role": "user",
-    "content": f"Question 6:  What is the driving motivation behind your choice of this particular program {programme} at {university} ? "},
-{
-    "role": "user",
-    "content": f"Your response should be based on {university_no_wikipedia} "
-},
-{
-    "role": "user",
-    "content": f"Question 7 : How does your personal experience or interest influence your decision to choose the programme {programme}"
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on your resume {res_text} and {programme_content} "
-},
-{
-    "role": "user",
-    "content": f"Question 8 : How does the emphasis on applying skills in this program influence your decision to enroll? "
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on your resume {res_text} and {programme_content}, and {practical_learning} and {modules} "
-},
-
-{
-    "role": "user",
-    "content": "Provide concrete examples for Questions 1 to 8. For each question, generate 20 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
-},
-
-{"role": "user",
 "content":"For Questions 1 to 8 The responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
 {
     "role": "user",
@@ -1111,13 +898,6 @@ async def generate_responses2(res_text,programme, university, programme_content,
 #     "role": "user",
 #     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
 # },
-
-
-
-    
-    
- 
-    
     ]
 
 
@@ -1126,213 +906,10 @@ async def generate_responses2(res_text,programme, university, programme_content,
         response_out = completion['choices'][0]['message']['content']
         st.write(response_out)
         return response_out
-    
-    
-    elif cgpa_score != 'unknown' and float(cgpa_score) < 7:
-        completion = ai.ChatCompletion.create(
-        #model="gpt-3.5-turbo-16k", 
-        model = "gpt-4o-2024-05-13",
-        temperature=ai_temp,
-        messages = [
-
-    {
-    "role": "user",
-    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer from Question 1 to Question 8 :"
-},
-
-{
-    "role": "user",
-    "content": f"Question 1:  How does the size of the student body or the presence of an international student community at this university influence your decision to attend?  "
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on {international_students} "
-},
-{
-    "role": "user",
-    "content": f"Question 2:  How does the link between the programme {programme_content} and the course curriculum {modules} influence your decision to enroll?  "
-},
-{
-    "role": "user",
-    "content": f"Question 3: How does this program's potential for personal benefit influence your decision to pursue it?  "},
-{
-    "role": "user",
-    "content": f"Your response should be based on {personal_benefit} "
-},
-{
-    "role": "user",
-    "content": f"Question 4: How does the program's focus on professional growth influence your decision to enroll "},
-{
-    "role": "user",
-    "content": f"Your response should be based on {professional_growth} "
-},
-
-{
-    "role": "user",
-    "content": f"Question 5:  How does the emphasis on technical learning and skills in {programme_content} influence your decision to pursue it?  "
-},
-{
-    "role": "user",
-    "content": f"Question 6:  What is the driving motivation behind your choice of this particular program {programme} at {university} ? "},
-{
-    "role": "user",
-    "content": f"Your response should be based on {university_no_wikipedia} "
-},
-{
-    "role": "user",
-    "content": f"Question 7 : How does your personal experience or interest influence your decision to choose the programme {programme}"
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on your resume {res_text} and {programme_content} "
-},
-{
-    "role": "user",
-    "content": f"Question 8 : How does the emphasis on applying skills in this program influence your decision to enroll? "
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on your resume {res_text} and {programme_content}, and {practical_learning} and {modules} "
-},
-
-{
-    "role": "user",
-    "content": "Provide concrete examples for Questions 1 to 8. For each question, generate 20 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
-},
-
-{"role": "user",
-"content":"For Questions 1 to 8 The responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
-{
-    "role": "user",
-    "content": " For Questions 1 to 8 The responses should be human-like and personal, using first-person language."
-},
-{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
-{
-    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
-}
-# {
-#     "role": "user",
-#     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
-# },
 
 
+async def generate_responses_germany(res_text,programme, university,cooperation_india_germany, germany):
 
-    
-    
- 
-    
-    ]
-        )
-
-        response_out = completion['choices'][0]['message']['content']
-        st.write(response_out)
-        return response_out
-    else:
-        completion = ai.ChatCompletion.create(
-        #model="gpt-3.5-turbo-16k", 
-        model = "gpt-4o-2024-05-13",
-        temperature=ai_temp,
-        messages = [
-
-    {
-    "role": "user",
-    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer from Question 1 to Question 8 :"
-},
-
-{
-    "role": "user",
-    "content": f"Question 1:  How does the size of the student body or the presence of an international student community at this university influence your decision to attend?  "
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on {international_students} "
-},
-{
-    "role": "user",
-    "content": f"Question 2:  How does the link between the programme {programme_content} and the course curriculum {modules} influence your decision to enroll?  "
-},
-{
-    "role": "user",
-    "content": f"Question 3: How does this program's potential for personal benefit influence your decision to pursue it?  "},
-{
-    "role": "user",
-    "content": f"Your response should be based on {personal_benefit} "
-},
-{
-    "role": "user",
-    "content": f"Question 4: How does the program's focus on professional growth influence your decision to enroll "},
-{
-    "role": "user",
-    "content": f"Your response should be based on {professional_growth} "
-},
-
-{
-    "role": "user",
-    "content": f"Question 5:  How does the emphasis on technical learning and skills in {programme_content} influence your decision to pursue it?  "
-},
-{
-    "role": "user",
-    "content": f"Question 6:  What is the driving motivation behind your choice of this particular program {programme} at {university} ? "},
-{
-    "role": "user",
-    "content": f"Your response should be based on {university_no_wikipedia} "
-},
-{
-    "role": "user",
-    "content": f"Question 7 : How does your personal experience or interest influence your decision to choose the programme {programme}"
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on your resume {res_text} and {programme_content} "
-},
-{
-    "role": "user",
-    "content": f"Question 8 : How does the emphasis on applying skills in this program influence your decision to enroll? "
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on your resume {res_text} and {programme_content}, and {practical_learning} and {modules} "
-},
-
-{
-    "role": "user",
-    "content": "Provide concrete examples for Questions 1 to 8. For each question, generate 20 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
-},
-
-{"role": "user",
-"content":"For Questions 1 to 8 The responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
-{
-    "role": "user",
-    "content": " For Questions 1 to 8 The responses should be human-like and personal, using first-person language."
-},
-{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
-{
-    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
-}
-# {
-#     "role": "user",
-#     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
-# },
-
-
-
-    
-    
- 
-    
-    ]
-        )
-
-        response_out = completion['choices'][0]['message']['content']
-        st.write(response_out)
-        return response_out
-
-
-async def generate_responses4(res_text,programme, university,cooperation_india_germany, germany):
-
-    cgpa_score = await retrieve_cgpa_score(res_text)
-    print("from the terminal 2 : ", cgpa_score)
-    
     
    # Get all local variables (including function arguments)
     arguments = locals()
@@ -1342,10 +919,7 @@ async def generate_responses4(res_text,programme, university,cooperation_india_g
             # Print the argument name and its content, with a limit on the content length for readability
             print(f"{arg_name}: {' '.join(str(arg_value).split()[:200])}")
     
-    
 
-    
-    if cgpa_score != 'unknown' and float(cgpa_score) >= 7: 
         completion = ai.ChatCompletion.create(
         #model="gpt-3.5-turbo-16k", 
         model = "gpt-4o-2024-05-13",
@@ -1408,135 +982,7 @@ async def generate_responses4(res_text,programme, university,cooperation_india_g
 
         response_out = completion['choices'][0]['message']['content']
         st.write(response_out)
-        return response_out
-    
-    
-    elif cgpa_score != 'unknown' and float(cgpa_score) < 7:
-        completion = ai.ChatCompletion.create(
-        #model="gpt-3.5-turbo-16k", 
-        model = "gpt-4o-2024-05-13",
-        temperature=ai_temp,
-        messages = [
-
-    {
-    "role": "user",
-    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer the following points:"
-},
-       {"role": "user", "content": f"""What factors make Germany an ideal study destination for you? Discuss the following points with relevant examples, for each point generate 10 lines minimum :
-        Point 1. Quality Education: Explain why Germany's high-quality education system is appealing to you. 
-        Point 2. Program Variety: Discuss how the variety of programs available in Germany aligns with your academic interests and goals.
-        Point 3. Economic Opportunities: Discuss how the opportunities available in Germany align with your career goals.
-        Point 4. Research Opportunities: Highlight the research opportunities in your field of study that attract you to Germany.
-        Point 5. Employment Opportunities: Discuss the employment opportunities available in Germany that align with your career goals.
-        Point 6. Mention examples of cooperation between India and Germany relevant to this programme.
-        Point 7. Cultural Experience: Describe how experiencing German culture and language will enrich your personal and academic growth.
-        Point 8. Financial Support: Explain how scholarships and financial support options in Germany will help alleviate your financial burden.
-        Point 9. Standard of Living: Discuss the high standard of living and quality of life that Germany offers to students.
-        Point 10.Location and Industry Links: Explain the strategic advantages of Germany's location and its strong ties to industries relevant to your field.
-        Point 11.Tuition Fees: Discuss the affordability of education in Germany due to its low tuition fees.
-        Point 12.Post-Graduation Opportunities: Highlight the post-graduation opportunities, including visa extensions, that make Germany a favorable choice for your future career prospects.
-        """},
-       {
-    "role": "user",
-    "content": f"Your responses should ONLY be based on {germany} and {cooperation_india_germany}"
-},
-
-{
-    "role": "user",
-    "content": "Provide concrete examples for the points 1 to 12. For each question, generate 10 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
-},
-
-{"role": "user",
-"content":"For the points 1 to 12, the responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
-{
-    "role": "user",
-    "content": " For the points 1 to 12, the responses should be human-like and personal, using first-person language."
-},
-{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
-{
-    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
-}
-# {
-#     "role": "user",
-#     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
-# },
-
-
-
-    
-    
- 
-    
-    ]
-        )
-
-        response_out = completion['choices'][0]['message']['content']
-        st.write(response_out)
-        return response_out
-    else:
-        completion = ai.ChatCompletion.create(
-        #model="gpt-3.5-turbo-16k", 
-        model = "gpt-4o-2024-05-13",
-        temperature=ai_temp,
-        messages = [
-
-    {
-    "role": "user",
-    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer the following points:"
-},
-       {"role": "user", "content": f"""What factors make Germany an ideal study destination for you? Discuss the following points with relevant examples, for each point generate 10 lines minimum : (Your responses should be based on {germany}):
-        Point 1. Quality Education: Explain why Germany's high-quality education system is appealing to you. 
-        Point 2. Program Variety: Discuss how the variety of programs available in Germany aligns with your academic interests and goals.
-        Point 3. Economic Opportunities: Discuss how the opportunities available in Germany align with your career goals.
-        Point 4. Research Opportunities: Highlight the research opportunities in your field of study that attract you to Germany.
-        Point 5. Employment Opportunities: Discuss the employment opportunities available in Germany that align with your career goals.
-        Point 6. Mention examples of cooperation between India and Germany relevant to this programme.
-        Point 7. Cultural Experience: Describe how experiencing German culture and language will enrich your personal and academic growth.
-        Point 8. Financial Support: Explain how scholarships and financial support options in Germany will help alleviate your financial burden.
-        Point 9. Standard of Living: Discuss the high standard of living and quality of life that Germany offers to students.
-        Point 10.Location and Industry Links: Explain the strategic advantages of Germany's location and its strong ties to industries relevant to your field.
-        Point 11.Tuition Fees: Discuss the affordability of education in Germany due to its low tuition fees.
-        Point 12.Post-Graduation Opportunities: Highlight the post-graduation opportunities, including visa extensions, that make Germany a favorable choice for your future career prospects.
-        """},
-       {
-    "role": "user",
-    "content": f"Your responses should ONLY be based on {germany} and {cooperation_india_germany}"
-},
-
-{
-    "role": "user",
-    "content": "Provide concrete examples for the points 1 to 12. For each question, generate 10 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
-},
-
-{"role": "user",
-"content":"For the points 1 to 12, the responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
-{
-    "role": "user",
-    "content": " For the points 1 to 12, the responses should be human-like and personal, using first-person language."
-},
-{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
-{
-    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
-}
-# {
-#     "role": "user",
-#     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
-# },
-
-
-
-    
-    
- 
-    
-    ]
-        )
-
-        response_out = completion['choices'][0]['message']['content']
-        st.write(response_out)
-        return response_out
-     
-     
+        return response_out 
     
        
 def create_word_document(phrase, font_name, font_size):
@@ -1794,22 +1240,22 @@ if submitted:
     
     
         # Run the response generation functions asynchronously
-        response2 = asyncio.create_task(generate_responses(
-            res_text, programme, university,
+        response2 = asyncio.create_task(generate_responses_university(
+            res_text, programme, university, international_students,
             university_description_wikipedia, facilities,
             research_institutes, ranking, location, culture,
             professors, practical_learning, fee_structure
         ))
         
-        response22 = asyncio.create_task(generate_responses2(
+        response22 = asyncio.create_task(generate_responses_programme(
              res_text, programme, university,
-            programme_content, university_no_wikipedia, international_students, modules,
+            programme_content, university_no_wikipedia, modules,
             practical_learning, personal_benefit,
             professional_growth
         ))
         
         
-        response4 = asyncio.create_task(generate_responses4(
+        response4 = asyncio.create_task(generate_responses_germany(
              res_text, programme, university,
             cooperation_india_germany, germany
         ))
