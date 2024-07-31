@@ -989,7 +989,7 @@ standard_living_germany, location_industries_germany, tuition_fees_germany, post
         #& Include only the area : 
         {"role": "user", "content": f" Question 2 : Program Variety:  How can {programme_variety_germany} offers the variety of programs available in Germany that aligns with your academic interests and goals in {programme}"},
         #& same here : 
-        {"role": "user", "content": f" Question 3 : Economic Opportunities:  Based on {economic_opportunities_germany}, Discuss how the opportunities available in Germany align with your career goals in {programme}."},
+        {"role": "user", "content": f" Question 3 : Economic Opportunities:  How can {economic_opportunities_germany}, Discuss how the opportunities available in Germany align with your career goals in {programme}."},
        
         {"role": "user", "content":  f" Question 4 : Research Opportunities:  Based on {research_opportunities_germany}, Highlight the research opportunities in your field of study that attract you to Germany."},
         # {"role": "user", "content":  f"Question 5 : Employment Opportunities:  Based on {employment_opportunities_germany}, Discuss the employment opportunities available in Germany that align with your career goals."},
