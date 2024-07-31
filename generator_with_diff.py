@@ -390,6 +390,50 @@ async def extract3urls_orderofresults(query):
                 return None, None, None
 
 
+async def extract_1_url_from_urls(query):
+    url = f'https://www.google.com/search?q={requests.utils.quote(query)}'
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    }
+
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url, headers=headers) as response:
+            if response.status == 200:
+                html = await response.text()
+                soup = BeautifulSoup(html, 'html.parser')
+
+                # Find the first search result links
+                links = []
+                results = soup.find_all('div', {'class': 'yuRUbf'})
+                for result in results[:5]:
+                    link = result.find('a')['href']
+                    links.append(link)
+                    print(link)
+                
+                if len(links) >= 5:
+                    # Slice the first 10 elements
+                    sliced_links = links[:5]
+                    
+                    # Get 3 unique random indices within the range of 0 to 4
+                 
+                    random_index = random.randint(0, 4)
+                    
+                    # Retrieve the links at the random indices
+                    chosen_link = sliced_links[random_index]
+                
+                    
+                    print('First link:', chosen_link)
+                    
+                    return chosen_link
+                else:
+                    return None
+            else:
+                print("Failed to retrieve the website content.")
+                return None
+            
+            
+            
 # Function to retrieve all fragment links
 def get_fragment_links(base_url):
     response = requests.get(base_url)
@@ -525,7 +569,7 @@ async def save_scraped_data(data):
         pickle.dump(data, file)
 
 
-async def extract_urls1(query):
+async def extract_first_url_1(query):
     url = f'https://www.google.com/search?q={requests.utils.quote(query)}'
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
@@ -590,7 +634,7 @@ async def get_url_content(url):
         return None
 
 async def return_data1(query):
-    url1 = await extract_urls1(query)
+    url1 = await extract_first_url_1(query)
     if url1:
         content = await get_url_content(url1)
         return content
@@ -598,7 +642,14 @@ async def return_data1(query):
         print("Nothing found for url1")
         return None
 
-
+async def return_data1_see(query):
+    url1 = await extract_1_url_from_urls(query)
+    if url1:
+        content = await get_url_content(url1)
+        return content
+    else:
+        print("Nothing found for url1")
+        return None
 
 
 
@@ -908,7 +959,9 @@ async def generate_responses_programme(res_text,programme, university, programme
         return response_out
 
 
-async def generate_responses_germany(res_text,programme, university,cooperation_india_germany, germany):
+async def generate_responses_germany(  res_text, programme, university, cooperation_india_germany, quality_education_germany, 
+programme_variety_germany, research_opportunities_germany, cultural_experiences_germany, financial_support_germany,
+standard_living_germany, location_industries_germany, tuition_fees_germany, postgraduation_opportunities_germany, economic_opportunities_germany):
 
     
    # Get all local variables (including function arguments)
@@ -926,59 +979,49 @@ async def generate_responses_germany(res_text,programme, university,cooperation_
         temperature=ai_temp,
         messages = [
 
+        {
+        "role": "user",
+        "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany."
+    },
+        
+        {"role": "user", "content": f"What factors make Germany an ideal study destination for you? Discuss the following 11 questions with relevant examples, for each question generate 10 lines minimum"},
+        {"role": "user", "content": f" Question 1 : Quality Education: How can {quality_education_germany} explain why Germany's high-quality education system is appealing to you."},
+        #& Include only the area : 
+        {"role": "user", "content": f" Question 2 : Program Variety:  How can {programme_variety_germany} offers the variety of programs available in Germany that aligns with your academic interests and goals in {programme}"},
+        #& same here : 
+        {"role": "user", "content": f" Question 3 : Economic Opportunities:  Based on {economic_opportunities_germany}, Discuss how the opportunities available in Germany align with your career goals in {programme}."},
+       
+        {"role": "user", "content":  f" Question 4 : Research Opportunities:  Based on {research_opportunities_germany}, Highlight the research opportunities in your field of study that attract you to Germany."},
+        # {"role": "user", "content":  f"Question 5 : Employment Opportunities:  Based on {employment_opportunities_germany}, Discuss the employment opportunities available in Germany that align with your career goals."},
+        {"role": "user", "content": f"Question 5 :  Based on {cooperation_india_germany}, Mention examples of cooperation between India and Germany relevant to this programme."},
+        {"role": "user", "content":  f" Question 6 :  Based on {cultural_experiences_germany}, Cultural Experience: Describe how experiencing German culture and language will enrich your personal and academic growth."},
+        { "role": "user", "content":  f"Question 7 : Financial Support:  Based on {financial_support_germany}, Explain how scholarships and financial support options in Germany will help alleviate your financial burden."},
+        {"role": "user", "content":   f"Question 8 : Standard of Living:  Based on {standard_living_germany}, Discuss the high standard of living and quality of life that Germany offers to students."},
+        {"role": "user", "content": f"Question 9 : Location and Industry Links:  Based on {location_industries_germany}, Explain the strategic advantages of Germany's location and its strong ties to industries relevant to your field."},
+        {"role": "user", "content":  f"Question 10 : Tuition Fees:  Based on {tuition_fees_germany}, Discuss the affordability of education in Germany due to its low tuition fees."},
+            {"role": "user", "content": f" Question 11 : Post-Graduation Opportunities:  Based on {postgraduation_opportunities_germany}, Highlight the post-graduation opportunities, including visa extensions, that make Germany a favorable choice for your future career prospects."},
+
+
     {
-    "role": "user",
-    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer the following points:"
-},
-       {"role": "user", "content": f"""What factors make Germany an ideal study destination for you? Discuss the following points with relevant examples, for each point generate 10 lines minimum : (Your responses should be based on {germany}):
-        Point 1. Quality Education: Explain why Germany's high-quality education system is appealing to you. 
-        Point 2. Program Variety: Discuss how the variety of programs available in Germany aligns with your academic interests and goals.
-        Point 3. Economic Opportunities: Discuss how the opportunities available in Germany align with your career goals.
-        Point 4. Research Opportunities: Highlight the research opportunities in your field of study that attract you to Germany.
-        Point 5. Employment Opportunities: Discuss the employment opportunities available in Germany that align with your career goals.
-        Point 6. Mention examples of cooperation between India and Germany relevant to this programme.
-        Point 7. Cultural Experience: Describe how experiencing German culture and language will enrich your personal and academic growth.
-        Point 8. Financial Support: Explain how scholarships and financial support options in Germany will help alleviate your financial burden.
-        Point 9. Standard of Living: Discuss the high standard of living and quality of life that Germany offers to students.
-        Point 10.Location and Industry Links: Explain the strategic advantages of Germany's location and its strong ties to industries relevant to your field.
-        Point 11.Tuition Fees: Discuss the affordability of education in Germany due to its low tuition fees.
-        Point 12.Post-Graduation Opportunities: Highlight the post-graduation opportunities, including visa extensions, that make Germany a favorable choice for your future career prospects.
-        """},
-       {
-    "role": "user",
-    "content": f"Your responses should ONLY be based on {germany} and {cooperation_india_germany}"
-},
+        "role": "user",
+        "content": "Provide concrete examples for the questions 1 to 11. For each question, generate 10 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
+    },
 
-{
-    "role": "user",
-    "content": "Provide concrete examples for the questions 1 to 12. For each question, generate 10 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
-},
+    {"role": "user",
+    "content":"For the questions 1 to 11, the responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
 
-{"role": "user",
-"content":"For the questions 1 to 12, the responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
-{
-    "role": "user",
-    "content": " For the questions 1 to 12, the responses should be human-like and personal, using first-person language."
-},
-{"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
-{
-    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
-}
-# {
-#     "role": "user",
-#     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
-# },
-
-
-
-    
-    
- 
-    
-    ]
-
-
-        )
+    {
+        "role": "user",
+        "content": " For the questions 1 to 11, the responses should be human-like and personal, using first-person language."},
+    {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
+    {
+        "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
+    }
+    # {
+    #     "role": "user",
+    #     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
+    # },
+    ] )
 
         response_out = completion['choices'][0]['message']['content']
         st.write(response_out)
@@ -1179,6 +1222,8 @@ if submitted:
         response_sop = asyncio.create_task(generate_sop4( generate_random_templates('templates4'), res_text,programme,university))
 
         # Define asynchronous tasks for return_data functions
+        
+        #! Tasks for University :
         facilities_task = asyncio.create_task(return_data3(f"How do the facilities provided by {university} influence your decision to attend?"))
         research_institutes_task = asyncio.create_task(return_data3_orderofresults(f"How do the research projects or research centers at {university} influence your decision to attend?"))
         university_description_wikipedia_task = asyncio.create_task(return_data1(f"{university} Wikipedia Deutch"))
@@ -1186,19 +1231,30 @@ if submitted:
         ranking_task = asyncio.create_task(return_data1(f"ranking {university} "))
         location_task = asyncio.create_task(return_data1(f"How does the location of {university} offer something particular and better for students compared to other universities"))
         fee_structure_task = asyncio.create_task(return_data1(f"{university} fee structure")) # here it was return_data3
-        
-        programme_content_task = asyncio.create_task(return_data1(research))
-        
-        cooperation_india_germany_task = asyncio.create_task(return_data3(f"bilateral cooperation between india and germany, {programme}"))
-        germany_task = asyncio.create_task(return_data3("What factors make Germany an ideal study destination for you?"))
-        culture_task = asyncio.create_task(return_data3(f"How does the diverse culture at {university} influence your decision to attend?"))
-        practical_learning_task = asyncio.create_task(return_data3(f"How do you believe the emphasis of {university} on practical learning will enhance your academic and professional goals?"))
-        
-        professional_growth_task = asyncio.create_task(return_data3(f"{programme} professional growth"))
-        personal_benefit_task = asyncio.create_task(return_data3(f"Why study {programme} in Germany"))
         international_students_task = asyncio.create_task(return_data3(f"How many international students are at {university}"))
-        modules_task = asyncio.create_task(return_data3_orderofresults(f"{programme}, {university}, modules"))
+        culture_task = asyncio.create_task(return_data3(f"How does the diverse culture at {university} influence your decision to attend?"))
+        
+        #* Tasks for the programme : programme_content,  university_no_wikipedia , modules, practical_learning, personal_benefit, professional_growth
+        programme_content_task = asyncio.create_task(return_data1(research))
         university_no_wikipedia_task = asyncio.create_task(return_data3_orderofresults(f"{university}"))
+        modules_task = asyncio.create_task(return_data3_orderofresults(f"{programme}, {university}, modules"))
+        practical_learning_task = asyncio.create_task(return_data3(f"How do you believe the emphasis of {university} on practical learning will enhance your academic and professional goals?"))
+        personal_benefit_task = asyncio.create_task(return_data3(f"Why study {programme} in Germany"))
+        professional_growth_task = asyncio.create_task(return_data3(f"{programme} professional growth"))
+        
+        #& Tasks for Germany (retake return_data1 function)
+        cooperation_india_germany_task = asyncio.create_task(return_data1_see(f"bilateral cooperation between india and germany, {programme}"))
+        quality_education_germany_task = asyncio.create_task(return_data1_see(f"why Germany's high-quality education system is appealing to Indian students"))
+        programme_variety_germany_task = asyncio.create_task(return_data1_see(f"Is Germany good for {programme}"))
+        research_opportunities_germany_task = asyncio.create_task(return_data1_see(f"Research Opportunities: Highlight the research opportunities in {programme} that attract you to Germany."))
+        cultural_experiences_germany_task = asyncio.create_task(return_data1_see(f"Describe how experiencing German culture and language will enrich your personal and academic growth."))
+        financial_support_germany_task = asyncio.create_task(return_data1_see(f"Explain how scholarships and financial support options in Germany will help alleviate your financial burden"))
+        standard_living_germany_task = asyncio.create_task(return_data1_see(f"Discuss the high standard of living and quality of life that Germany offers to Indian students."))
+        location_industries_germany_task = asyncio.create_task(return_data1_see(f"Explain the strategic advantages of Germany's location and its strong ties to industries relevant to {programme}"))
+        tuition_fees_germany_task = asyncio.create_task(return_data1_see(f" Discuss the affordability of education in Germany due to its low tuition fees for Indian students."))
+        postgraduation_opportunities_germany_task = asyncio.create_task(return_data1_see(f" Highlight the post-graduation opportunities, including visa extensions, that make Germany a favorable choice for your future career prospects in {programme} as an Indian student"))
+        economic_opportunities_germany_task = asyncio.create_task(return_data1_see(f"Article about Job Opportunities available in Germany for careers in {programme}"))
+
 
     #     #^ Wait for all return_data tasks to complete
        
@@ -1210,28 +1266,30 @@ if submitted:
         (university_description_wikipedia, professors, cooperation_india_germany) = await asyncio.gather(university_description_wikipedia_task, professors_task,  cooperation_india_germany_task)
         
         await asyncio.sleep(2)
-        
-        (ranking, location, cooperation_india_germany) = await asyncio.gather(ranking_task, location_task, cooperation_india_germany_task)
+         
+        (ranking, location, fee_structure, programme_content, quality_education_germany ) = await asyncio.gather(ranking_task, location_task, fee_structure_task, programme_content_task, quality_education_germany_task)
         
         await asyncio.sleep(2)
         
-        (professors, germany) = await asyncio.gather(professors_task, germany_task)
+        ( international_students , modules ) = await asyncio.gather( international_students_task, modules_task)
 
         await asyncio.sleep(2)
         
-        (fee_structure, programme_content, culture ) = await asyncio.gather( fee_structure_task,  programme_content_task,
-            culture_task, )
+        (culture, practical_learning ) = await asyncio.gather( culture_task, practical_learning_task)
         
         await asyncio.sleep(2)
-        ( practical_learning, international_students) = await asyncio.gather( practical_learning_task,
-            international_students_task)
+        (  university_no_wikipedia , personal_benefit ) = await asyncio.gather(  university_no_wikipedia_task, personal_benefit_task  )
         
         await asyncio.sleep(2)
-        ( modules, university_no_wikipedia) = await asyncio.gather( modules_task, university_no_wikipedia_task)
+        
+        ( professional_growth, programme_variety_germany, research_opportunities_germany ) = await asyncio.gather(professional_growth_task , programme_variety_germany_task, research_opportunities_germany_task  )
         
         await asyncio.sleep(2)
-         
-        (  personal_benefit, professional_growth ) = await asyncio.gather(personal_benefit_task, professional_growth_task)
+        
+        ( cultural_experiences_germany, financial_support_germany, standard_living_germany, location_industries_germany, tuition_fees_germany  ) = await asyncio.gather(  cultural_experiences_germany_task, financial_support_germany_task, standard_living_germany_task,  location_industries_germany_task,   tuition_fees_germany_task )
+        await asyncio.sleep(2)
+        
+        ( postgraduation_opportunities_germany , economic_opportunities_germany  ) = await asyncio.gather( postgraduation_opportunities_germany_task,  economic_opportunities_germany_task)
         
         
 
@@ -1240,14 +1298,14 @@ if submitted:
     
     
         # Run the response generation functions asynchronously
-        response2 = asyncio.create_task(generate_responses_university(
+        response1 = asyncio.create_task(generate_responses_university(
             res_text, programme, university, international_students,
             university_description_wikipedia, facilities,
             research_institutes, ranking, location, culture,
             professors, practical_learning, fee_structure
         ))
         
-        response22 = asyncio.create_task(generate_responses_programme(
+        response2 = asyncio.create_task(generate_responses_programme(
              res_text, programme, university,
             programme_content, university_no_wikipedia, modules,
             practical_learning, personal_benefit,
@@ -1255,13 +1313,16 @@ if submitted:
         ))
         
         
-        response4 = asyncio.create_task(generate_responses_germany(
-             res_text, programme, university,
-            cooperation_india_germany, germany
+        response3 = asyncio.create_task(generate_responses_germany(
+             res_text, programme, university, cooperation_india_germany, quality_education_germany, programme_variety_germany,
+             research_opportunities_germany, cultural_experiences_germany, financial_support_germany, standard_living_germany,
+             location_industries_germany,
+             tuition_fees_germany, postgraduation_opportunities_germany, economic_opportunities_germany
+             
         ))
 
         # Wait for all response generation tasks to complete
-        responses = await asyncio.gather(response_sop, response2, response22, response4)
+        responses = await asyncio.gather(response_sop, response1, response2, response3)
         response_final = responses 
         # Combine responses
         response = ''.join(response_final) 
