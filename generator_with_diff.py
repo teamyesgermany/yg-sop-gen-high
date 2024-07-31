@@ -36,6 +36,7 @@ async def generate_sop4(template_text, res_text,programme,university):
     
     
     cgpa_score = await retrieve_cgpa_score(res_text)
+    
     print("from the terminal : ", cgpa_score)
     
     if cgpa_score != 'unknown' and float(cgpa_score) >= 7: 
@@ -44,34 +45,43 @@ async def generate_sop4(template_text, res_text,programme,university):
         model = "gpt-4o-2024-05-13",
         temperature=ai_temp,
         messages=[
-            {"role": "user", "content": "Generate a statement of purpose based on the provided details, following a specific structure and style."},
+             {"role": "user", "content": "Generate a statement of purpose (SOP) based on the provided details, following a specific structure and style."},
+
             {"role": "user", "content": f"Template for guidance: {template_text}. You should reproduce the exact same structure"},
-            {"role": "user", "content": f"Resume information: {res_text}"},
+            {"role": "user", "content": f"Here is the resume {res_text} from which you have to take information about the student and please make sure that you do not add things from your own and stick to this {res_text} througout the sop"},
+            {"role": "user" , "content": f"Another important that you should keep in mind while making the sop is that the sop is a letter of motivation to study in this {university} , so you have to generate the sop which should contian strong motivational points for choosing {programme}"},
             {"role": "user", "content": f"Study programme name: {programme}"},
             {"role": "user", "content": f"University name: {university}"},
-            {"role": "user", "content": f"based on the provided details, following the specific structure and style given by the template {template_text}. You should reproduce the exact same structure of statement of purpose"},
-            {"role": "user", "content": "The template is likely to contain an Introduction's paragraph, Academic and experience paragraph, Programme and motivation paragraph, University paragraph, future career paragraph."},
-            {"role": "user", "content": "You must keep the same order of paragraphs from the template. The following instructions are just here so you can treat individually each paragraph :"},
-            {"role": "user", "content": f" for the Introduction's paragraph, you must start with a catching phrase that shows how important is studying the programme {programme} you apply for. Then, you must mention your name, background, and programme and university you are applying and also mention the reason why to choose this programme. And retrieve all introductory elements from {template_text}"},
-            {"role": "user", "content": """the Academic and experience Paragraph: Discuss the candidate's academic and professional background :
+
+            {"role": "user", "content": f" For the Introduction's paragraph, you must be using content from the {res_text} and follow the same structure and catchy words from from the introduction paragraph of this template {template_text}"},
+
+
+            {"role": "user", "content": f"""Fot the Academic and experience Paragraph too you will be using content from the {res_text}: Discuss the candidate's academic and professional background :
             IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
+            Mention all his acadamic education scores from the {res_text}
+             Mention all the acadamic education scores as they are prensent in {res_text}
             Mention ALL his work experiences and the different roles and responsibilities he held
-            Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-            Mention all his certificates.
-            Mention his overall IELTS score
+            Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list.
+            You will be mentioning things like his certificates and Ilets score if they are present in the {res_text}
             """},
-            {"role": "user", "content": f"""For the paragraph about the programme and the motivation behind your decision to study it,  you must :
+
+
+            {"role": "user", "content": f""" For the paragraph about the programme use strong motivational points for choosing {programme}, 
                 Show a STRONG motivation by evoking a storytelling from your past that led you want to study this programme.
+                If the past education of yours is related to the programme you are applying then you can consider them adding in this paragraph too
                 You have to choose MINIMUM two out of these points :
                 Story from a family experience
                 Story from a social phenomenon and you want to bring solutions
                 Story from previous internship
                 Story from the studied modules in your Academic cursus
                 Story from one of your extra-curricular activites
+                You will also be adding What are the benifits you will be getting from this {programme} and the {university} 
                 You must also select some modules proposed by the programme and describe their contents, then explain why you are HIGHLY motivated to study them.
+                Add learning outcomes form the curriculum of this {university} and these learning will be divided into two parts which are tecnical learning and interpersonal learning
                 Explain Why this programme can help you build your career and prepare you for your future too 
-                
             """},
+
+
             {"role": "user", "content": f""" For the paragraph about the University, you should retrieve the following data :
                                                             Exact ranking of the University and the source of ranking
                                                             Number of students
@@ -79,40 +89,27 @@ async def generate_sop4(template_text, res_text,programme,university):
                                                             Precise you have relatives and friends there
                                                             Names of Research centers and renowned Professors linked to the programme
             You should use ALL these data and invent for each one an element of motivation make you want to integrate the University
-                
             In this paragraph you should also mention why you want to study in the city of the University , mention :  Some cool spots in the city you would like to see
                                                                                                                         names of companies in the city that accept people from {programme} to work in       
             """},
+
             {"role": "user", "content": f"""For the paragraph which is about your future career perspectives and aspirations post-study, you should mention how the programme of {programme}
              will give you the opportunity to work in the futur job you want to do. You should mention names of professional positions linked to the programme you want to work in.
              You can also add that you aim to work in Germany"""},
+
+
             {"role": "user", "content": "Last Paragraph: A brief conclusion summarizing why you are the ideal applicant and show again your interest."},
             {"role": "user", "content": """For the paragraph about Germany, you must mention the following points :
             Point 1. Explain why you chose to apply in Germany
             Point 2. Your Intention to stay in Germany because the field education comparative is far better to others destinations
             Point 3. Talk about the Good exposure, diversity and German culture 
             """},
+
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+
             {"role": "user", "content": "Finish with a closing line with consideration of this statement of purpose and add your name signature bellow"},
-            {"role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-
-                        { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
-
-            
-            
-            
-            
-            
-            
-            
             {"role": "user", "content": f"Be sure to replace the correct information from {res_text} including the name."},
             {"role": "user", "content": "Please ensure each paragraph transitions smoothly into the next, maintaining a logical flow throughout the document."},
             {"role": "user", "content": "The statement of purpose should consist of seven paragraphs, totaling a minimum of 500 words, using simple language that appears human-written."},
@@ -120,7 +117,6 @@ async def generate_sop4(template_text, res_text,programme,university):
 
         ]
 
-        
         )
 
         response_out = completion['choices'][0]['message']['content']
@@ -134,34 +130,43 @@ async def generate_sop4(template_text, res_text,programme,university):
         model = "gpt-4o-2024-05-13",
         temperature=ai_temp,
         messages=[
-            {"role": "user", "content": "Generate a statement of purpose based on the provided details, following a specific structure and style."},
+           {"role": "user", "content": "Generate a statement of purpose (SOP) based on the provided details, following a specific structure and style."},
+
             {"role": "user", "content": f"Template for guidance: {template_text}. You should reproduce the exact same structure"},
-            {"role": "user", "content": f"Resume information: {res_text}"},
+            {"role": "user", "content": f"Here is the resume {res_text} from which you have to take information about the student and please make sure that you do not add things from your own and stick to this {res_text} througout the sop"},
+            {"role": "user" , "content": f"Another important that you should keep in mind while making the sop is that the sop is a letter of motivation to study in this {university} , so you have to generate the sop which should contian strong motivational points for choosing {programme}"},
             {"role": "user", "content": f"Study programme name: {programme}"},
             {"role": "user", "content": f"University name: {university}"},
-            {"role": "user", "content": f"based on the provided details, following the specific structure and style given by the template {template_text}. You should reproduce the exact same structure of statement of purpose"},
-            {"role": "user", "content": "The template is likely to contain an Introduction's paragraph, Academic and experience paragraph, Programme and motivation paragraph, University paragraph, future career paragraph."},
-            {"role": "user", "content": "You must keep the same order of paragraphs from the template. The following instructions are just here so you can treat individually each paragraph :"},
-            {"role": "user", "content": f" for the Introduction's paragraph, you must start with a catching phrase that shows how important is studying the programme {programme} you apply for. Then, you must mention your name, background, and programme and university you are applying and also mention the reason why to choose this programme. And retrieve all introductory elements from {template_text}"},
-            {"role": "user", "content": """the Academic and experience Paragraph: Discuss the candidate's academic and professional background :
-            IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Please DON'T mention his CGPA score.
+
+            {"role": "user", "content": f" For the Introduction's paragraph, you must be using content from the {res_text} and follow the same structure and catchy words from from the introduction paragraph of this template {template_text}"},
+
+
+            {"role": "user", "content": f"""Fot the Academic and experience Paragraph too you will be using content from the {res_text}: Discuss the candidate's academic and professional background :
+            IF CGPA score is less than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
+             Mention all his acadamic education scores from the {res_text}
+             Mention all the acadamic education scores as they are prensent in {res_text}        
             Mention ALL his work experiences and the different roles and responsibilities he held
-            Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-            Mention all his certificates.
-            Mention his overall IELTS score
+            Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list.
+            You will be mentioning things like his certificates and Ilets score if they are present in the {res_text}
             """},
-            {"role": "user", "content": f"""For the paragraph about the programme and the motivation behind your decision to study it,  you must :
+
+
+            {"role": "user", "content": f""" For the paragraph about the programme use strong motivational points for choosing {programme}, 
                 Show a STRONG motivation by evoking a storytelling from your past that led you want to study this programme.
+                If the past education of yours is related to the programme you are applying then you can consider them adding in this paragraph too
                 You have to choose MINIMUM two out of these points :
                 Story from a family experience
                 Story from a social phenomenon and you want to bring solutions
                 Story from previous internship
                 Story from the studied modules in your Academic cursus
                 Story from one of your extra-curricular activites
+                You will also be adding What are the benifits you will be getting from this {programme} and the {university} 
                 You must also select some modules proposed by the programme and describe their contents, then explain why you are HIGHLY motivated to study them.
+                Add learning outcomes form the curriculum of this {university} and these learning will be divided into two parts which are tecnical learning and interpersonal learning
                 Explain Why this programme can help you build your career and prepare you for your future too 
-                
             """},
+
+
             {"role": "user", "content": f""" For the paragraph about the University, you should retrieve the following data :
                                                             Exact ranking of the University and the source of ranking
                                                             Number of students
@@ -169,26 +174,32 @@ async def generate_sop4(template_text, res_text,programme,university):
                                                             Precise you have relatives and friends there
                                                             Names of Research centers and renowned Professors linked to the programme
             You should use ALL these data and invent for each one an element of motivation make you want to integrate the University
-                
             In this paragraph you should also mention why you want to study in the city of the University , mention :  Some cool spots in the city you would like to see
                                                                                                                         names of companies in the city that accept people from {programme} to work in       
             """},
+
             {"role": "user", "content": f"""For the paragraph which is about your future career perspectives and aspirations post-study, you should mention how the programme of {programme}
              will give you the opportunity to work in the futur job you want to do. You should mention names of professional positions linked to the programme you want to work in.
              You can also add that you aim to work in Germany"""},
+
+
             {"role": "user", "content": "Last Paragraph: A brief conclusion summarizing why you are the ideal applicant and show again your interest."},
             {"role": "user", "content": """For the paragraph about Germany, you must mention the following points :
             Point 1. Explain why you chose to apply in Germany
             Point 2. Your Intention to stay in Germany because the field education comparative is far better to others destinations
             Point 3. Talk about the Good exposure, diversity and German culture 
             """},
+
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+
             {"role": "user", "content": "Finish with a closing line with consideration of this statement of purpose and add your name signature bellow"},
-            {
-                "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
             {"role": "user", "content": f"Be sure to replace the correct information from {res_text} including the name."},
             {"role": "user", "content": "Please ensure each paragraph transitions smoothly into the next, maintaining a logical flow throughout the document."},
             {"role": "user", "content": "The statement of purpose should consist of seven paragraphs, totaling a minimum of 500 words, using simple language that appears human-written."},
             {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
+
 
         ]
         )
@@ -202,34 +213,43 @@ async def generate_sop4(template_text, res_text,programme,university):
         model = "gpt-4o-2024-05-13",
         temperature=ai_temp,
         messages=[
-            {"role": "user", "content": "Generate a statement of purpose based on the provided details, following a specific structure and style."},
+                       {"role": "user", "content": "Generate a statement of purpose (SOP) based on the provided details, following a specific structure and style."},
+
             {"role": "user", "content": f"Template for guidance: {template_text}. You should reproduce the exact same structure"},
-            {"role": "user", "content": f"Resume information: {res_text}"},
+            {"role": "user", "content": f"Here is the resume {res_text} from which you have to take information about the student and please make sure that you do not add things from your own and stick to this {res_text} througout the sop"},
+            {"role": "user" , "content": f"Another important that you should keep in mind while making the sop is that the sop is a letter of motivation to study in this {university} , so you have to generate the sop which should contian strong motivational points for choosing {programme}"},
             {"role": "user", "content": f"Study programme name: {programme}"},
             {"role": "user", "content": f"University name: {university}"},
-            {"role": "user", "content": f"based on the provided details, following the specific structure and style given by the template {template_text}. You should reproduce the exact same structure of statement of purpose"},
-            {"role": "user", "content": "The template is likely to contain an Introduction's paragraph, Academic and experience paragraph, Programme and motivation paragraph, University paragraph, future career paragraph."},
-            {"role": "user", "content": "You must keep the same order of paragraphs from the template. The following instructions are just here so you can treat individually each paragraph :"},
-            {"role": "user", "content": f" for the Introduction's paragraph, you must start with a catching phrase that shows how important is studying the programme {programme} you apply for. Then, you must mention your name, background, and programme and university you are applying and also mention the reason why to choose this programme. And retrieve all introductory elements from {template_text}"},
-            {"role": "user", "content": """the Academic and experience Paragraph: Discuss the candidate's academic and professional background :
+
+            {"role": "user", "content": f" For the Introduction's paragraph, you must be using content from the {res_text} and follow the same structure and catchy words from from the introduction paragraph of this template {template_text}"},
+
+
+            {"role": "user", "content": f"""Fot the Academic and experience Paragraph too you will be using content from the {res_text}: Discuss the candidate's academic and professional background :
             IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
+             Mention all his acadamic education scores from the {res_text}
+             Mention all the acadamic education scores as they are prensent in {res_text}
             Mention ALL his work experiences and the different roles and responsibilities he held
-            Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list
-            Mention all his certificates.
-            Mention his overall IELTS score
+            Retrieve ALL extra curricular activites and workshops he has attended and list them like a bulleted list.
+            You will be mentioning things like his certificates and Ilets score if they are present in the {res_text}
             """},
-            {"role": "user", "content": f"""For the paragraph about the programme and the motivation behind your decision to study it,  you must :
+
+
+            {"role": "user", "content": f""" For the paragraph about the programme use strong motivational points for choosing {programme}, 
                 Show a STRONG motivation by evoking a storytelling from your past that led you want to study this programme.
+                If the past education of yours is related to the programme you are applying then you can consider them adding in this paragraph too
                 You have to choose MINIMUM two out of these points :
                 Story from a family experience
                 Story from a social phenomenon and you want to bring solutions
                 Story from previous internship
                 Story from the studied modules in your Academic cursus
                 Story from one of your extra-curricular activites
+                You will also be adding What are the benifits you will be getting from this {programme} and the {university} 
                 You must also select some modules proposed by the programme and describe their contents, then explain why you are HIGHLY motivated to study them.
+                Add learning outcomes form the curriculum of this {university} and these learning will be divided into two parts which are tecnical learning and interpersonal learning
                 Explain Why this programme can help you build your career and prepare you for your future too 
-                
             """},
+
+
             {"role": "user", "content": f""" For the paragraph about the University, you should retrieve the following data :
                                                             Exact ranking of the University and the source of ranking
                                                             Number of students
@@ -237,22 +257,27 @@ async def generate_sop4(template_text, res_text,programme,university):
                                                             Precise you have relatives and friends there
                                                             Names of Research centers and renowned Professors linked to the programme
             You should use ALL these data and invent for each one an element of motivation make you want to integrate the University
-                
             In this paragraph you should also mention why you want to study in the city of the University , mention :  Some cool spots in the city you would like to see
                                                                                                                         names of companies in the city that accept people from {programme} to work in       
             """},
+
             {"role": "user", "content": f"""For the paragraph which is about your future career perspectives and aspirations post-study, you should mention how the programme of {programme}
              will give you the opportunity to work in the futur job you want to do. You should mention names of professional positions linked to the programme you want to work in.
              You can also add that you aim to work in Germany"""},
+
+
             {"role": "user", "content": "Last Paragraph: A brief conclusion summarizing why you are the ideal applicant and show again your interest."},
             {"role": "user", "content": """For the paragraph about Germany, you must mention the following points :
             Point 1. Explain why you chose to apply in Germany
             Point 2. Your Intention to stay in Germany because the field education comparative is far better to others destinations
             Point 3. Talk about the Good exposure, diversity and German culture 
             """},
+
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+            { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
+
             {"role": "user", "content": "Finish with a closing line with consideration of this statement of purpose and add your name signature bellow"},
-            {
-                "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
             {"role": "user", "content": f"Be sure to replace the correct information from {res_text} including the name."},
             {"role": "user", "content": "Please ensure each paragraph transitions smoothly into the next, maintaining a logical flow throughout the document."},
             {"role": "user", "content": "The statement of purpose should consist of seven paragraphs, totaling a minimum of 500 words, using simple language that appears human-written."},
@@ -1765,7 +1790,7 @@ if submitted:
         
         await asyncio.sleep(2)
         
-        (ranking, location, cooperation_india_germany) = await asyncio.gather(ranking_task, location_task, cooperation_india_germany_task)
+        (ranking, location) = await asyncio.gather(ranking_task, location_task)
         
         await asyncio.sleep(2)
         
