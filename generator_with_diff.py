@@ -17,6 +17,13 @@ import aiohttp
 import requests
 from bs4 import BeautifulSoup
 
+import sys
+# import logging
+
+# # Configure the logging
+# logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+
+
 # Your Diffbot API token
 DIFFBOT_API_TOKEN = 'fe55e6257d2143b2ad59ba2cc83e3379'
 DIFFBOT_API_URL = 'https://api.diffbot.com/v3/article'
@@ -32,7 +39,7 @@ nlp = spacy.blank("en")  # Create a blank English model
 #^ Load the SpaCy English model
 nlp_e = spacy.load("en_core_web_sm")
 
-async def generate_sop4(template_text, res_text,programme,university):
+async def generate_sop4(template_text, res_text,programme,university, university_response, programme_response, germany_response):
     
     
     cgpa_score = await retrieve_cgpa_score(res_text)
@@ -66,7 +73,7 @@ async def generate_sop4(template_text, res_text,programme,university):
             """},
 
 
-            {"role": "user", "content": f""" For the paragraph about the programme use strong motivational points for choosing {programme}, 
+            {"role": "user", "content": f""" For the paragraph about the programme use strong motivational points for choosing {programme} and add information from {programme_response} into this paragraph, 
                 Show a STRONG motivation by evoking a storytelling from your past that led you want to study this programme.
                 If the past education of yours is related to the programme you are applying then you can consider them adding in this paragraph too
                 You have to choose MINIMUM two out of these points :
@@ -78,31 +85,62 @@ async def generate_sop4(template_text, res_text,programme,university):
                 You will also be adding What are the benifits you will be getting from this {programme} and the {university} 
                 You must also select some modules proposed by the programme and describe their contents, then explain why you are HIGHLY motivated to study them.
                 Add learning outcomes form the curriculum of this {university} and these learning will be divided into two parts which are tecnical learning and interpersonal learning
-                Explain Why this programme can help you build your career and prepare you for your future too 
+                Explain Why this programme can help you build your career and prepare you for your future too.
+                **Important:** Please do not invent any information not found in the `programme_response`. Base your content strictly on the provided information. If any required information is missing from the source, simply omit that point rather than fabricating details.
+
             """},
 
 
-            {"role": "user", "content": f""" For the paragraph about the University, you should retrieve the following data :
-                                                            Exact ranking of the University and the source of ranking
-                                                            Number of students
-                                                            facilities, faculties , campus location
-                                                            Precise you have relatives and friends there
-                                                            Names of Research centers and renowned Professors linked to the programme
-            You should use ALL these data and invent for each one an element of motivation make you want to integrate the University
-            In this paragraph you should also mention why you want to study in the city of the University , mention :  Some cool spots in the city you would like to see
-                                                                                                                        names of companies in the city that accept people from {programme} to work in       
-            """},
+            # {"role": "user", "content": f""" For the paragraph about the University, you have to show the reasons for choosing {university} and try to write this like you want to apply for it(first person tone). And add information from {university_response} into this paragraph :
+            #                                  You can use the following points to show the reason for choosing the university :  
+            #                                                 Exact ranking of the University and the source of ranking
+            #                                                 Number of students
+            #                                                 facilities, faculties , campus location
+            #                                                 Precise you have relatives and friends there
+            #                                                 Names of Research centers and renowned Professors linked to the programme
+                                                            
+            
+            # In this paragraph you should also mention why you want to study in the city of the University , mention :  Some cool spots in the city you would like to see
+            #                                                                                                             names of companies in the city that accept people from {programme} to work in       
+            # """},
+{"role": "user", "content": f"""For the paragraph about the University, you need to craft a compelling and personalized statement about why you want to apply to {university}. Write in the first person, as if you are the applicant. Incorporate detailed information from {university_response} into this paragraph, addressing the following points:
 
+1. **University Ranking and Source:**
+   - Include the exact ranking of {university} and cite the source of this ranking.
+
+2. **Student Body and Facilities:**
+   - Mention the number of students at {university}.
+   - Describe the facilities, faculty, and campus location in detail.
+
+3. **Personal Connections:**
+   - Note if you have any relatives or friends at {university} and how that influences your choice.
+
+4. **Research Centers and Professors:**
+   - Highlight any notable research centers and renowned professors associated with the program you are interested in.
+
+5. **City Attractions:**
+   - Explain why you want to study in the city where {university} is located. Include some cool spots or attractions in the city that interest you.
+
+6. **Local Job Market:**
+   - Provide examples of companies in the city that hire graduates from the {programme}.
+
+Make sure to weave all these elements into a cohesive and engaging paragraph that reflects your genuine interest in both the university and the city. Be detailed, specific, and personal in your response.
+
+**Important:** Please do not invent any information not found in the `university_response`. Base your content strictly on the provided information. If any required information is missing from the source, simply omit that point rather than fabricating details.
+
+"""},
             {"role": "user", "content": f"""For the paragraph which is about your future career perspectives and aspirations post-study, you should mention how the programme of {programme}
              will give you the opportunity to work in the futur job you want to do. You should mention names of professional positions linked to the programme you want to work in.
              You can also add that you aim to work in Germany"""},
 
 
             {"role": "user", "content": "Last Paragraph: A brief conclusion summarizing why you are the ideal applicant and show again your interest."},
-            {"role": "user", "content": """For the paragraph about Germany, you must mention the following points :
+            {"role": "user", "content": f"""For the paragraph about Germany, you must mention the following points and add information from {germany_response} into this paragraph :
             Point 1. Explain why you chose to apply in Germany
             Point 2. Your Intention to stay in Germany because the field education comparative is far better to others destinations
             Point 3. Talk about the Good exposure, diversity and German culture 
+            **Important:** Please do not invent any information not found in the `germany_response`. Base your content strictly on the provided information. If any required information is missing from the source, simply omit that point rather than fabricating details.
+
             """},
 
             { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
@@ -349,7 +387,7 @@ async def extract3urls(query):
                 for result in results[:10]:
                     link = result.find('a')['href']
                     links.append(link)
-                    print(link)
+                    # print(link)  #^ temporary  
                 
                 if len(links) >= 10:
                     # Slice the first 10 elements
@@ -363,7 +401,8 @@ async def extract3urls(query):
                     second_link = sliced_links[random_indices[1]]
                     third_link = sliced_links[random_indices[2]]
                     
-                    print('First link:', first_link, 'Second link:', second_link, 'Third link:', third_link)
+                    #^ temporary 
+                    # print(f'{query} :', '  First link:', first_link, 'Second link:', second_link, 'Third link:', third_link)
                     
                     return first_link, second_link, third_link
                 else:
@@ -393,7 +432,7 @@ async def extract3urls_orderofresults(query):
                 for result in results[:10]:
                     link = result.find('a')['href']
                     links.append(link)
-                    print(link)
+                    # print(link)  #^ temporary
                 
                 if len(links) >= 10:
                     # Slice the first 10 elements
@@ -405,7 +444,8 @@ async def extract3urls_orderofresults(query):
                     second_link = sliced_links[1]
                     third_link = sliced_links[2]
                     
-                    print('First link:', first_link, 'Second link:', second_link, 'Third link:', third_link)
+                    #^ temporary : 
+                    # print(f'{query} :', 'First link:', first_link, 'Second link:', second_link, 'Third link:', third_link)
                     
                     return first_link, second_link, third_link
                 else:
@@ -434,7 +474,7 @@ async def extract_1_url_from_urls(query):
                 for result in results[:5]:
                     link = result.find('a')['href']
                     links.append(link)
-                    print(link)
+                    # print(link) #^ temporary
                 
                 if len(links) >= 5:
                     # Slice the first 10 elements
@@ -447,8 +487,8 @@ async def extract_1_url_from_urls(query):
                     # Retrieve the links at the random indices
                     chosen_link = sliced_links[random_index]
                 
-                    
-                    print('First link:', chosen_link)
+                    #^ temporary
+                    # print(f"The Unique link (from # urls) for {query} :", chosen_link)
                     
                     return chosen_link
                 else:
@@ -607,6 +647,7 @@ async def extract_first_url_1(query):
                 soup = BeautifulSoup(html, 'html.parser')
                 result = soup.find('div', {'class': 'yuRUbf'})
                 if result:
+                    print(f"The Unique link for {query} :", result.find('a')['href'])
                     return result.find('a')['href']
                 else:
                     print("No results found.")
@@ -660,6 +701,7 @@ async def get_url_content(url):
 
 async def return_data1(query):
     url1 = await extract_first_url_1(query)
+    print(f"for query: {query}  :", url1)
     if url1:
         content = await get_url_content(url1)
         return content
@@ -669,6 +711,7 @@ async def return_data1(query):
 
 async def return_data1_see(query):
     url1 = await extract_1_url_from_urls(query)
+    print(f"for query: {query}  :", url1)
     if url1:
         content = await get_url_content(url1)
         return content
@@ -768,101 +811,102 @@ async def generate_responses_university(res_text,programme, university, internat
     # Get all local variables (including function arguments)
     arguments = locals()
     
-    for arg_name, arg_value in arguments.items():
-        if arg_value is not None:
-            # Print the argument name and its content, with a limit on the content length for readability
-            print(f"{arg_name}: {' '.join(str(arg_value).split()[:200])}")
+    #^ temporary : 
+    # for arg_name, arg_value in arguments.items():
+    #     if arg_value is not None:
+    #         # Print the argument name and its content, with a limit on the content length for readability
+    #         print(f"{arg_name}: {' '.join(str(arg_value).split()[:200])}")
     
 
-        completion = ai.ChatCompletion.create(
-        #model="gpt-3.5-turbo-16k", 
-        model = "gpt-4o-2024-05-13",
-        temperature=ai_temp,
-        messages = [
+    completion = ai.ChatCompletion.create(
+    #model="gpt-3.5-turbo-16k", 
+    model = "gpt-4o-2024-05-13",
+    temperature=ai_temp,
+    messages = [
 
 
-    {
-    "role": "user",
-    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer from Question 1 to Question 8:"
+{
+"role": "user",
+"content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer from Question 1 to Question 8:"
 },
 {
-    "role": "user",
-    "content": f"Question 1: How do you believe this university's emphasis on practical learning will enhance your academic and professional goals?"
+"role": "user",
+"content": f"Question 1: How do you believe this university's emphasis on practical learning will enhance your academic and professional goals?"
 },
 {
-    "role": "user",
-    "content": f"Your response should be based on {practical_learning} and reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal and genuine."
+"role": "user",
+"content": f"Your response should be based on {practical_learning} and reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal and genuine."
 },
 {
-    "role": "user",
-    "content": f"Question 2: How does the expertise and reputation of the faculty at this university influence your decision to attend?"
+"role": "user",
+"content": f"Question 2: How does the expertise and reputation of the faculty at this university influence your decision to attend?"
 },
 {
-    "role": "user",
-    "content": f"Your response should be  based on {university_description_wikipedia} and {professors}"
+"role": "user",
+"content": f"Your response should be  based on {university_description_wikipedia} and {professors}"
 },
 {
-    "role": "user",
-    "content": f"Question 3: How do the facilities provided by {university} influence your decision to attend?"
+"role": "user",
+"content": f"Question 3: How do the facilities provided by {university} influence your decision to attend?"
 },
 {
-    "role": "user",
-    "content": f"Your response should be based on {facilities}"
+"role": "user",
+"content": f"Your response should be based on {facilities}"
 },
 {
-    "role": "user",
-    "content": f"Question 4: How does the diverse culture at {university} influence your decision to attend the university?"
+"role": "user",
+"content": f"Question 4: How does the diverse culture at {university} influence your decision to attend the university?"
 },
 {
-    "role": "user",
-    "content": f"Your response should be based on {culture} "
+"role": "user",
+"content": f"Your response should be based on {culture} "
 },
 {
-    "role": "user",
-    "content": f"Question 5: How do the research projects or research centers at {university} influence your decision to attend?"
+"role": "user",
+"content": f"Question 5: How do the research projects or research centers at {university} influence your decision to attend?"
 },
 {
-    "role": "user",
-    "content": f"Your response should be based on {research_institutes} "
+"role": "user",
+"content": f"Your response should be based on {research_institutes} "
 },
 {
-    "role": "user",
-    "content": f"Question 6: How do the university's ranking and fee structure influence your decision to attend?"
+"role": "user",
+"content": f"Question 6: How do the university's ranking and fee structure influence your decision to attend?"
 },
 {
-    "role": "user",
-    "content": f"Your response should be based on {ranking} and {fee_structure}. Please provide the sources. "
+"role": "user",
+"content": f"Your response should be based on {ranking} and {fee_structure}. Please provide the sources. "
 },
 {
-    "role": "user",
-    "content": f"Question 7:  How does the location of this university influence your decision to attend? "
+"role": "user",
+"content": f"Question 7:  How does the location of this university influence your decision to attend? "
 },
 {
-    "role": "user",
-    "content": f"Your response should be based on {location} and {university_description_wikipedia} "
+"role": "user",
+"content": f"Your response should be based on {location} and {university_description_wikipedia} "
 },
 {
-    "role": "user",
-    "content": f"Question 1:  How does the size of the student body or the presence of an international student community at this university influence your decision to attend?  "
+"role": "user",
+"content": f"Question 1:  How does the size of the student body or the presence of an international student community at this university influence your decision to attend?  "
 },
 {
-    "role": "user",
-    "content": f"Your response should be based on {international_students} "
+"role": "user",
+"content": f"Your response should be based on {international_students} "
 },
 {
-    "role": "user",
-    "content": "Provide concrete examples for Questions 1 to 7. For each question, generate 20 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
+"role": "user",
+"content": "Provide concrete examples for Questions 1 to 7. For each question, generate 20 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
 },
 
 {"role": "user",
 "content":"For Questions 1 to 8 The responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
 {
-    "role": "user",
-    "content": " For Questions 1 to 8 The responses should be human-like and personal, using first-person language."
+"role": "user",
+"content": " For Questions 1 to 8 The responses should be human-like and personal, using first-person language."
 },
 {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis', 'boasts'"},
 {
-    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
+"role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
 }
 # {
 #     "role": "user",
@@ -870,18 +914,18 @@ async def generate_responses_university(res_text,programme, university, internat
 # },
 
 
-    
-    
- 
-    
-    ]
 
 
-        )
 
-        response_out = completion['choices'][0]['message']['content']
-        st.write(response_out)
-        return response_out
+
+]
+
+
+    )
+
+    response_out = completion['choices'][0]['message']['content']
+    st.write(response_out)
+    return response_out
     
     
 async def generate_responses_programme(res_text,programme, university, programme_content,  university_no_wikipedia , modules, practical_learning, personal_benefit, professional_growth):
@@ -890,98 +934,99 @@ async def generate_responses_programme(res_text,programme, university, programme
    # Get all local variables (including function arguments)
     arguments = locals()
     
-    for arg_name, arg_value in arguments.items():
-        if arg_value is not None:
-            # Print the argument name and its content, with a limit on the content length for readability
-            print(f"{arg_name}: {' '.join(str(arg_value).split()[:200])}")
+    #^ temporary 
+    # for arg_name, arg_value in arguments.items():
+    #     if arg_value is not None:
+    #         # Print the argument name and its content, with a limit on the content length for readability
+    #         print(f"{arg_name}: {' '.join(str(arg_value).split()[:200])}")
     
-    
-        completion = ai.ChatCompletion.create(
-        #model="gpt-3.5-turbo-16k", 
-        model = "gpt-4o-2024-05-13",
-        temperature=ai_temp,
-        messages = [
 
-    {
-    "role": "user",
-    "content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer from Question 1 to Question 7 :"
-},
-
+    completion = ai.ChatCompletion.create(
+    #model="gpt-3.5-turbo-16k", 
+    model = "gpt-4o-2024-05-13",
+    temperature=ai_temp,
+    messages = [
 
 {
-    "role": "user",
-    "content": f"Question 1:  How does the link between the programme {programme_content} and the course curriculum {modules} influence your decision to enroll?  "
-},
-{
-    "role": "user",
-    "content": f"Question 2: How does this program's potential for personal benefit influence your decision to pursue it?  "},
-{
-    "role": "user",
-    "content": f"Your response should be based on {personal_benefit} "
-},
-{
-    "role": "user",
-    "content": f"Question 3: How does the program's focus on professional growth influence your decision to enroll "},
-{
-    "role": "user",
-    "content": f"Your response should be based on {professional_growth} "
+"role": "user",
+"content": f"Imagine you are an Indian student whose resume is {res_text} and you want to study a master programme in {programme} at the university: {university} in Germany. You have to answer from Question 1 to Question 7 :"
 },
 
+
 {
-    "role": "user",
-    "content": f"Question 4:  How does the emphasis on technical learning and skills in {programme_content} influence your decision to pursue it?  "
+"role": "user",
+"content": f"Question 1:  How does the link between the programme {programme_content} and the course curriculum {modules} influence your decision to enroll?  "
 },
 {
-    "role": "user",
-    "content": f"Question 5:  What is the driving motivation behind your choice of this particular program {programme} at {university} ? "},
+"role": "user",
+"content": f"Question 2: How does this program's potential for personal benefit influence your decision to pursue it?  "},
 {
-    "role": "user",
-    "content": f"Your response should be based on {university_no_wikipedia} "
+"role": "user",
+"content": f"Your response should be based on {personal_benefit} "
 },
 {
-    "role": "user",
-    "content": f"Question 6 : How does your personal experience or interest influence your decision to choose the programme {programme}"
-},
+"role": "user",
+"content": f"Question 3: How does the program's focus on professional growth influence your decision to enroll "},
 {
-    "role": "user",
-    "content": f"Your response should be based on your resume {res_text} and {programme_content} "
-},
-{
-    "role": "user",
-    "content": f"Question 7 : How does the emphasis on applying skills in this program influence your decision to enroll? "
-},
-{
-    "role": "user",
-    "content": f"Your response should be based on your resume {res_text} and {programme_content}, and {practical_learning} and {modules} "
+"role": "user",
+"content": f"Your response should be based on {professional_growth} "
 },
 
 {
-    "role": "user",
-    "content": "Provide concrete examples for Questions 1 to 7. For each question, generate 20 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
+"role": "user",
+"content": f"Question 4:  How does the emphasis on technical learning and skills in {programme_content} influence your decision to pursue it?  "
+},
+{
+"role": "user",
+"content": f"Question 5:  What is the driving motivation behind your choice of this particular program {programme} at {university} ? "},
+{
+"role": "user",
+"content": f"Your response should be based on {university_no_wikipedia} "
+},
+{
+"role": "user",
+"content": f"Question 6 : How does your personal experience or interest influence your decision to choose the programme {programme}"
+},
+{
+"role": "user",
+"content": f"Your response should be based on your resume {res_text} and {programme_content} "
+},
+{
+"role": "user",
+"content": f"Question 7 : How does the emphasis on applying skills in this program influence your decision to enroll? "
+},
+{
+"role": "user",
+"content": f"Your response should be based on your resume {res_text} and {programme_content}, and {practical_learning} and {modules} "
+},
+
+{
+"role": "user",
+"content": "Provide concrete examples for Questions 1 to 7. For each question, generate 20 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
 },
 
 {"role": "user",
 "content":"For Questions 1 to 8 The responses should reflect the style and content of the provided sources. Make sure to include personal reflections and first-person language to make it sound personal"},
 {
-    "role": "user",
-    "content": " For Questions 1 to 8 The responses should be human-like and personal, using first-person language."
+"role": "user",
+"content": " For Questions 1 to 8 The responses should be human-like and personal, using first-person language."
 },
 {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis', 'boasts'"},
 {
-    "role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
+"role": "user" , "content" : "I don't want the results in dramatic tone , Instead give results based on the above information i have provided you and try to give results in as simple way as possible "
 }
 # {
 #     "role": "user",
 #     "content": "I repeat that the responses should be human-like, meaning very SIMPLE, responses understood by 18-year-old people."
 # },
-    ]
+]
 
 
-        )
+    )
 
-        response_out = completion['choices'][0]['message']['content']
-        st.write(response_out)
-        return response_out
+    response_out = completion['choices'][0]['message']['content']
+    st.write(response_out)
+    return response_out
 
 
 async def generate_responses_germany(  res_text, programme, university, cooperation_india_germany, quality_education_germany, 
@@ -992,13 +1037,14 @@ standard_living_germany, location_industries_germany, tuition_fees_germany, post
    # Get all local variables (including function arguments)
     arguments = locals()
     
-    for arg_name, arg_value in arguments.items():
-        if arg_value is not None:
-            # Print the argument name and its content, with a limit on the content length for readability
-            print(f"{arg_name}: {' '.join(str(arg_value).split()[:200])}")
+    #^ temporary 
+    # for arg_name, arg_value in arguments.items():
+    #     if arg_value is not None:
+    #         # Print the argument name and its content, with a limit on the content length for readability
+    #         print(f"{arg_name}: {' '.join(str(arg_value).split()[:200])}")
     
 
-        completion = ai.ChatCompletion.create(
+    completion = ai.ChatCompletion.create(
         #model="gpt-3.5-turbo-16k", 
         model = "gpt-4o-2024-05-13",
         temperature=ai_temp,
@@ -1048,9 +1094,9 @@ standard_living_germany, location_industries_germany, tuition_fees_germany, post
     # },
     ] )
 
-        response_out = completion['choices'][0]['message']['content']
-        st.write(response_out)
-        return response_out 
+    response_out = completion['choices'][0]['message']['content']
+    st.write(response_out)
+    return response_out 
     
        
 def create_word_document(phrase, font_name, font_size):
@@ -1244,7 +1290,6 @@ if submitted:
         research = university + " " + programme
 
         
-        response_sop = asyncio.create_task(generate_sop4( generate_random_templates('templates4'), res_text,programme,university))
 
         # Define asynchronous tasks for return_data functions
         
@@ -1323,14 +1368,14 @@ if submitted:
     
     
         # Run the response generation functions asynchronously
-        response1 = asyncio.create_task(generate_responses_university(
+        response_university = asyncio.create_task(generate_responses_university(
             res_text, programme, university, international_students,
             university_description_wikipedia, facilities,
             research_institutes, ranking, location, culture,
             professors, practical_learning, fee_structure
         ))
         
-        response2 = asyncio.create_task(generate_responses_programme(
+        response_programme = asyncio.create_task(generate_responses_programme(
              res_text, programme, university,
             programme_content, university_no_wikipedia, modules,
             practical_learning, personal_benefit,
@@ -1338,7 +1383,7 @@ if submitted:
         ))
         
         
-        response3 = asyncio.create_task(generate_responses_germany(
+        response_germany = asyncio.create_task(generate_responses_germany(
              res_text, programme, university, cooperation_india_germany, quality_education_germany, programme_variety_germany,
              research_opportunities_germany, cultural_experiences_germany, financial_support_germany, standard_living_germany,
              location_industries_germany,
@@ -1347,12 +1392,37 @@ if submitted:
         ))
 
         # Wait for all response generation tasks to complete
-        responses = await asyncio.gather(response_sop, response1, response2, response3)
-        response_final = responses 
-        # Combine responses
-        response = ''.join(response_final) 
+        responses = await asyncio.gather( response_university, response_programme, response_germany)
         
-        doc_download1 = create_word_document(response, 'Arial', 11)
+        germany_response = responses[2]
+        # Redirect output to a file
+        with open('output.txt', 'w') as f:
+            sys.stdout = f
+            print(type(germany_response))
+
+        # Reset stdout to default
+        sys.stdout = sys.__stdout__
+        # logging.debug(f"Debug: data = {germany_response["messages"]["content"][:200]}") 
+        # logging.debug(f"Type of germany_response: {type(germany_response)}")
+        # Retrieve only the result of university paragraph 
+        university_response = responses[0]
+        # logging.debug(f"Debug: data = {university_response}") 
+        # Retrieve only the result of programme paragraph
+        programme_response = responses[1]
+        # logging.debug(f"Debug: data = {programme_response}") 
+        # Retrieve only the result of germany paragraph 
+        
+        
+
+        
+        response_sop = await generate_sop4( generate_random_templates('templates4'), res_text,programme,university,university_response,programme_response,germany_response )
+
+        
+        # Combine responses
+        response = ''.join(responses) 
+        final_sop_and_responses = response + response_sop 
+        
+        doc_download1 = create_word_document(final_sop_and_responses, 'Arial', 11)
         st.download_button(
             label="Download SOP",
             data=save_doc_to_buffer(doc_download1),
