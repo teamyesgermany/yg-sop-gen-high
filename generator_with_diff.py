@@ -1245,27 +1245,27 @@ else:
     
  
  
-st.subheader("If you have a template in mind you can submit it 'Upload'.  Otherwise tick 'Let the software generate the template' and it will be automatically generated ")
-# radio for upload or copy paste option         
-template_format = st.radio(
-    "Do you want to upload or paste the template",
-    ('Upload', 'Paste', 'let the software generate the template'))
+# st.subheader("If you have a template in mind you can submit it 'Upload'.  Otherwise tick 'Let the software generate the template' and it will be automatically generated ")
+# # radio for upload or copy paste option         
+# template_format = st.radio(
+#     "Do you want to upload or paste the template",
+#     ('Upload', 'Paste', 'let the software generate the template'))
 
-if template_format == 'Upload':     
-        # upload_resume
-    template_file = st.file_uploader('📁 Upload your template in pdf format')
-    if template_file:
-        pdf_reader = PdfReader(template_file)
+# if template_format == 'Upload':     
+#         # upload_resume
+#     template_file = st.file_uploader('📁 Upload your template in pdf format')
+#     if template_file:
+#         pdf_reader = PdfReader(template_file)
 
-        # Collect text from pdf
-        template_text = ""
-        for page in pdf_reader.pages:
-            template_text += page.extract_text()
-elif template_format == 'Paste':
-    # use the pasted contents instead
-    template_text = st.text_input('Pasted template elements')
-else:
-    st.write("Process of selecting a random template")
+#         # Collect text from pdf
+#         template_text = ""
+#         for page in pdf_reader.pages:
+#             template_text += page.extract_text()
+# elif template_format == 'Paste':
+#     # use the pasted contents instead
+#     template_text = st.text_input('Pasted template elements')
+# else:
+#     st.write("Process of selecting a random template")
             
             
 
