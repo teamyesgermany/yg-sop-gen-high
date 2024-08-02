@@ -1395,22 +1395,18 @@ if submitted:
         responses = await asyncio.gather( response_university, response_programme, response_germany)
         
         germany_response = responses[2]
-        # Redirect output to a file
-        with open('output.txt', 'w') as f:
-            sys.stdout = f
-            print(type(germany_response))
+        # # Redirect output to a file
+        # with open('output.txt', 'w') as f:
+        #     sys.stdout = f
+        #     print(type(germany_response))
 
-        # Reset stdout to default
-        sys.stdout = sys.__stdout__
-        # logging.debug(f"Debug: data = {germany_response["messages"]["content"][:200]}") 
-        # logging.debug(f"Type of germany_response: {type(germany_response)}")
-        # Retrieve only the result of university paragraph 
+        # # Reset stdout to default
+        # sys.stdout = sys.__stdout__
+     
         university_response = responses[0]
-        # logging.debug(f"Debug: data = {university_response}") 
-        # Retrieve only the result of programme paragraph
+        
         programme_response = responses[1]
-        # logging.debug(f"Debug: data = {programme_response}") 
-        # Retrieve only the result of germany paragraph 
+       
         
         
 
