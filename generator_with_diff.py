@@ -123,6 +123,15 @@ async def generate_sop4(template_text, res_text,programme,university, university
 
 6. **Local Job Market:**
    - Provide examples of companies in the city that hire graduates from the {programme}.
+Based on the above 6 points, add the following points in the paragraph:
+7. Academic benifits:
+   - Mention the academic benifits of studying in this {university}
+
+8. Personal benifits:
+   - Mention the personal benifits of studying in this {university}
+
+9. Professional benifits:
+   -Mention the professional benifits of studying in this {university}
 
 Make sure to weave all these elements into a cohesive and engaging paragraph that reflects your genuine interest in both the university and the city. Be detailed, specific, and personal in your response.
 
@@ -136,9 +145,16 @@ Make sure to weave all these elements into a cohesive and engaging paragraph tha
 
             {"role": "user", "content": "Last Paragraph: A brief conclusion summarizing why you are the ideal applicant and show again your interest."},
             {"role": "user", "content": f"""For the paragraph about Germany, you must mention the following points and add information from {germany_response} into this paragraph :
+            
+            You strictly have to include at least 5-6 good points for this paragraph.
+            Please write this paragraph in the first-person tone where I express my strong motivation to study in Germany..
+            Add all the points given below to the paragraph 
             Point 1. Explain why you chose to apply in Germany
             Point 2. Your Intention to stay in Germany because the field education comparative is far better to others destinations
             Point 3. Talk about the Good exposure, diversity and German culture 
+            point 4. What are the reasons to choose Germany for masters/bachelors program?
+            point 5. How studying in Germnay will help me grow professionally as well as personally
+            point 6. Facts about Germany and its culture that led to the decision to study in Germany 
             **Important:** Please do not invent any information not found in the `germany_response`. Base your content strictly on the provided information. If any required information is missing from the source, simply omit that point rather than fabricating details.
 
             """},
