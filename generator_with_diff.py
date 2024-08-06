@@ -1338,6 +1338,13 @@ if res_file is not None:
     
     elif res_file.name.endswith('.docx'):
         doc_reader = Document(res_file)
+        # Collect text from pdf
+        res_text = ""
+        for page in pdf_reader.pages:
+            res_text += page.extract_text()
+    
+    elif res_file.name.endswith('.docx'):
+        doc_reader = Document(res_file)
 
         res_text = ""
         for para in doc_reader.paragraphs:
