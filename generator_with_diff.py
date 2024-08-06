@@ -1318,36 +1318,30 @@ def  return_data3_from_diffbot(programme):
 #^ THE MAIN PROGRAMME DISPLAYED ON THE STREAMLIT INTERFACE : 
 
 st.markdown("""
-# 📝 AI-Powered SOP Generator
+# 📝 YESGEN AI
 
-Generate a sop letter : JUST READ THE INSTRUCTIONS
 """
 )
 
 # radio for upload or copy paste option         
-res_format = st.radio(
-    "Upload or paste the applicant's resume/key experience",
-    ('Upload', 'Paste'))
 
-if res_format == 'Upload':
-    # upload_resume
-    res_file = st.file_uploader('📁 Upload your resume in pdf or docx format')
+res_file = st.file_uploader('📁 Upload your resume in pdf or docx format')
     
-    if res_file is not None:
-        if res_file.name.endswith('.pdf'):
-            pdf_reader = PdfReader(res_file)
+if res_file is not None:
+    if res_file.name.endswith('.pdf'):
+        pdf_reader = PdfReader(res_file)
 
-            # Collect text from pdf
-            res_text = ""
-            for page in pdf_reader.pages:
-                res_text += page.extract_text()
-        
-        elif res_file.name.endswith('.docx'):
-            doc_reader = Document(res_file)
+        # Collect text from pdf
+        res_text = ""
+        for page in pdf_reader.pages:
+            res_text += page.extract_text()
+    
+    elif res_file.name.endswith('.docx'):
+        doc_reader = Document(res_file)
 
-            res_text = ""
-            for para in doc_reader.paragraphs:
-                res_text += para.text + " "
+        res_text = ""
+        for para in doc_reader.paragraphs:
+            res_text += para.text + " "
 
 
             for table in doc_reader.tables:
@@ -1358,9 +1352,6 @@ if res_format == 'Upload':
 
         else:
             st.error("Unsupported file format. Please upload a PDF or DOCX file.")
-else:
-    # Use the pasted contents instead
-    res_text = st.text_area('Pasted resume elements')
     
  
  
