@@ -24,9 +24,6 @@ import sys
 # logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
-# Your Diffbot API token
-DIFFBOT_API_TOKEN = 'fe55e6257d2143b2ad59ba2cc83e3379'
-DIFFBOT_API_URL = 'https://api.diffbot.com/v3/article'
 
 PICKLE_FILE = 'scraped_data.pkl'
 
@@ -34,6 +31,12 @@ PICKLE_FILE = 'scraped_data.pkl'
 load_dotenv()  # take environment variables from .env.
 
 ai.api_key = os.getenv("OPENAI_API_KEY")
+
+# Your Diffbot API token
+DIFFBOT_API_TOKEN = os.getenv("DIFFBOT_API_KEY")
+DIFFBOT_API_URL = 'https://api.diffbot.com/v3/article'
+
+
 #test
 nlp = spacy.blank("en")  # Create a blank English model
 #^ Load the SpaCy English model
