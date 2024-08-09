@@ -1574,7 +1574,7 @@ if 'logged_in' not in st.session_state or not st.session_state.logged_in:
             user = auth.sign_in_with_email_and_password(email , password)
             st.session_state.logged_in = True
             st.session_state.user = user
-            st.success('Congratulations')
+            st.success('Welcome!')
             st.rerun()  # Refresh the page to show the main content
         except Exception as e:
             print(f"Error: {e}")
