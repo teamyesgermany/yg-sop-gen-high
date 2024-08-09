@@ -1560,25 +1560,31 @@ def  return_data3_from_diffbot(programme):
     #         mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     #     )
 
-
+# URL of your logo image
+logo_path = 'images/yeslogo2.jpg'
 if 'logged_in' not in st.session_state or not st.session_state.logged_in:
-
+    st.image(logo_path, width=150)
     st.title("Welcome to YESGEN AI")
     st.subheader("Login")
     email = st.text_input('Please enter your email address')
     password = st.text_input('Please enter your password' , type= 'password')
 
     if st.button('Login'):
-        user = auth.sign_in_with_email_and_password(email , password)
-        st.session_state.logged_in = True
-        st.session_state.user = user
-        st.success('Congratulations')
-        st.rerun()  # Refresh the page to show the main content
-    else:
-        st.error("Invalid username or password")
+        try:
+            user = auth.sign_in_with_email_and_password(email , password)
+            st.session_state.logged_in = True
+            st.session_state.user = user
+            st.success('Congratulations')
+            st.rerun()  # Refresh the page to show the main content
+        except Exception as e:
+            print(f"Error: {e}")
+            st.error("Wrong Credentials!")
+    
 else:
-    st.markdown("""
-    # 📝 YESGEN AI
+    # Display the logo
+    st.image(logo_path, width=150)  # Adjust the width as needed
+    st.markdown(f"""
+    # YESGEN AI
 
     """
     )
