@@ -13,6 +13,7 @@ import random
 import pickle
 import asyncio
 import aiohttp
+import pyrebase
 
 import requests
 from bs4 import BeautifulSoup
@@ -22,6 +23,21 @@ import sys
 
 # # Configure the logging
 # logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+
+firebaseConfig = {
+    'apiKey': "AIzaSyAUPmBdfpeJcRYNQwyqHLqmjbyiFAO2KOQ",
+    'authDomain': "yg-sop-gen-high.firebaseapp.com",
+    'projectId': "yg-sop-gen-high",
+    'databaseURL': "https://yg-sop-gen-high-default-rtdb.firebaseio.com/",
+    'storageBucket': "yg-sop-gen-high.appspot.com",
+    'messagingSenderId': "912444145418",
+    'appId': "1:912444145418:web:d157bb3a58a1176de704f3",
+    'measurementId': "G-6BXXTL8T1L"
+  }
+
+# Firebase authentication
+firebase = pyrebase.initialize_app(firebaseConfig)
+auth = firebase.auth()
 
 
 
@@ -90,6 +106,8 @@ async def generate_sop4(template_text, res_text,programme,university, university
                 Mention the learning outcomes from this {programme}, which include technical knowledge and interpersonal skills.     
                 How this course will benefit me professionally and for persona growth as well.
                 Explain Why this programme can help you build your career and prepare you for your future too.
+                Please write this paragraph in the first-person tone where I express my strong motivation to study in Germany. 
+                Start each sentence with 'I' or include 'my'
                 **Important:** Please do not invent any information not found in the `programme_response`. Base your content strictly on the provided information. If any required information is missing from the source, simply omit that point rather than fabricating details.
 
             """},
@@ -136,6 +154,9 @@ Based on the above 6 points, add the following points in the paragraph:
 
 9. Professional benifits:
    -Mention the professional benifits of studying in this {university}
+
+Please write this paragraph in the first-person tone where I express my strong motivation to study in Germany. 
+Start each sentence with 'I' or include 'my'
 
 Make sure to weave all these elements into a cohesive and engaging paragraph that reflects your genuine interest in both the university and the city. Be detailed, specific, and personal in your response.
 
@@ -1320,159 +1341,159 @@ def  return_data3_from_diffbot(programme):
 
 #^ THE MAIN PROGRAMME DISPLAYED ON THE STREAMLIT INTERFACE : 
 
-st.markdown("""
-# 📝 YESGEN AI
+# st.markdown("""
+# # 📝 YESGEN AI
 
-"""
-)
+# """
+# )
 
-# radio for upload or copy paste option         
-
-res_file = st.file_uploader('📁 Upload your resume in pdf or docx format')
-    
-if res_file is not None:
-    if res_file.name.endswith('.pdf'):
-        pdf_reader = PdfReader(res_file)
-
-        # Collect text from pdf
-        res_text = ""
-        for page in pdf_reader.pages:
-            res_text += page.extract_text()
-    
-    elif res_file.name.endswith('.docx'):
-        doc_reader = Document(res_file)
-
-        res_text = ""
-        for para in doc_reader.paragraphs:
-            res_text += para.text + " "
-
-
-            for table in doc_reader.tables:
-                for row in table.rows:
-                    for cell in row.cells:
-                        res_text += cell.text + " "
-                    res_text += "\n"
-
-    else:
-        st.error("Unsupported file format. Please upload a PDF or DOCX file.")
-    
- 
- 
-# st.subheader("If you have a template in mind you can submit it 'Upload'.  Otherwise tick 'Let the software generate the template' and it will be automatically generated ")
 # # radio for upload or copy paste option         
-# template_format = st.radio(
-#     "Do you want to upload or paste the template",
-#     ('Upload', 'Paste', 'let the software generate the template'))
 
-# if template_format == 'Upload':     
-#         # upload_resume
-#     template_file = st.file_uploader('📁 Upload your template in pdf format')
-#     if template_file:
-#         pdf_reader = PdfReader(template_file)
+# res_file = st.file_uploader('📁 Upload your resume in pdf or docx format')
+    
+# if res_file is not None:
+#     if res_file.name.endswith('.pdf'):
+#         pdf_reader = PdfReader(res_file)
 
 #         # Collect text from pdf
-#         template_text = ""
+#         res_text = ""
 #         for page in pdf_reader.pages:
-#             template_text += page.extract_text()
-# elif template_format == 'Paste':
-#     # use the pasted contents instead
-#     template_text = st.text_input('Pasted template elements')
-# else:
-#     st.write("Process of selecting a random template")
+#             res_text += page.extract_text()
+    
+#     elif res_file.name.endswith('.docx'):
+#         doc_reader = Document(res_file)
+
+#         res_text = ""
+#         for para in doc_reader.paragraphs:
+#             res_text += para.text + " "
+
+
+#             for table in doc_reader.tables:
+#                 for row in table.rows:
+#                     for cell in row.cells:
+#                         res_text += cell.text + " "
+#                     res_text += "\n"
+
+#     else:
+#         st.error("Unsupported file format. Please upload a PDF or DOCX file.")
+    
+ 
+ 
+# # st.subheader("If you have a template in mind you can submit it 'Upload'.  Otherwise tick 'Let the software generate the template' and it will be automatically generated ")
+# # # radio for upload or copy paste option         
+# # template_format = st.radio(
+# #     "Do you want to upload or paste the template",
+# #     ('Upload', 'Paste', 'let the software generate the template'))
+
+# # if template_format == 'Upload':     
+# #         # upload_resume
+# #     template_file = st.file_uploader('📁 Upload your template in pdf format')
+# #     if template_file:
+# #         pdf_reader = PdfReader(template_file)
+
+# #         # Collect text from pdf
+# #         template_text = ""
+# #         for page in pdf_reader.pages:
+# #             template_text += page.extract_text()
+# # elif template_format == 'Paste':
+# #     # use the pasted contents instead
+# #     template_text = st.text_input('Pasted template elements')
+# # else:
+# #     st.write("Process of selecting a random template")
             
             
 
-with st.form('input_form'):
-    # other inputs
-    programme = st.text_input('Programme name')
-    university = st.text_input('University name')
-    ai_temp = st.number_input('AI Temperature (0.0-1.0) Input how creative the API can be',value=.6)
+# with st.form('input_form'):
+#     # other inputs
+#     programme = st.text_input('Programme name')
+#     university = st.text_input('University name')
+#     ai_temp = st.number_input('AI Temperature (0.0-1.0) Input how creative the API can be',value=.6)
     
     
     
     
-    # # submit button
-    submitted = st.form_submit_button("Generate the SOP")
+#     # # submit button
+#     submitted = st.form_submit_button("Generate the SOP")
 
-# if the form is submitted run the openai completion   
-if submitted:    
+# # if the form is submitted run the openai completion   
+# if submitted:    
 
     #^ generate_responses :                                                                                               
     
-    async def main():
-        research = university + " " + programme
+    # async def main():
+    #     research = university + " " + programme
 
         
 
-        # Define asynchronous tasks for return_data functions
+    #     # Define asynchronous tasks for return_data functions
         
-        #! Tasks for University :
-        facilities_task = asyncio.create_task(return_data3(f"How do the facilities provided by {university} influence your decision to attend?"))
-        research_institutes_task = asyncio.create_task(return_data3_orderofresults(f"How do the research projects or research centers at {university} influence your decision to attend?"))
-        university_description_wikipedia_task = asyncio.create_task(return_data1(f"{university} Wikipedia Deutch"))
-        professors_task = asyncio.create_task(return_data1(f"good teachers, professors, doctors {university} Research gate"))
-        ranking_task = asyncio.create_task(return_data1(f"ranking {university} "))
-        location_task = asyncio.create_task(return_data1(f"How does the location of {university} offer something particular and better for students compared to other universities"))
-        fee_structure_task = asyncio.create_task(return_data1(f"{university} fee structure")) # here it was return_data3
-        international_students_task = asyncio.create_task(return_data3(f"How many international students are at {university}"))
-        culture_task = asyncio.create_task(return_data3(f"How does the diverse culture at {university} influence your decision to attend?"))
+    #     #! Tasks for University :
+    #     facilities_task = asyncio.create_task(return_data3(f"How do the facilities provided by {university} influence your decision to attend?"))
+    #     research_institutes_task = asyncio.create_task(return_data3_orderofresults(f"How do the research projects or research centers at {university} influence your decision to attend?"))
+    #     university_description_wikipedia_task = asyncio.create_task(return_data1(f"{university} Wikipedia Deutch"))
+    #     professors_task = asyncio.create_task(return_data1(f"good teachers, professors, doctors {university} Research gate"))
+    #     ranking_task = asyncio.create_task(return_data1(f"ranking {university} "))
+    #     location_task = asyncio.create_task(return_data1(f"How does the location of {university} offer something particular and better for students compared to other universities"))
+    #     fee_structure_task = asyncio.create_task(return_data1(f"{university} fee structure")) # here it was return_data3
+    #     international_students_task = asyncio.create_task(return_data3(f"How many international students are at {university}"))
+    #     culture_task = asyncio.create_task(return_data3(f"How does the diverse culture at {university} influence your decision to attend?"))
         
-        #* Tasks for the programme : programme_content,  university_no_wikipedia , modules, practical_learning, personal_benefit, professional_growth
-        programme_content_task = asyncio.create_task(return_data1(research))
-        university_no_wikipedia_task = asyncio.create_task(return_data3_orderofresults(f"{university}"))
-        modules_task = asyncio.create_task(return_data3_orderofresults(f"{programme}, {university}, modules"))
-        practical_learning_task = asyncio.create_task(return_data3(f"How do you believe the emphasis of {university} on practical learning will enhance your academic and professional goals?"))
-        personal_benefit_task = asyncio.create_task(return_data3(f"Why study {programme} in Germany"))
-        professional_growth_task = asyncio.create_task(return_data3(f"{programme} professional growth"))
+    #     #* Tasks for the programme : programme_content,  university_no_wikipedia , modules, practical_learning, personal_benefit, professional_growth
+    #     programme_content_task = asyncio.create_task(return_data1(research))
+    #     university_no_wikipedia_task = asyncio.create_task(return_data3_orderofresults(f"{university}"))
+    #     modules_task = asyncio.create_task(return_data3_orderofresults(f"{programme}, {university}, modules"))
+    #     practical_learning_task = asyncio.create_task(return_data3(f"How do you believe the emphasis of {university} on practical learning will enhance your academic and professional goals?"))
+    #     personal_benefit_task = asyncio.create_task(return_data3(f"Why study {programme} in Germany"))
+    #     professional_growth_task = asyncio.create_task(return_data3(f"{programme} professional growth"))
         
-        #& Tasks for Germany (retake return_data1 function)
-        cooperation_india_germany_task = asyncio.create_task(return_data1_see(f"bilateral cooperation between india and germany, {programme}"))
-        quality_education_germany_task = asyncio.create_task(return_data1_see(f"why Germany's high-quality education system is appealing to Indian students"))
-        programme_variety_germany_task = asyncio.create_task(return_data1_see(f"Is Germany good for {programme}"))
-        research_opportunities_germany_task = asyncio.create_task(return_data1_see(f"Research Opportunities: Highlight the research opportunities in {programme} that attract you to Germany."))
-        cultural_experiences_germany_task = asyncio.create_task(return_data1_see(f"Describe how experiencing German culture and language will enrich your personal and academic growth."))
-        financial_support_germany_task = asyncio.create_task(return_data1_see(f"Explain how scholarships and financial support options in Germany will help alleviate your financial burden"))
-        standard_living_germany_task = asyncio.create_task(return_data1_see(f"Discuss the high standard of living and quality of life that Germany offers to Indian students."))
-        location_industries_germany_task = asyncio.create_task(return_data1_see(f"Explain the strategic advantages of Germany's location and its strong ties to industries relevant to {programme}"))
-        tuition_fees_germany_task = asyncio.create_task(return_data1_see(f" Discuss the affordability of education in Germany due to its low tuition fees for Indian students."))
-        postgraduation_opportunities_germany_task = asyncio.create_task(return_data1_see(f" Highlight the post-graduation opportunities, including visa extensions, that make Germany a favorable choice for your future career prospects in {programme} as an Indian student"))
-        economic_opportunities_germany_task = asyncio.create_task(return_data1_see(f"Article about Job Opportunities available in Germany for careers in {programme}"))
+    #     #& Tasks for Germany (retake return_data1 function)
+    #     cooperation_india_germany_task = asyncio.create_task(return_data1_see(f"bilateral cooperation between india and germany, {programme}"))
+    #     quality_education_germany_task = asyncio.create_task(return_data1_see(f"why Germany's high-quality education system is appealing to Indian students"))
+    #     programme_variety_germany_task = asyncio.create_task(return_data1_see(f"Is Germany good for {programme}"))
+    #     research_opportunities_germany_task = asyncio.create_task(return_data1_see(f"Research Opportunities: Highlight the research opportunities in {programme} that attract you to Germany."))
+    #     cultural_experiences_germany_task = asyncio.create_task(return_data1_see(f"Describe how experiencing German culture and language will enrich your personal and academic growth."))
+    #     financial_support_germany_task = asyncio.create_task(return_data1_see(f"Explain how scholarships and financial support options in Germany will help alleviate your financial burden"))
+    #     standard_living_germany_task = asyncio.create_task(return_data1_see(f"Discuss the high standard of living and quality of life that Germany offers to Indian students."))
+    #     location_industries_germany_task = asyncio.create_task(return_data1_see(f"Explain the strategic advantages of Germany's location and its strong ties to industries relevant to {programme}"))
+    #     tuition_fees_germany_task = asyncio.create_task(return_data1_see(f" Discuss the affordability of education in Germany due to its low tuition fees for Indian students."))
+    #     postgraduation_opportunities_germany_task = asyncio.create_task(return_data1_see(f" Highlight the post-graduation opportunities, including visa extensions, that make Germany a favorable choice for your future career prospects in {programme} as an Indian student"))
+    #     economic_opportunities_germany_task = asyncio.create_task(return_data1_see(f"Article about Job Opportunities available in Germany for careers in {programme}"))
 
 
-    #     #^ Wait for all return_data tasks to complete
+    # #     #^ Wait for all return_data tasks to complete
        
 
-        (facilities, research_institutes) = await asyncio.gather(facilities_task, research_institutes_task)
+    #     (facilities, research_institutes) = await asyncio.gather(facilities_task, research_institutes_task)
         
-        await asyncio.sleep(2)
+    #     await asyncio.sleep(2)
         
-        (university_description_wikipedia, professors, cooperation_india_germany) = await asyncio.gather(university_description_wikipedia_task, professors_task,  cooperation_india_germany_task)
+    #     (university_description_wikipedia, professors, cooperation_india_germany) = await asyncio.gather(university_description_wikipedia_task, professors_task,  cooperation_india_germany_task)
         
-        await asyncio.sleep(2)
+    #     await asyncio.sleep(2)
          
-        (ranking, location, fee_structure, programme_content, quality_education_germany ) = await asyncio.gather(ranking_task, location_task, fee_structure_task, programme_content_task, quality_education_germany_task)
+    #     (ranking, location, fee_structure, programme_content, quality_education_germany ) = await asyncio.gather(ranking_task, location_task, fee_structure_task, programme_content_task, quality_education_germany_task)
         
-        await asyncio.sleep(2)
+    #     await asyncio.sleep(2)
         
-        ( international_students , modules ) = await asyncio.gather( international_students_task, modules_task)
+    #     ( international_students , modules ) = await asyncio.gather( international_students_task, modules_task)
 
-        await asyncio.sleep(2)
+    #     await asyncio.sleep(2)
         
-        (culture, practical_learning ) = await asyncio.gather( culture_task, practical_learning_task)
+    #     (culture, practical_learning ) = await asyncio.gather( culture_task, practical_learning_task)
         
-        await asyncio.sleep(2)
-        (  university_no_wikipedia , personal_benefit ) = await asyncio.gather(  university_no_wikipedia_task, personal_benefit_task  )
+    #     await asyncio.sleep(2)
+    #     (  university_no_wikipedia , personal_benefit ) = await asyncio.gather(  university_no_wikipedia_task, personal_benefit_task  )
         
-        await asyncio.sleep(2)
+    #     await asyncio.sleep(2)
         
-        ( professional_growth, programme_variety_germany, research_opportunities_germany ) = await asyncio.gather(professional_growth_task , programme_variety_germany_task, research_opportunities_germany_task  )
+    #     ( professional_growth, programme_variety_germany, research_opportunities_germany ) = await asyncio.gather(professional_growth_task , programme_variety_germany_task, research_opportunities_germany_task  )
         
-        await asyncio.sleep(2)
+    #     await asyncio.sleep(2)
         
-        ( cultural_experiences_germany, financial_support_germany, standard_living_germany, location_industries_germany, tuition_fees_germany  ) = await asyncio.gather(  cultural_experiences_germany_task, financial_support_germany_task, standard_living_germany_task,  location_industries_germany_task,   tuition_fees_germany_task )
-        await asyncio.sleep(2)
+    #     ( cultural_experiences_germany, financial_support_germany, standard_living_germany, location_industries_germany, tuition_fees_germany  ) = await asyncio.gather(  cultural_experiences_germany_task, financial_support_germany_task, standard_living_germany_task,  location_industries_germany_task,   tuition_fees_germany_task )
+    #     await asyncio.sleep(2)
         
-        ( postgraduation_opportunities_germany , economic_opportunities_germany  ) = await asyncio.gather( postgraduation_opportunities_germany_task,  economic_opportunities_germany_task)
+    #     ( postgraduation_opportunities_germany , economic_opportunities_germany  ) = await asyncio.gather( postgraduation_opportunities_germany_task,  economic_opportunities_germany_task)
         
         
 
@@ -1480,63 +1501,295 @@ if submitted:
     
     
     
-        # Run the response generation functions asynchronously
-        response_university = asyncio.create_task(generate_responses_university(
-            res_text, programme, university, international_students,
-            university_description_wikipedia, facilities,
-            research_institutes, ranking, location, culture,
-            professors, practical_learning, fee_structure
-        ))
+    #     # Run the response generation functions asynchronously
+    #     response_university = asyncio.create_task(generate_responses_university(
+    #         res_text, programme, university, international_students,
+    #         university_description_wikipedia, facilities,
+    #         research_institutes, ranking, location, culture,
+    #         professors, practical_learning, fee_structure
+    #     ))
         
-        response_programme = asyncio.create_task(generate_responses_programme(
-             res_text, programme, university,
-            programme_content, university_no_wikipedia, modules,
-            practical_learning, personal_benefit,
-            professional_growth
-        ))
+    #     response_programme = asyncio.create_task(generate_responses_programme(
+    #          res_text, programme, university,
+    #         programme_content, university_no_wikipedia, modules,
+    #         practical_learning, personal_benefit,
+    #         professional_growth
+    #     ))
         
         
-        response_germany = asyncio.create_task(generate_responses_germany(
-             res_text, programme, university, cooperation_india_germany, quality_education_germany, programme_variety_germany,
-             research_opportunities_germany, cultural_experiences_germany, financial_support_germany, standard_living_germany,
-             location_industries_germany,
-             tuition_fees_germany, postgraduation_opportunities_germany, economic_opportunities_germany
+    #     response_germany = asyncio.create_task(generate_responses_germany(
+    #          res_text, programme, university, cooperation_india_germany, quality_education_germany, programme_variety_germany,
+    #          research_opportunities_germany, cultural_experiences_germany, financial_support_germany, standard_living_germany,
+    #          location_industries_germany,
+    #          tuition_fees_germany, postgraduation_opportunities_germany, economic_opportunities_germany
              
-        ))
+    #     ))
 
-        # Wait for all response generation tasks to complete
-        responses = await asyncio.gather( response_university, response_programme, response_germany)
+    #     # Wait for all response generation tasks to complete
+    #     responses = await asyncio.gather( response_university, response_programme, response_germany)
         
-        germany_response = responses[2]
-        # # Redirect output to a file
-        # with open('output.txt', 'w') as f:
-        #     sys.stdout = f
-        #     print(type(germany_response))
+    #     germany_response = responses[2]
+    #     # # Redirect output to a file
+    #     # with open('output.txt', 'w') as f:
+    #     #     sys.stdout = f
+    #     #     print(type(germany_response))
 
-        # # Reset stdout to default
-        # sys.stdout = sys.__stdout__
+    #     # # Reset stdout to default
+    #     # sys.stdout = sys.__stdout__
      
-        university_response = responses[0]
+    #     university_response = responses[0]
         
-        programme_response = responses[1]
+    #     programme_response = responses[1]
        
         
         
 
         
-        response_sop = await generate_sop4( generate_random_templates('templates4'), res_text,programme,university,university_response,programme_response,germany_response )
+    #     response_sop = await generate_sop4( generate_random_templates('templates4'), res_text,programme,university,university_response,programme_response,germany_response )
 
         
-        # Combine responses
-        response = ''.join(responses) 
-        final_sop_and_responses = response + response_sop 
+    #     # Combine responses
+    #     response = ''.join(responses) 
+    #     final_sop_and_responses = response + response_sop 
         
-        doc_download1 = create_word_document(final_sop_and_responses, 'Arial', 11)
-        st.download_button(
-            label="Download SOP",
-            data=save_doc_to_buffer(doc_download1),
-            file_name=f"{res_file.name}_{university}_{programme}_SOP.docx",
-            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        )
+    #     doc_download1 = create_word_document(final_sop_and_responses, 'Arial', 11)
+    #     st.download_button(
+    #         label="Download SOP",
+    #         data=save_doc_to_buffer(doc_download1),
+    #         file_name=f"{res_file.name}_{university}_{programme}_SOP.docx",
+    #         mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    #     )
 
-    asyncio.run(main())
+
+if 'logged_in' not in st.session_state or not st.session_state.logged_in:
+
+    st.title("Welcome to YESGEN AI")
+    st.subheader("Login")
+    email = st.text_input('Please enter your email address')
+    password = st.text_input('Please enter your password' , type= 'password')
+
+    if st.button('Login'):
+        user = auth.sign_in_with_email_and_password(email , password)
+        st.session_state.logged_in = True
+        st.session_state.user = user
+        st.success('Congratulations')
+        st.rerun()  # Refresh the page to show the main content
+    else:
+        st.error("Invalid username or password")
+else:
+    st.markdown("""
+    # 📝 YESGEN AI
+
+    """
+    )
+
+    # radio for upload or copy paste option         
+
+    res_file = st.file_uploader('📁 Upload your resume in pdf or docx format')
+        
+    if res_file is not None:
+        if res_file.name.endswith('.pdf'):
+            pdf_reader = PdfReader(res_file)
+
+            # Collect text from pdf
+            res_text = ""
+            for page in pdf_reader.pages:
+                res_text += page.extract_text()
+        
+        elif res_file.name.endswith('.docx'):
+            doc_reader = Document(res_file)
+
+            res_text = ""
+            for para in doc_reader.paragraphs:
+                res_text += para.text + " "
+
+
+                for table in doc_reader.tables:
+                    for row in table.rows:
+                        for cell in row.cells:
+                            res_text += cell.text + " "
+                        res_text += "\n"
+
+        else:
+            st.error("Unsupported file format. Please upload a PDF or DOCX file.")
+        
+    
+    
+    # st.subheader("If you have a template in mind you can submit it 'Upload'.  Otherwise tick 'Let the software generate the template' and it will be automatically generated ")
+    # # radio for upload or copy paste option         
+    # template_format = st.radio(
+    #     "Do you want to upload or paste the template",
+    #     ('Upload', 'Paste', 'let the software generate the template'))
+
+    # if template_format == 'Upload':     
+    #         # upload_resume
+    #     template_file = st.file_uploader('📁 Upload your template in pdf format')
+    #     if template_file:
+    #         pdf_reader = PdfReader(template_file)
+
+    #         # Collect text from pdf
+    #         template_text = ""
+    #         for page in pdf_reader.pages:
+    #             template_text += page.extract_text()
+    # elif template_format == 'Paste':
+    #     # use the pasted contents instead
+    #     template_text = st.text_input('Pasted template elements')
+    # else:
+    #     st.write("Process of selecting a random template")
+                
+                
+
+    with st.form('input_form'):
+        # other inputs
+        programme = st.text_input('Programme/Course name')
+        university = st.text_input('University name')
+        ai_temp = st.number_input('AI Temperature (0.0-1.0) Input how creative the API can be',value=.6)
+        
+        
+        
+        
+        # # submit button
+        submitted = st.form_submit_button("Generate the SOP")
+
+    # if the form is submitted run the openai completion   
+    if submitted:    
+        async def main():
+            research = university + " " + programme
+
+            
+
+            # Define asynchronous tasks for return_data functions
+            
+            #! Tasks for University :
+            facilities_task = asyncio.create_task(return_data3(f"How do the facilities provided by {university} influence your decision to attend?"))
+            research_institutes_task = asyncio.create_task(return_data3_orderofresults(f"How do the research projects or research centers at {university} influence your decision to attend?"))
+            university_description_wikipedia_task = asyncio.create_task(return_data1(f"{university} Wikipedia Deutch"))
+            professors_task = asyncio.create_task(return_data1(f"good teachers, professors, doctors {university} Research gate"))
+            ranking_task = asyncio.create_task(return_data1(f"ranking {university} "))
+            location_task = asyncio.create_task(return_data1(f"How does the location of {university} offer something particular and better for students compared to other universities"))
+            fee_structure_task = asyncio.create_task(return_data1(f"{university} fee structure")) # here it was return_data3
+            international_students_task = asyncio.create_task(return_data3(f"How many international students are at {university}"))
+            culture_task = asyncio.create_task(return_data3(f"How does the diverse culture at {university} influence your decision to attend?"))
+            
+            #* Tasks for the programme : programme_content,  university_no_wikipedia , modules, practical_learning, personal_benefit, professional_growth
+            programme_content_task = asyncio.create_task(return_data1(research))
+            university_no_wikipedia_task = asyncio.create_task(return_data3_orderofresults(f"{university}"))
+            modules_task = asyncio.create_task(return_data3_orderofresults(f"{programme}, {university}, modules"))
+            practical_learning_task = asyncio.create_task(return_data3(f"How do you believe the emphasis of {university} on practical learning will enhance your academic and professional goals?"))
+            personal_benefit_task = asyncio.create_task(return_data3(f"Why study {programme} in Germany"))
+            professional_growth_task = asyncio.create_task(return_data3(f"{programme} professional growth"))
+            
+            #& Tasks for Germany (retake return_data1 function)
+            cooperation_india_germany_task = asyncio.create_task(return_data1_see(f"bilateral cooperation between india and germany, {programme}"))
+            quality_education_germany_task = asyncio.create_task(return_data1_see(f"why Germany's high-quality education system is appealing to Indian students"))
+            programme_variety_germany_task = asyncio.create_task(return_data1_see(f"Is Germany good for {programme}"))
+            research_opportunities_germany_task = asyncio.create_task(return_data1_see(f"Research Opportunities: Highlight the research opportunities in {programme} that attract you to Germany."))
+            cultural_experiences_germany_task = asyncio.create_task(return_data1_see(f"Describe how experiencing German culture and language will enrich your personal and academic growth."))
+            financial_support_germany_task = asyncio.create_task(return_data1_see(f"Explain how scholarships and financial support options in Germany will help alleviate your financial burden"))
+            standard_living_germany_task = asyncio.create_task(return_data1_see(f"Discuss the high standard of living and quality of life that Germany offers to Indian students."))
+            location_industries_germany_task = asyncio.create_task(return_data1_see(f"Explain the strategic advantages of Germany's location and its strong ties to industries relevant to {programme}"))
+            tuition_fees_germany_task = asyncio.create_task(return_data1_see(f" Discuss the affordability of education in Germany due to its low tuition fees for Indian students."))
+            postgraduation_opportunities_germany_task = asyncio.create_task(return_data1_see(f" Highlight the post-graduation opportunities, including visa extensions, that make Germany a favorable choice for your future career prospects in {programme} as an Indian student"))
+            economic_opportunities_germany_task = asyncio.create_task(return_data1_see(f"Article about Job Opportunities available in Germany for careers in {programme}"))
+
+
+        #     #^ Wait for all return_data tasks to complete
+        
+
+            (facilities, research_institutes) = await asyncio.gather(facilities_task, research_institutes_task)
+            
+            await asyncio.sleep(2)
+            
+            (university_description_wikipedia, professors, cooperation_india_germany) = await asyncio.gather(university_description_wikipedia_task, professors_task,  cooperation_india_germany_task)
+            
+            await asyncio.sleep(2)
+            
+            (ranking, location, fee_structure, programme_content, quality_education_germany ) = await asyncio.gather(ranking_task, location_task, fee_structure_task, programme_content_task, quality_education_germany_task)
+            
+            await asyncio.sleep(2)
+            
+            ( international_students , modules ) = await asyncio.gather( international_students_task, modules_task)
+
+            await asyncio.sleep(2)
+            
+            (culture, practical_learning ) = await asyncio.gather( culture_task, practical_learning_task)
+            
+            await asyncio.sleep(2)
+            (  university_no_wikipedia , personal_benefit ) = await asyncio.gather(  university_no_wikipedia_task, personal_benefit_task  )
+            
+            await asyncio.sleep(2)
+            
+            ( professional_growth, programme_variety_germany, research_opportunities_germany ) = await asyncio.gather(professional_growth_task , programme_variety_germany_task, research_opportunities_germany_task  )
+            
+            await asyncio.sleep(2)
+            
+            ( cultural_experiences_germany, financial_support_germany, standard_living_germany, location_industries_germany, tuition_fees_germany  ) = await asyncio.gather(  cultural_experiences_germany_task, financial_support_germany_task, standard_living_germany_task,  location_industries_germany_task,   tuition_fees_germany_task )
+            await asyncio.sleep(2)
+            
+            ( postgraduation_opportunities_germany , economic_opportunities_germany  ) = await asyncio.gather( postgraduation_opportunities_germany_task,  economic_opportunities_germany_task)
+            
+            
+
+        
+        
+        
+        
+            # Run the response generation functions asynchronously
+            response_university = asyncio.create_task(generate_responses_university(
+                res_text, programme, university, international_students,
+                university_description_wikipedia, facilities,
+                research_institutes, ranking, location, culture,
+                professors, practical_learning, fee_structure
+            ))
+            
+            response_programme = asyncio.create_task(generate_responses_programme(
+                res_text, programme, university,
+                programme_content, university_no_wikipedia, modules,
+                practical_learning, personal_benefit,
+                professional_growth
+            ))
+            
+            
+            response_germany = asyncio.create_task(generate_responses_germany(
+                res_text, programme, university, cooperation_india_germany, quality_education_germany, programme_variety_germany,
+                research_opportunities_germany, cultural_experiences_germany, financial_support_germany, standard_living_germany,
+                location_industries_germany,
+                tuition_fees_germany, postgraduation_opportunities_germany, economic_opportunities_germany
+                
+            ))
+
+            # Wait for all response generation tasks to complete
+            responses = await asyncio.gather( response_university, response_programme, response_germany)
+            
+            germany_response = responses[2]
+            # # Redirect output to a file
+            # with open('output.txt', 'w') as f:
+            #     sys.stdout = f
+            #     print(type(germany_response))
+
+            # # Reset stdout to default
+            # sys.stdout = sys.__stdout__
+        
+            university_response = responses[0]
+            
+            programme_response = responses[1]
+        
+            
+            
+
+            
+            response_sop = await generate_sop4( generate_random_templates('templates4'), res_text,programme,university,university_response,programme_response,germany_response )
+
+            
+            # Combine responses
+            response = ''.join(responses) 
+            final_sop_and_responses = response + response_sop 
+            
+            doc_download1 = create_word_document(final_sop_and_responses, 'Arial', 11)
+            st.download_button(
+                label="Download SOP",
+                data=save_doc_to_buffer(doc_download1),
+                file_name=f"{res_file.name}_{university}_{programme}_SOP.docx",
+                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            )
+        asyncio.run(main())
