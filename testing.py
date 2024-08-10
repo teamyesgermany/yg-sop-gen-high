@@ -3,6 +3,13 @@ import pyrebase
 import warnings
 from datetime import datetime, timedelta
 from streamlit_cookies_manager import EncryptedCookieManager
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  # take environment variables from .env.
+
+# Your Diffbot API token
+PYREBASE_API_KEY = os.getenv("PYREBASE_API_KEY")
 
 # Turn Streamlit's st.cache deprecation warnings into exceptions
 warnings.filterwarnings("error", message=".*st.cache is deprecated.*")
@@ -11,7 +18,7 @@ try:
     # Your code that might cause the deprecation warning
     # Initialize Firebase
     firebaseConfig = {
-        'apiKey': "AIzaSyAUPmBdfpeJcRYNQwyqHLqmjbyiFAO2KOQ",
+        'apiKey': f"{PYREBASE_API_KEY}",
         'authDomain': "yg-sop-gen-high.firebaseapp.com",
         'projectId': "yg-sop-gen-high",
         'databaseURL': "https://yg-sop-gen-high-default-rtdb.firebaseio.com/",
