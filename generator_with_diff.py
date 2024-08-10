@@ -15,6 +15,10 @@ import asyncio
 import aiohttp
 import pyrebase
 
+import warnings
+from datetime import datetime, timedelta
+from streamlit_cookies_manager import EncryptedCookieManager
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -24,27 +28,17 @@ import sys
 # # Configure the logging
 # logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-firebaseConfig = {
-    'apiKey': "AIzaSyAUPmBdfpeJcRYNQwyqHLqmjbyiFAO2KOQ",
-    'authDomain': "yg-sop-gen-high.firebaseapp.com",
-    'projectId': "yg-sop-gen-high",
-    'databaseURL': "https://yg-sop-gen-high-default-rtdb.firebaseio.com/",
-    'storageBucket': "yg-sop-gen-high.appspot.com",
-    'messagingSenderId': "912444145418",
-    'appId': "1:912444145418:web:d157bb3a58a1176de704f3",
-    'measurementId': "G-6BXXTL8T1L"
-  }
-
-# Firebase authentication
-firebase = pyrebase.initialize_app(firebaseConfig)
-auth = firebase.auth()
-
-
 
 PICKLE_FILE = 'scraped_data.pkl'
 
 
 load_dotenv()  # take environment variables from .env.
+
+# Firebase api token
+PYREBASE_API_KEY = os.getenv("PYREBASE_API_KEY")
+
+# Turn Streamlit's st.cache deprecation warnings into exceptions
+warnings.filterwarnings("error", message=".*st.cache is deprecated.*")
 
 ai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -1560,9 +1554,41 @@ def  return_data3_from_diffbot(programme):
     #         mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     #     )
 
+
 # URL of your logo image
 logo_path = 'images/yeslogo2.jpg'
-if 'logged_in' not in st.session_state or not st.session_state.logged_in:
+
+
+firebaseConfig = {
+    'apiKey': f"{PYREBASE_API_KEY}",
+    'authDomain': "yg-sop-gen-high.firebaseapp.com",
+    'projectId': "yg-sop-gen-high",
+    'databaseURL': "https://yg-sop-gen-high-default-rtdb.firebaseio.com/",
+    'storageBucket': "yg-sop-gen-high.appspot.com",
+    'messagingSenderId': "912444145418",
+    'appId': "1:912444145418:web:d157bb3a58a1176de704f3",
+    'measurementId': "G-6BXXTL8T1L"
+}
+
+# Firebase authentication
+firebase = pyrebase.initialize_app(firebaseConfig)
+auth = firebase.auth()
+
+# Initialize the cookie manager
+cookies = EncryptedCookieManager(password="your-secure-password")
+
+# Ensure cookies are ready before proceeding
+if not cookies.ready():
+    st.stop()  # Stop the script until the cookies are ready
+
+# Check if the user is already logged in via cookies
+if "logged_in" not in st.session_state:
+    logged_in_cookie = cookies.get("logged_in")
+    st.session_state.logged_in = logged_in_cookie == "true"
+    st.session_state.user_email = cookies.get("user_email") if st.session_state.logged_in else None
+
+
+if not st.session_state.logged_in:
     st.image(logo_path, width=150)
     st.title("Welcome to YESGEN AI")
     st.subheader("Login")
@@ -1573,7 +1599,15 @@ if 'logged_in' not in st.session_state or not st.session_state.logged_in:
         try:
             user = auth.sign_in_with_email_and_password(email , password)
             st.session_state.logged_in = True
-            st.session_state.user = user
+            st.session_state.user = user['email']
+
+            # Set cookies to persist the login state for 24 hours
+            expires_at = (datetime.now() + timedelta(seconds=60)).isoformat()
+            cookies["logged_in"] = "true"
+            cookies["user_email"] = user['email']
+            cookies["expires_at"] = expires_at
+            cookies.save()
+
             st.success('Welcome!')
             st.rerun()  # Refresh the page to show the main content
         except Exception as e:
@@ -1581,6 +1615,24 @@ if 'logged_in' not in st.session_state or not st.session_state.logged_in:
             st.error("Wrong Credentials!")
     
 else:
+    
+    col1, col2, col3 = st.columns([1, 6, 1])
+    
+    with col3:
+        # Logout button
+        if st.button('Logout'):
+                # Clear session state
+                st.session_state.logged_in = False
+                st.session_state.user_email = None
+
+                # Delete the cookies to log out
+                del cookies["logged_in"]
+                del cookies["user_email"]
+                del cookies["expires_at"]
+                cookies.save()
+
+                st.rerun()  # Refresh the page to show the login screen
+    
     # Display the logo
     st.image(logo_path, width=150)  # Adjust the width as needed
     st.markdown(f"""
@@ -1799,3 +1851,4 @@ else:
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
         asyncio.run(main())
+
