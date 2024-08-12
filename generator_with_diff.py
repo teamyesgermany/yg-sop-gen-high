@@ -1590,7 +1590,7 @@ if "logged_in" not in st.session_state:
 
 if not st.session_state.logged_in:
     st.image(logo_path, width=150)
-    st.title("Welcome to YESGEN AI")
+    st.title("Welcome to YES WIZARD")
     st.subheader("Login")
     email = st.text_input('Please enter your email address')
     password = st.text_input('Please enter your password' , type= 'password')
@@ -1636,7 +1636,7 @@ else:
     # Display the logo
     st.image(logo_path, width=150)  # Adjust the width as needed
     st.markdown(f"""
-    # YESGEN AI
+    # YES WIZARD
 
     """
     )
