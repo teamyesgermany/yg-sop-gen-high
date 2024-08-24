@@ -165,7 +165,7 @@ Make sure to weave all these elements into a cohesive and engaging paragraph tha
 
             {"role": "user", "content": "Last Paragraph: A brief conclusion summarizing why you are the ideal applicant and show again your interest."},
             {"role": "user", "content": f"""
-            For the paragraph about Germany, you must mention the following points and add information from {germany_response} and {germany_from_articles} into this paragraph :
+            For the paragraph about Germany, you must mention the following points and add information from {germany_response} into this paragraph :
             
             You strictly have to include at least 5-6 good points for this paragraph.
             Point 1. Explain why you chose to apply in Germany
@@ -185,7 +185,7 @@ Make sure to weave all these elements into a cohesive and engaging paragraph tha
             {
                 "role": "user",
                 "content": f"""
-                You have to write another paragraph about why Germany is the ideal destination to study {programme}. In this paragraph, you will add 5-6 points explaining why you want to study in Germany and the specific programme {programme}. Please use relevant examples from {germany_from_articles}. Ensure each point is supported by examples, and start with a clear statement of why Germany was chosen.
+                You have to write another paragraph about why Germany is the ideal destination to study {programme} by adding 5-6 points using relevant examples from {germany_from_articles}.
                 """
             },
             #  {
@@ -218,7 +218,7 @@ Make sure to weave all these elements into a cohesive and engaging paragraph tha
         #model="gpt-3.5-turbo-16k", 
         model = "gpt-4o-2024-05-13",
         temperature=ai_temp,
-        messages=[
+             messages=[
              {"role": "user", "content": "Generate a statement of purpose (SOP) based on the provided details, following a specific structure and style."},
 
             {"role": "user", "content": f"Template for guidance: {template_text}. You should reproduce the exact same structure"},
@@ -240,7 +240,7 @@ Make sure to weave all these elements into a cohesive and engaging paragraph tha
             """},
 
 
-            {"role": "user", "content": f""" For the paragraph about the programme use strong motivational points for choosing {programme} and add information from {programme_response} into this paragraph, 
+            {"role": "user", "content": f""" For the paragraph about the programme use strong motivational points for choosing {programme} and add information from {programme_response} and {germany_from_articles} into this paragraph, 
                 Show a STRONG motivation by evoking a storytelling from your past that led you want to study this programme.
                 If the past education of yours is related to the programme you are applying then you can consider them adding in this paragraph too
                 You have to choose MINIMUM two out of these points :
@@ -254,80 +254,85 @@ Make sure to weave all these elements into a cohesive and engaging paragraph tha
                 Mention the learning outcomes from this {programme}, which include technical knowledge and interpersonal skills.     
                 How this course will benefit me professionally and for persona growth as well.
                 Explain Why this programme can help you build your career and prepare you for your future too.
+                Please write this paragraph in the first-person tone where I express my strong motivation to study in Germany. 
+                Start each sentence with 'I' or include 'my'
                 **Important:** Please do not invent any information not found in the `programme_response`. Base your content strictly on the provided information. If any required information is missing from the source, simply omit that point rather than fabricating details.
 
             """},
 
+            {"role": "user", "content": f"""For the paragraph about the University, you need to craft a compelling and personalized statement about why you want to apply to {university}. Write in the first person, as if you are the applicant. Incorporate detailed information from {university_response} into this paragraph, addressing the following points:
 
-            # {"role": "user", "content": f""" For the paragraph about the University, you have to show the reasons for choosing {university} and try to write this like you want to apply for it(first person tone). And add information from {university_response} into this paragraph :
-            #                                  You can use the following points to show the reason for choosing the university :  
-            #                                                 Exact ranking of the University and the source of ranking
-            #                                                 Number of students
-            #                                                 facilities, faculties , campus location
-            #                                                 Precise you have relatives and friends there
-            #                                                 Names of Research centers and renowned Professors linked to the programme
-                                                            
-            
-            # In this paragraph you should also mention why you want to study in the city of the University , mention :  Some cool spots in the city you would like to see
-            #                                                                                                             names of companies in the city that accept people from {programme} to work in       
-            # """},
-{"role": "user", "content": f"""For the paragraph about the University, you need to craft a compelling and personalized statement about why you want to apply to {university}. Write in the first person, as if you are the applicant. Incorporate detailed information from {university_response} into this paragraph, addressing the following points:
+            1. **University Ranking and Source:**
+            - Include the exact ranking of {university} and cite the source of this ranking.
 
-1. **University Ranking and Source:**
-   - Include the exact ranking of {university} and cite the source of this ranking.
+            2. **Student Body and Facilities:**
+            - Mention the number of students at {university}.
+            - Describe the facilities, faculty, and campus location in detail.
 
-2. **Student Body and Facilities:**
-   - Mention the number of students at {university}.
-   - Describe the facilities, faculty, and campus location in detail.
+            3. **Personal Connections:**
+            - Note if you have any relatives or friends at {university} and how that influences your choice.
 
-3. **Personal Connections:**
-   - Note if you have any relatives or friends at {university} and how that influences your choice.
+            4. **Research Centers and Professors:**
+            - Highlight any notable research centers and renowned professors associated with the program you are interested in.
 
-4. **Research Centers and Professors:**
-   - Highlight any notable research centers and renowned professors associated with the program you are interested in.
+            5. **City Attractions:**
+            - Explain why you want to study in the city where {university} is located. Include some cool spots or attractions in the city that interest you.
 
-5. **City Attractions:**
-   - Explain why you want to study in the city where {university} is located. Include some cool spots or attractions in the city that interest you.
+            6. **Local Job Market:**
+            - Provide examples of companies in the city that hire graduates from the {programme}.
+            Based on the above 6 points, add the following points in the paragraph:
+            7. Academic benifits:
+            - Mention the academic benifits of studying in this {university}
 
-6. **Local Job Market:**
-   - Provide examples of companies in the city that hire graduates from the {programme}.
-Based on the above 6 points, add the following points in the paragraph:
-7. Academic benifits:
-   - Mention the academic benifits of studying in this {university}
+            8. Personal benifits:
+            - Mention the personal benifits of studying in this {university}
 
-8. Personal benifits:
-   - Mention the personal benifits of studying in this {university}
+            9. Professional benifits:
+            -Mention the professional benifits of studying in this {university}
 
-9. Professional benifits:
-   -Mention the professional benifits of studying in this {university}
+            Please write this paragraph in the first-person tone where I express my strong motivation to study in Germany. 
+            Start each sentence with 'I' or include 'my'
 
-Make sure to weave all these elements into a cohesive and engaging paragraph that reflects your genuine interest in both the university and the city. Be detailed, specific, and personal in your response.
+            Make sure to weave all these elements into a cohesive and engaging paragraph that reflects your genuine interest in both the university and the city. Be detailed, specific, and personal in your response.
 
-**Important:** Please do not invent any information not found in the `university_response`. Base your content strictly on the provided information. If any required information is missing from the source, simply omit that point rather than fabricating details.
+            **Important:** Please do not invent any information not found in the `university_response`. Base your content strictly on the provided information. If any required information is missing from the source, simply omit that point rather than fabricating details.
 
-"""},
+            """},
             {"role": "user", "content": f"""For the paragraph which is about your future career perspectives and aspirations post-study, you should mention how the programme of {programme}
              will give you the opportunity to work in the futur job you want to do. You should mention names of professional positions linked to the programme you want to work in.
              You can also add that you aim to work in Germany"""},
 
 
             {"role": "user", "content": "Last Paragraph: A brief conclusion summarizing why you are the ideal applicant and show again your interest."},
-            {"role": "user", "content": f"""For the paragraph about Germany, you must mention the following points and add information from {germany_response} into this paragraph :
+            {"role": "user", "content": f"""
+            For the paragraph about Germany, you must mention the following points and add information from {germany_response} into this paragraph :
             
             You strictly have to include at least 5-6 good points for this paragraph.
-            Add all the points given below to the paragraph 
             Point 1. Explain why you chose to apply in Germany
             Point 2. Your Intention to stay in Germany because the field education comparative is far better to others destinations
             Point 3. Talk about the Good exposure, diversity and German culture 
             point 4. What are the reasons to choose Germany for masters/bachelors program?
             point 5. How studying in Germnay will help me grow professionally as well as personally
             point 6. Facts about Germany and its culture that led to the decision to study in Germany
+            Please ensure each sentence transitions smoothly into the next, maintaining a logical flow throughout the document.
             Please write this paragraph in the first-person tone where I express my strong motivation to study in Germany. 
             Start each sentence with 'I' or include 'my'
             please can you write each sentence like "I want to …." instead of "Germany's education system is highly regarded for its quality and affordability" and please write the whole paragraph like this only.
             **Important:** Please do not invent any information not found in the `germany_response`. Base your content strictly on the provided information. If any required information is missing from the source, simply omit that point rather than fabricating details.
 
             """},
+
+            {
+                "role": "user",
+                "content": f"""
+                You have to write another paragraph about why Germany is the ideal destination to study {programme} by adding 5-6 points using relevant examples from {germany_from_articles}.
+                """
+            },
+            #  {
+            #     "role": "user" , "content": f"""You have to write another paragraph about why Germany is the ideal destination to study {programme} based in which you will add 5-6 points explaining why you want to study in Germany and the programme {programme}, based on relevant examples from {germany_from_articles} """
+            # },
+            
+            
 
             { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
             { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
@@ -338,7 +343,6 @@ Make sure to weave all these elements into a cohesive and engaging paragraph tha
             {"role": "user", "content": "Please ensure each paragraph transitions smoothly into the next, maintaining a logical flow throughout the document."},
             {"role": "user", "content": "The statement of purpose should consist of seven paragraphs, totaling a minimum of 500 words, using simple language that appears human-written."},
             {"role": "user", "content": "MOST IMPORTANT : Make sure the tone is warm, simple and human-like. Don't use the following words : 'cutting-edge', 'leverage', 'honed/hone', 'appealing', 'hands-on','delve', 'renowned', 'intricacies', 'close-knit', 'aligns', 'hands-on', 'enhance', 'foster', 'emphasis'"},
-
 
         ]
         )
@@ -351,7 +355,7 @@ Make sure to weave all these elements into a cohesive and engaging paragraph tha
         #model="gpt-3.5-turbo-16k", 
         model = "gpt-4o-2024-05-13",
         temperature=ai_temp,
-        messages=[
+               messages=[
              {"role": "user", "content": "Generate a statement of purpose (SOP) based on the provided details, following a specific structure and style."},
 
             {"role": "user", "content": f"Template for guidance: {template_text}. You should reproduce the exact same structure"},
@@ -373,7 +377,7 @@ Make sure to weave all these elements into a cohesive and engaging paragraph tha
             """},
 
 
-            {"role": "user", "content": f""" For the paragraph about the programme use strong motivational points for choosing {programme} and add information from {programme_response} into this paragraph, 
+            {"role": "user", "content": f""" For the paragraph about the programme use strong motivational points for choosing {programme} and add information from {programme_response} and {germany_from_articles} into this paragraph, 
                 Show a STRONG motivation by evoking a storytelling from your past that led you want to study this programme.
                 If the past education of yours is related to the programme you are applying then you can consider them adding in this paragraph too
                 You have to choose MINIMUM two out of these points :
@@ -387,67 +391,85 @@ Make sure to weave all these elements into a cohesive and engaging paragraph tha
                 Mention the learning outcomes from this {programme}, which include technical knowledge and interpersonal skills.     
                 How this course will benefit me professionally and for persona growth as well.
                 Explain Why this programme can help you build your career and prepare you for your future too.
+                Please write this paragraph in the first-person tone where I express my strong motivation to study in Germany. 
+                Start each sentence with 'I' or include 'my'
                 **Important:** Please do not invent any information not found in the `programme_response`. Base your content strictly on the provided information. If any required information is missing from the source, simply omit that point rather than fabricating details.
 
             """},
 
-{"role": "user", "content": f"""For the paragraph about the University, you need to craft a compelling and personalized statement about why you want to apply to {university}. Write in the first person, as if you are the applicant. Incorporate detailed information from {university_response} into this paragraph, addressing the following points:
+                {"role": "user", "content": f"""For the paragraph about the University, you need to craft a compelling and personalized statement about why you want to apply to {university}. Write in the first person, as if you are the applicant. Incorporate detailed information from {university_response} into this paragraph, addressing the following points:
 
-1. **University Ranking and Source:**
-   - Include the exact ranking of {university} and cite the source of this ranking.
+                1. **University Ranking and Source:**
+                - Include the exact ranking of {university} and cite the source of this ranking.
 
-2. **Student Body and Facilities:**
-   - Mention the number of students at {university}.
-   - Describe the facilities, faculty, and campus location in detail.
+                2. **Student Body and Facilities:**
+                - Mention the number of students at {university}.
+                - Describe the facilities, faculty, and campus location in detail.
 
-3. **Personal Connections:**
-   - Note if you have any relatives or friends at {university} and how that influences your choice.
+                3. **Personal Connections:**
+                - Note if you have any relatives or friends at {university} and how that influences your choice.
 
-4. **Research Centers and Professors:**
-   - Highlight any notable research centers and renowned professors associated with the program you are interested in.
+                4. **Research Centers and Professors:**
+                - Highlight any notable research centers and renowned professors associated with the program you are interested in.
 
-5. **City Attractions:**
-   - Explain why you want to study in the city where {university} is located. Include some cool spots or attractions in the city that interest you.
+                5. **City Attractions:**
+                - Explain why you want to study in the city where {university} is located. Include some cool spots or attractions in the city that interest you.
 
-6. **Local Job Market:**
-   - Provide examples of companies in the city that hire graduates from the {programme}.
-Based on the above 6 points, add the following points in the paragraph:
-7. Academic benifits:
-   - Mention the academic benifits of studying in this {university}
+                6. **Local Job Market:**
+                - Provide examples of companies in the city that hire graduates from the {programme}.
+                Based on the above 6 points, add the following points in the paragraph:
+                7. Academic benifits:
+                - Mention the academic benifits of studying in this {university}
 
-8. Personal benifits:
-   - Mention the personal benifits of studying in this {university}
+                8. Personal benifits:
+                - Mention the personal benifits of studying in this {university}
 
-9. Professional benifits:
-   -Mention the professional benifits of studying in this {university}
+                9. Professional benifits:
+                -Mention the professional benifits of studying in this {university}
 
-Make sure to weave all these elements into a cohesive and engaging paragraph that reflects your genuine interest in both the university and the city. Be detailed, specific, and personal in your response.
+                Please write this paragraph in the first-person tone where I express my strong motivation to study in Germany. 
+                Start each sentence with 'I' or include 'my'
 
-**Important:** Please do not invent any information not found in the `university_response`. Base your content strictly on the provided information. If any required information is missing from the source, simply omit that point rather than fabricating details.
+                Make sure to weave all these elements into a cohesive and engaging paragraph that reflects your genuine interest in both the university and the city. Be detailed, specific, and personal in your response.
 
-"""},
+                **Important:** Please do not invent any information not found in the `university_response`. Base your content strictly on the provided information. If any required information is missing from the source, simply omit that point rather than fabricating details.
+
+                """},
             {"role": "user", "content": f"""For the paragraph which is about your future career perspectives and aspirations post-study, you should mention how the programme of {programme}
              will give you the opportunity to work in the futur job you want to do. You should mention names of professional positions linked to the programme you want to work in.
              You can also add that you aim to work in Germany"""},
 
 
             {"role": "user", "content": "Last Paragraph: A brief conclusion summarizing why you are the ideal applicant and show again your interest."},
-            {"role": "user", "content": f"""For the paragraph about Germany, you must mention the following points and add information from {germany_response} into this paragraph :
+            {"role": "user", "content": f"""
+            For the paragraph about Germany, you must mention the following points and add information from {germany_response} into this paragraph :
             
             You strictly have to include at least 5-6 good points for this paragraph.
-            Add all the points given below to the paragraph 
             Point 1. Explain why you chose to apply in Germany
             Point 2. Your Intention to stay in Germany because the field education comparative is far better to others destinations
             Point 3. Talk about the Good exposure, diversity and German culture 
             point 4. What are the reasons to choose Germany for masters/bachelors program?
             point 5. How studying in Germnay will help me grow professionally as well as personally
             point 6. Facts about Germany and its culture that led to the decision to study in Germany
+            Please ensure each sentence transitions smoothly into the next, maintaining a logical flow throughout the document.
             Please write this paragraph in the first-person tone where I express my strong motivation to study in Germany. 
             Start each sentence with 'I' or include 'my'
             please can you write each sentence like "I want to …." instead of "Germany's education system is highly regarded for its quality and affordability" and please write the whole paragraph like this only.
             **Important:** Please do not invent any information not found in the `germany_response`. Base your content strictly on the provided information. If any required information is missing from the source, simply omit that point rather than fabricating details.
 
             """},
+
+            {
+                "role": "user",
+                "content": f"""
+                You have to write another paragraph about why Germany is the ideal destination to study {programme} by adding 5-6 points using relevant examples from {germany_from_articles}.
+                """
+            },
+            #  {
+            #     "role": "user" , "content": f"""You have to write another paragraph about why Germany is the ideal destination to study {programme} based in which you will add 5-6 points explaining why you want to study in Germany and the programme {programme}, based on relevant examples from {germany_from_articles} """
+            # },
+            
+            
 
             { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
             { "role": "user" , "content": f"Don't consider the above instructions as the order of the paragraphs of the statement of purpose but use {template_text} for the  structure and order instead"},
@@ -1091,13 +1113,6 @@ async def extract_first_url_1(query):
                 print("Failed to retrieve the website content.")
                 return None
 
-    
-    
-    
-    
-    
-    
-    
     
 # Function to scrape content from a URL using the Diffbot API
 async def scrape_url(url):
