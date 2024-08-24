@@ -39,13 +39,13 @@ DIFFBOT_API_URL = 'https://api.diffbot.com/v3/article'
 
 firebaseConfig = {
     'apiKey': f"{PYREBASE_API_KEY}",
-    'authDomain': "yg-sop-gen-high.firebaseapp.com",
-    'projectId': "yg-sop-gen-high",
-    'databaseURL': "https://yg-sop-gen-high-default-rtdb.firebaseio.com/",
-    'storageBucket': "yg-sop-gen-high.appspot.com",
-    'messagingSenderId': "912444145418",
-    'appId': "1:912444145418:web:d157bb3a58a1176de704f3",
-    'measurementId': "G-6BXXTL8T1L"
+    'authDomain': "yg----sop---high.firebaseapp.com",
+    'projectId': "yg----sop---high",
+    'databaseURL':"https://yg----sop---high-default-rtdb.firebaseio.com/",
+    'storageBucket': "yg----sop---high.appspot.com",
+    'messagingSenderId': "203643126427",
+    'appId':  "1:203643126427:web:54ce1ef165fc2b40993c3e",
+    'measurementId': "G-2QQBJK5FG5"
 }
 # Firebase authentication
 firebase = pyrebase.initialize_app(firebaseConfig)
