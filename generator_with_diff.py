@@ -100,7 +100,7 @@ async def generate_sop_version1(template_text, res_text,programme,university, un
             """},
 
 
-            {"role": "user", "content": f""" For the paragraph about the programme use strong motivational points for choosing {programme} and add information from {programme_response} and {germany_from_articles} into this paragraph, 
+            {"role": "user", "content": f""" For the paragraph about the programme use strong motivational points for choosing {programme} and add information from {programme_response} into this paragraph, 
                 Show a STRONG motivation by evoking a storytelling from your past that led you want to study this programme.
                 If the past education of yours is related to the programme you are applying then you can consider them adding in this paragraph too
                 You have to choose MINIMUM two out of these points :
@@ -231,7 +231,7 @@ Make sure to weave all these elements into a cohesive and engaging paragraph tha
 
 
             {"role": "user", "content": f"""Fot the Academic and experience Paragraph too you will be using content from the {res_text}: Discuss the candidate's academic and professional background :
-            IF CGPA score is more than 7 and his Bachelor graduation date is PAST : Mention his CGPA score.
+            DO NOT MENTION his CGPA score
             Mention all his acadamic education scores from the {res_text}
              Mention all the acadamic education scores as they are prensent in {res_text}
             Mention ALL his work experiences and the different roles and responsibilities he held
@@ -240,7 +240,7 @@ Make sure to weave all these elements into a cohesive and engaging paragraph tha
             """},
 
 
-            {"role": "user", "content": f""" For the paragraph about the programme use strong motivational points for choosing {programme} and add information from {programme_response} and {germany_from_articles} into this paragraph, 
+            {"role": "user", "content": f""" For the paragraph about the programme use strong motivational points for choosing {programme} and add information from {programme_response} into this paragraph, 
                 Show a STRONG motivation by evoking a storytelling from your past that led you want to study this programme.
                 If the past education of yours is related to the programme you are applying then you can consider them adding in this paragraph too
                 You have to choose MINIMUM two out of these points :
@@ -377,7 +377,7 @@ Make sure to weave all these elements into a cohesive and engaging paragraph tha
             """},
 
 
-            {"role": "user", "content": f""" For the paragraph about the programme use strong motivational points for choosing {programme} and add information from {programme_response} and {germany_from_articles} into this paragraph, 
+            {"role": "user", "content": f""" For the paragraph about the programme use strong motivational points for choosing {programme} and add information from {programme_response} into this paragraph, 
                 Show a STRONG motivation by evoking a storytelling from your past that led you want to study this programme.
                 If the past education of yours is related to the programme you are applying then you can consider them adding in this paragraph too
                 You have to choose MINIMUM two out of these points :
@@ -571,7 +571,7 @@ async def generate_responses_university(res_text,programme, university, internat
 },
 {
 "role": "user",
-"content": f"Question 1:  How does the size of the student body or the presence of an international student community at this university influence your decision to attend?  "
+"content": f"Question 8:  How does the size of the student body or the presence of an international student community at this university influence your decision to attend?  "
 },
 {
 "role": "user",
@@ -579,7 +579,7 @@ async def generate_responses_university(res_text,programme, university, internat
 },
 {
 "role": "user",
-"content": "Provide concrete examples for Questions 1 to 7. For each question, generate 20 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
+"content": "Provide concrete examples for Questions 1 to 8. For each question, generate 20 lines minimum. I want DETAILED and RELEVANT information that goes beyond a simple sentence."
 },
 
 {"role": "user",
