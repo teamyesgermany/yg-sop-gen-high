@@ -67,8 +67,8 @@ logo_path = 'images/yeslogo2.jpg'
     
 
 async def generate_sop_version1(template_text, res_text,programme,university, university_response, programme_response, germany_response , germany_from_articles):
-    st.write(f"**Relevant article about Germany and {programme}**" + '\n\n')
-    st.write(germany_from_articles)
+    # st.write(f"**Relevant article about Germany and {programme}**" + '\n\n')
+    # st.write(germany_from_articles)
     cgpa_score = await retrieve_cgpa_score(res_text)
     
     print("from the terminal : ", cgpa_score)
@@ -608,7 +608,7 @@ async def generate_responses_university(res_text,programme, university, internat
     )
 
     response_out = completion['choices'][0]['message']['content']
-    st.write(response_out)
+    # st.write(response_out)
     return response_out
     
     
@@ -709,7 +709,7 @@ async def generate_responses_programme(res_text,programme, university, programme
     )
 
     response_out = completion['choices'][0]['message']['content']
-    st.write(response_out)
+    # st.write(response_out)
     return response_out
 
 
@@ -779,7 +779,7 @@ standard_living_germany, location_industries_germany, tuition_fees_germany, post
     ] )
 
     response_out = completion['choices'][0]['message']['content']
-    st.write(response_out)
+    # st.write(response_out)
     return response_out 
 #*****
    
